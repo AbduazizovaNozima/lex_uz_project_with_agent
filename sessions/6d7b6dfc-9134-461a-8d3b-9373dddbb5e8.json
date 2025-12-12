@@ -1,0 +1,130 @@
+{
+  "session_id": "6d7b6dfc-9134-461a-8d3b-9373dddbb5e8",
+  "user_id": "anonymous",
+  "created_at": "2025-12-12T15:47:34.098926",
+  "last_active": "2025-12-12T15:51:48.154630",
+  "messages": [
+    {
+      "role": "user",
+      "content": "salom",
+      "timestamp": "2025-12-12T15:47:34.100933",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Sizni qanday yordam bera olishim mumkin?",
+      "timestamp": "2025-12-12T15:47:34.114921",
+      "agent_path": [
+        "SocialBot"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "kimsan",
+      "timestamp": "2025-12-12T15:47:39.578594",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Men Lex.uz saytining professional yordamchisi, qonunlar va huquqiy masalalar bo'yicha yordam berishga tayyorman. Nima haqida gaplashamiz?",
+      "timestamp": "2025-12-12T15:47:42.342777",
+      "agent_path": [
+        "SocialBot"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "man kecha sudiyani urdim ",
+      "timestamp": "2025-12-12T15:48:00.706445",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "📋 **Sudiyani urish oqibatlari**\n\nSudiyani urish, ya'ni sudya yoki sud organiga jismoniy zarar yetkazish, jiddiy huquqiy oqibatlarga olib keladi. Bu jinoyat hisoblanadi va qonun bilan jazolanadi. Sudya, davlat organi vakili sifatida, o'z vazifalarini bajarishda himoya qilinishi kerak.\n\n📚 **Qonuniy asos:**\n- Jinoyat kodeksi, modda 237 (sudga hujum qilish)\n\n💡 **Amaliy maslahat:**\nAgar siz bunday harakatni amalga oshirgan bo'lsangiz, tezda yuridik yordamga murojaat qilishingiz va vaziyatni hal qilish uchun qonuniy yo'llarni izlashingiz muhimdir.",
+      "timestamp": "2025-12-12T15:48:11.839123",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "kecha bitta bola o'lib qolgani ko'rdim, bu manga tasir qilmaydimi qonuniy tomonlaman",
+      "timestamp": "2025-12-12T15:49:07.600592",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "📋 **Bola o'lib qolishi va qonuniy ta'sirlar**\n\nAgar siz biror voqea, masalan, bola o'lib qolishini ko'rsangiz, bu sizga qonuniy jihatdan ta'sir qilishi mumkin. Bunday vaziyatda siz guvoh sifatida sudga chaqirilishingiz mumkin. Agar siz voqeani ko'rgan bo'lsangiz, bu haqda huquqiy organlarga xabar berishingiz muhimdir.\n\n📚 Qonuniy asos:\n- Afsuski, bazada bu mavzu bo'yicha batafsil ma'lumot yo'q.\n\n💡 Amaliy maslahat:\nAgar siz voqeani ko'rgan bo'lsangiz, buni huquqiy organlarga xabar berishdan tortinmang. Bu sizning fuqarolik burchingizdir.",
+      "timestamp": "2025-12-12T15:49:20.557004",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "qanday qilib lex.uzga resgistration qilsam bo'ladi",
+      "timestamp": "2025-12-12T15:50:02.886685",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, bu mavzu bo'yicha ma'lumot yo'q. Agar boshqa savollaringiz bo'lsa, yordam berishga tayyorman!",
+      "timestamp": "2025-12-12T15:50:08.245703",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "registration qanday qiliandi",
+      "timestamp": "2025-12-12T15:50:38.907772",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Lex.uz saytida ro'yxatdan o'tish uchun quyidagi qadamlarni bajaring:\n\n1. Saytning yuqori o'ng burchagidagi **'Kirish'** tugmasini bosing.\n2. **'Ro'yxatdan o'tish'** havolasini tanlang.\n3. Elektron pochta manzilingizni va parolingizni kiriting.\n4. Tasdiqlash kodini elektron pochtangizga yuborilgan xabarda toping.\n5. Kodni kiritib, ro'yxatdan o'tishni yakunlang.\n\nMana, ro'yxatdan o'tish jarayonini ko'rsatadigan rasm:  \n![Ro'yxatdan o'tish jarayoni](/home/nozima/langchain_first_project/static/registration.png)\n\nAgar yana biror savolingiz bo'lsa, yordam berishga tayyorman!",
+      "timestamp": "2025-12-12T15:50:48.898532",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/registration.png"
+    },
+    {
+      "role": "user",
+      "content": "qanday qilib data qidirsam bo'ladi",
+      "timestamp": "2025-12-12T15:51:37.235761",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Lex.uz saytida ma'lumot qidirish uchun quyidagi qadamlarni bajaring:\n\n1. Saytning yuqori qismidagi **Qidiruv** maydonini toping.\n2. Hujjat nomi, raqami yoki kalit so'zlarni kiriting.\n3. **Enter** tugmasini bosing yoki **Qidirish** tugmasini bosing.\n4. Natijalar ro'yxatidan kerakli hujjatni tanlang.\n\nMana, qidiruv jarayonini ko'rsatadigan rasm:  \n![Qidirish jarayoni](/home/nozima/langchain_first_project/static/search.png)\n\nAgar boshqa savollaringiz bo'lsa, yordam berishga tayyorman!",
+      "timestamp": "2025-12-12T15:51:48.154619",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/search.png"
+    }
+  ],
+  "metadata": {}
+}

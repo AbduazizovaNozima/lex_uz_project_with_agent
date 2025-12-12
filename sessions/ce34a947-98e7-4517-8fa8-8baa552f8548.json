@@ -1,0 +1,77 @@
+{
+  "session_id": "ce34a947-98e7-4517-8fa8-8baa552f8548",
+  "user_id": "anonymous",
+  "created_at": "2025-12-12T14:57:48.843066",
+  "last_active": "2025-12-12T15:01:53.687438",
+  "messages": [
+    {
+      "role": "user",
+      "content": "registartsiya qilishim uchun nima qilishm kk",
+      "timestamp": "2025-12-12T14:57:48.891287",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Lex.uz saytida ro'yxatdan o'tish uchun quyidagi qadamlarni bajaring:\n\n1. Saytning yuqori o'ng burchagidagi **'Kirish'** tugmasini bosing.\n2. **'Ro'yxatdan o'tish'** havolasini tanlang.\n3. Elektron pochta manzilingizni va parolingizni kiriting.\n4. Tasdiqlash kodini elektron pochtangizga yuborilgan xabarda toping.\n5. Kodni kiritib, ro'yxatdan o'tishni yakunlang.\n\nQuyida ro'yxatdan o'tish jarayonini ko'rsatuvchi rasmni ham ko'rishingiz mumkin:\n\n![Ro'yxatdan o'tish jarayoni](/home/nozima/langchain_first_project/static/registration.png)\n\nAgar qo'shimcha savollaringiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T14:58:03.769692",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/registration.png"
+    },
+    {
+      "role": "user",
+      "content": "saytni tilini ozgartirish uchun nima qilaman",
+      "timestamp": "2025-12-12T14:59:26.309608",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Lex.uz saytining tilini o'zgartirish uchun quyidagi qadamlarni bajaring:\n\n1. Saytning yuqori qismidagi til tugmasini toping (O'z/Ўз/Ru).\n2. Kerakli tilni tanlang:\n   - **O'z** - Lotin alifbosi\n   - **Ўз** - Kirill alifbosi\n   - **Ru** - Rus tili\n3. Sahifa avtomatik yangilanadi.\n\nQuyida tilni o'zgartirish jarayonini ko'rsatadigan rasm mavjud:\n\n![Tilni o'zgartirish](home/nozima/langchain_first_project/static/language_change.png)\n\nAgar yana biror savolingiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T14:59:37.320260",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "home/nozima/langchain_first_project/static/language_change.png"
+    },
+    {
+      "role": "user",
+      "content": "registartsiya qilishim uchun nima qilishm kk\n\n",
+      "timestamp": "2025-12-12T15:00:41.304030",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Lex.uz saytida ro'yxatdan o'tish uchun quyidagi qadamlarni bajaring:\n\n1. Saytning yuqori o'ng burchagidagi **'Kirish'** tugmasini bosing.\n2. **'Ro'yxatdan o'tish'** havolasini tanlang.\n3. Elektron pochta manzilingizni va parolingizni kiriting.\n4. Tasdiqlash kodini elektron pochtangizga yuborilgan xabarda toping.\n5. Kodni kiritib, ro'yxatdan o'tishni yakunlang.\n\n![Ro'yxatdan o'tish](sandbox:/home/nozima/langchain_first_project/static/registration.png)\n\nAgar qo'shimcha savollaringiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T15:00:56.850436",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/registration.png"
+    },
+    {
+      "role": "user",
+      "content": "saytni tilini ozgartirish uchun nima qilaman\n\n",
+      "timestamp": "2025-12-12T15:01:43.296187",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Lex.uz saytining tilini o'zgartirish uchun quyidagi qadamlarni bajaring:\n\n1. Saytning yuqori qismidagi til tugmasini toping (O'z/Ўз/Ru).\n2. Kerakli tilni tanlang:\n   - **O'z** - Lotin alifbosi\n   - **Ўз** - Kirill alifbosi\n   - **Ru** - Rus tili\n3. Sahifa avtomatik yangilanadi.\n\n![Saytni tilini o'zgartirish](sandbox:/home/nozima/langchain_first_project/static/language_change.png)\n\nAgar boshqa savollaringiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T15:01:53.687427",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/language_change.png"
+    }
+  ],
+  "metadata": {}
+}

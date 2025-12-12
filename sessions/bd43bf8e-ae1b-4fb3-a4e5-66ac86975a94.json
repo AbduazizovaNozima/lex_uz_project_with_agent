@@ -1,0 +1,60 @@
+{
+  "session_id": "bd43bf8e-ae1b-4fb3-a4e5-66ac86975a94",
+  "user_id": "anonymous",
+  "created_at": "2025-12-12T15:05:08.987174",
+  "last_active": "2025-12-12T15:06:09.057415",
+  "messages": [
+    {
+      "role": "user",
+      "content": "saytni tilini ozgartirish uchun nima qilaman\n\n",
+      "timestamp": "2025-12-12T15:05:08.990433",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Sayt tilini o'zgartirish uchun quyidagi amallarni bajaring:\n\n1. Saytning yuqori qismidagi til tugmasini toping (O'z/Ўз/Ru).\n2. Kerakli tilni tanlang:\n   - **O'z** - Lotin alifbosi\n   - **Ўз** - Kirill alifbosi\n   - **Ru** - Rus tili\n3. Sahifa avtomatik yangilanadi.\n\nQuyida tilni o'zgartirish jarayonini ko'rsatadigan rasm mavjud:\n\n![Saytni tilini o'zgartirish](sandbox:/home/nozima/langchain_first_project/static/language_change.png)\n\nAgar yana savollaringiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T15:05:14.280260",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/language_change.png"
+    },
+    {
+      "role": "user",
+      "content": "saytdan moddalarani qidirish uchun nima qilay",
+      "timestamp": "2025-12-12T15:05:29.164232",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, bu mavzu bo'yicha ma'lumot yo'q. Agar boshqa savollaringiz bo'lsa, yordam berishga tayyorman!",
+      "timestamp": "2025-12-12T15:05:34.958036",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "hujjatlarni qidirish uchun nima qilay",
+      "timestamp": "2025-12-12T15:06:04.282353",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, bu mavzu bo'yicha ma'lumot yo'q. Agar boshqa savollaringiz bo'lsa, yordam berishga tayyorman!",
+      "timestamp": "2025-12-12T15:06:09.057406",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

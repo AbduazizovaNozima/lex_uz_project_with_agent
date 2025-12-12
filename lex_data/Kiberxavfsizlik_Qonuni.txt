@@ -1,0 +1,265 @@
+Oʻzbekiston Respublikasining Qonuni, 15.04.2022 yildagi O‘RQ-764-son
+Кучга кириш санаси
+17.07.2022
+Қўшимча ахборот
+Улашиш
+РУС
+ENG
+ЎЗБ
+O’ZB
+O‘ZB|РУС
+OʻZBEKISTON RESPUBLIKASINING QONUNI
+KIBERXAVFSIZLIK TOʻGʻRISIDA
+Qonunchilik palatasi tomonidan 2022-yil 25-fevralda qabul qilingan
+Senat tomonidan 2022-yil 17-martda maʼqullangan
+1-bob. Umumiy qoidalar
+1-modda. Ushbu Qonunning maqsadi
+Ushbu Qonunning maqsadi kiberxavfsizlik sohasidagi munosabatlarni tartibga solishdan iborat.
+2-modda. Kiberxavfsizlik toʻgʻrisidagi qonunchilik
+Kiberxavfsizlik toʻgʻrisidagi qonunchilik ushbu Qonun va boshqa qonunchilik hujjatlaridan iboratdir.
+Telekommunikatsiya tarmoqlari va aloqa kanallaridagi tezkor-qidiruv tadbirlari tizimining kiberxavfsizligini taʼminlash alohida qonunchilik hujjatlarida belgilangan tartibda amalga oshiriladi.
+Agar Oʻzbekiston Respublikasining xalqaro shartnomasida Oʻzbekiston Respublikasining kiberxavfsizlik toʻgʻrisidagi qonunchiligida nazarda tutilganidan boshqacha qoidalar belgilangan boʻlsa, xalqaro shartnoma qoidalari qoʻllaniladi.
+3-modda. Asosiy tushunchalar
+Ushbu Qonunda quyidagi asosiy tushunchalar qoʻllaniladi:
+axborotlashtirish obyekti — turli darajadagi va maqsaddagi axborot tizimlari, telekommunikatsiya tarmoqlari, axborotga ishlov berishning texnik vositalari, ushbu vositalar oʻrnatilgan va foydalaniladigan xonalar;
+kiberjinoyatchilik — axborotni egallash, uni oʻzgartirish, yoʻq qilish yoki axborot tizimlari va resurslarini ishdan chiqarish maqsadida kibermakonda dasturiy taʼminot va texnik vositalardan foydalanilgan holda amalga oshiriladigan jinoyatlar yigʻindisi;
+kibermakon — axborot texnologiyalari yordamida yaratilgan virtual muhit;
+kibertahdid — kibermakonda shaxs, jamiyat va davlat manfaatlariga tahdid soluvchi shart-sharoitlar va omillar majmui;
+kiberxavfsizlik — kibermakonda shaxs, jamiyat va davlat manfaatlarining tashqi va ichki tahdidlardan himoyalanganlik holati;
+kiberxavfsizlik hodisasi — kibermakonda axborot tizimlarining ishlashida uzilishlarga va (yoki) ulardagi axborotning ochiqligi, yaxlitligi va undan erkin foydalanilishining buzilishiga olib kelgan hodisa;
+kiberxavfsizlik obyekti — axborotning kiberhimoya qilinishini hamda milliy axborot tizimlari va resurslarining kiberxavfsizligini taʼminlashga doir faoliyatda foydalaniladigan axborot tizimlari majmui, shu jumladan muhim axborot infratuzilmasi obyektlari;
+kiberxavfsizlik subyekti — milliy axborot resurslariga ega boʻlish, ulardan foydalanish va ularni tasarruf etish hamda ulardan foydalanish boʻyicha elektron axborot xizmatlari koʻrsatish, axborotni himoya qilish hamda kiberxavfsizlik bilan bogʻliq muayyan huquqlar va majburiyatlarga ega boʻlgan yuridik shaxs va (yoki) yakka tartibdagi tadbirkor, shu jumladan muhim axborot infratuzilmasi subyektlari;
+kiberhimoya — kiberxavfsizlik hodisalarining oldini olishga, kiberhujumlarni aniqlashga va ulardan himoya qilishga, kiberhujumlarning oqibatlarini bartaraf etishga, telekommunikatsiya tarmoqlari, axborot tizimlari hamda resurslari faoliyatining barqarorligini va ishonchliligini tiklashga qaratilgan huquqiy, tashkiliy, moliyaviy-iqtisodiy, muhandislik-texnik chora-tadbirlar, shuningdek maʼlumotlarni kriptografik va texnik jihatdan himoya qilish chora-tadbirlari majmui;
+kiberhujum — kibermakonda apparat, apparat-dasturiy va dasturiy vositalardan foydalangan holda qasddan amalga oshiriladigan, kiberxavfsizlikka tahdid soladigan harakat;
+muhim axborot infratuzilmasi — muhim strategik va ijtimoiy-iqtisodiy ahamiyatga ega boʻlgan avtomatlashtirilgan boshqaruv tizimlarining, axborot tizimlari hamda tarmoqlar va texnologik jarayonlar resurslarining majmui;
+muhim axborot infratuzilmasi obyektlari — davlat boshqaruvi va davlat xizmatlari koʻrsatish, mudofaa, davlat xavfsizligini, huquq-tartibotni taʼminlash, yoqilgʻi-energetika majmui (atom energetikasi), kimyo, neft-kimyo tarmoqlari, metallurgiya, suvdan foydalanish va suv taʼminoti, qishloq xoʻjaligi, sogʻliqni saqlash, uy-joy kommunal xizmatlar koʻrsatish, bank-moliya tizimi, transport, axborot-kommunikatsiya texnologiyalari, ekologiya va atrof-muhitni muhofaza qilish, strategik ahamiyatiga ega boʻlgan foydali qazilmalarni qazib olish va qayta ishlash sohasida, ishlab chiqarish sohasida, shuningdek iqtisodiyotning boshqa tarmoqlarida va ijtimoiy sohada qoʻllaniladigan axborotlashtirish tizimlari;
+muhim axborot infratuzilmasi subyektlari — davlat organlari va tashkilotlari, shuningdek mulk, ijara huquqlari asosida yoki boshqa qonuniy asoslarda muhim axborot infratuzilmasi obyektlariga egalik qiluvchi yuridik shaxslar, shu jumladan muhim axborot infratuzilmasi obyektlarining ishlashini hamda hamkorligini taʼminlovchi yuridik shaxslar va (yoki) yakka tartibdagi tadbirkorlar.
+4-modda. Kiberxavfsizlikni taʼminlashning asosiy prinsiplari
+Kiberxavfsizlikni taʼminlashning asosiy prinsiplari quyidagilardan iborat:
+qonuniylik;
+kibermakonda shaxs, jamiyat va davlat manfaatlarini himoya qilishning ustuvorligi;
+kiberxavfsizlik sohasini tartibga solishga nisbatan yagona yondashuv;
+kiberxavfsizlik tizimini yaratishda mahalliy ishlab chiqaruvchilar ishtirokining ustuvorligi;
+Oʻzbekiston Respublikasining kiberxavfsizlikni taʼminlashda xalqaro hamkorlik uchun ochiqligi.
+5-modda. Qonuniylik prinsipi
+Kiberxavfsizlikni taʼminlashda Oʻzbekiston Respublikasi Konstitutsiyasining, ushbu Qonun va boshqa qonunchilik hujjatlarining talablariga ogʻishmay rioya etilishi hamda ular bajarilishi shart.
+Qonunchilik talablarini aniq bajarishdan va ularga rioya etishdan har qanday tarzda chetga chiqish, buning sabablari qanday boʻlishidan qatʼi nazar, qonuniylikning buzilishidir va u belgilangan javobgarlikka sabab boʻladi.
+6-modda. Kibermakonda shaxs, jamiyat va davlat manfaatlarini himoya qilishning ustuvorligi prinsipi
+Kibermakonda shaxs, jamiyat va davlat manfaatlarini tashqi va ichki tahdidlardan himoya qilish davlatning kiberxavfsizligini taʼminlashda ustuvor hisoblanadi.
+7-modda. Kiberxavfsizlik sohasini tartibga solishga nisbatan yagona yondashuv prinsipi
+Kiberxavfsizlik sohasini tartibga solishga nisbatan yagona yondashuv maʼlumotlarga ishlov berish hamda ularni himoya qilish boʻyicha dasturiy va texnik vositalarni ishlab chiqish hamda joriy etish jarayonini tashkil etish, uning monitoringini va nazoratini amalga oshirishga qaratilgan axborot tizimlarini hamda resurslarini kiberhimoya qilishning yagona davlat tizimi joriy etilgan holda taʼminlanadi.
+Kiberxavfsizlikni taʼminlash ushbu sohadagi munosabatlarni huquqiy, maʼmuriy va texnik jihatdan tartibga solish tizimini shakllantirishda yagona yondashuvlar asosida amalga oshirilishi kerak.
+8-modda. Kiberxavfsizlik tizimini yaratishda mahalliy ishlab chiqaruvchilar ishtirokining ustuvorligi prinsipi
+Davlat va xoʻjalik boshqaruvi organlarining, mahalliy davlat hokimiyati organlarining kiberxavfsizligini taʼminlash uchun zarur boʻlgan tovarlarni (ishlarni, xizmatlarni) xarid qilishda Oʻzbekiston Respublikasi hududida ishlab chiqarilgan tovarlar (ishlar, xizmatlar) xorijda ishlab chiqarilgan mahsulotga nisbatan ustuvorlikka ega boʻladi.
+9-modda. Oʻzbekiston Respublikasining kiberxavfsizlikni taʼminlashda xalqaro hamkorlik uchun ochiqligi prinsipi
+Oʻzbekiston Respublikasi kiberxavfsizlikni taʼminlash sohasida xalqaro shartnomalar doirasida xalqaro tashkilotlar, chet davlatlar va ularning vakolatli idoralari bilan xalqaro hamkorlikni amalga oshiradi.
+2-bob. Kiberxavfsizlik sohasini davlat tomonidan tartibga solish
+10-modda. Kiberxavfsizlik sohasidagi yagona davlat siyosati
+Kiberxavfsizlik sohasidagi yagona davlat siyosatini Oʻzbekiston Respublikasi Prezidenti belgilaydi.
+11-modda. Kiberxavfsizlik sohasidagi vakolatli davlat organi
+Oʻzbekiston Respublikasi Davlat xavfsizlik xizmati kiberxavfsizlik sohasidagi vakolatli davlat organidir (bundan buyon matnda vakolatli davlat organi deb yuritiladi).
+Vakolatli davlat organining kiberxavfsizlik sohasidagi vakolatlari jumlasiga quyidagilar kiradi:
+kiberxavfsizlik sohasidagi normativ-huquqiy hujjatlarni va davlat dasturlarini ishlab chiqish;
+kiberxavfsizlik toʻgʻrisidagi qonunchilik hujjatlarining ijro etilishi ustidan nazoratni amalga oshirish;
+kiberxavfsizlik hodisalari yuzasidan tezkor-qidiruv tadbirlarini, tergovga qadar tekshiruvlarni va tergov harakatlarini amalga oshirish;
+kiberxavfsizlik hodisalarining oldini olish, ularni aniqlash va bartaraf etish hamda ularga nisbatan tegishli chora-tadbirlarni, shu jumladan ularning oqibatlarini tugatish boʻyicha tashkiliy-texnik chora-tadbirlarni koʻrish;
+favqulodda vaziyatlarda axborot tizimlari va resurslarini kiberhimoya qilish hamda kiberxavfsizlik sohasidagi boshqa masalalar boʻyicha chora-tadbirlarni oʻz ichiga olgan rejalarni ishlab chiqish;
+kiberxavfsizlikni taʼminlashga doir ishlarni, shuningdek muhim axborot infratuzilmasi obyektlarida kiberhujumlarning oldini olishga, ularni aniqlashga va ularning oqibatlarini tugatishga doir ishlarni tashkil etish;
+kiberxavfsizlik talablariga muvofiq axborot tizimlari va resurslaridagi apparat, apparat-dasturiy hamda dasturiy vositalarni sertifikatlashtirishga doir ishlarni tashkil etish;
+kiberxavfsizlik sohasida tadqiqotlar oʻtkazilishini va monitoringni tashkil etish;
+muhim axborot infratuzilmasi obyektlarining yagona reyestrini shakllantirish, shuningdek ushbu reyestrning yuritilishini tashkil etish va taʼminlash;
+kiberxavfsizlik subyektlari tomonidan taqdim etilgan maʼlumotlar asosida obyektlarni muhim axborot infratuzilmasi obyektlarining yagona reyestriga kiritish toʻgʻrisida qaror qabul qilish;
+muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlashga doir talablarni belgilash;
+axborotlashtirish obyektlarini va muhim axborot infratuzilmasi obyektlarini kiberxavfsizlik talablariga muvofiq attestatsiyadan oʻtkazish tartibini belgilash;
+axborotni kriptografik himoya qilish vositalarini ishlab chiqishga, ishlab chiqarishga va realizatsiya qilishga doir faoliyatni litsenziyalash;
+axborot tizimlaridan hamda resurslaridan foydalanuvchilarning huquqlari va qonuniy manfaatlarini himoya qilish choralarini koʻrish;
+kiberxavfsizlik subyektlarining axborot tizimlarini va resurslarini oʻrganish va tekshirishni, shuningdek muhim axborot infratuzilmasi obyektlarida oʻrganishlar va tekshirishlarni amalga oshirish;
+muhim axborot infratuzilmasi obyektlariga boʻlgan kiberhujumlarga urinishlarning oldini olishga doir rejalarni ishlab chiqish va ularni bevosita amalga oshirish;
+kiberxavfsizlik boʻlinmalarining, mustaqil ekspertlar xizmatlari va guruhlarining faoliyatini tartibga solish, kibertahdidlarga qarshi kurashish sohasida huquqni muhofaza qiluvchi organlar bilan hamkorlik qilish;
+davlat va xoʻjalik boshqaruvi organlarini, mahalliy davlat hokimiyati organlarini axborot tizimlari hamda resurslarida aniqlangan zaifliklar, kibertahdidlar, kiberhujumlar va boshqa buzgʻunchi xatti-harakatlar toʻgʻrisida xabardor qilish;
+huquqni muhofaza qiluvchi organlarni va muhim axborot infratuzilmasi subyektlarini muhim axborot infratuzilmasi obyektlarida kiberxavfsizlik hodisalarini birgalikda tekshirishga jalb etish;
+kiberxavfsizlik sohasida xalqaro hamkorlikni amalga oshirish va kibertahdidlarga qarshi kurashish boʻyicha umumiy yondashuvlarni ishlab chiqish, kiberjinoyatchilik boʻyicha tergov harakatlarini olib borish hamda kiberjinoyatchilikning oldini olish borasidagi saʼy-harakatlarni birlashtirish, shuningdek Oʻzbekiston Respublikasining kibermakonidan terrorchilik, ekstremistik va boshqa qonunga xilof faoliyatda foydalanilishiga yoʻl qoʻymaslik choralarini koʻrish;
+muhim axborot infratuzilmasi obyektlarida kiberhujumlarni aniqlash, ularning oldini olish va oqibatlarini bartaraf etish vositalarini joriy etishga doir ishlarni tashkil qilish, shuningdek kiberxavfsizlik hodisalariga nisbatan choralar koʻrish;
+muhim axborot infratuzilmasi obyektlaridagi mavjud zaifliklar va ehtimoldagi tahdidlar toʻgʻrisidagi maʼlumotlarni aniqlashga, toʻplashga va tahlil qilishga doir ishlarni tashkil etish;
+axborot tizimlari va resurslarida kiberxavfsizlikning taʼminlanganlik darajasi boʻyicha tasniflagich yaratish;
+kiberxavfsizlik obyektlarini kiberxavfsizlikni taʼminlash darajasiga koʻra tasniflash;
+kiberxavfsizlik sohasida kadrlar tayyorlash boʻyicha faoliyatni amalga oshirish;
+kiberxavfsizlik talablariga muvofiqlik yuzasidan ekspertiza oʻtkazish mexanizmlarini belgilash;
+kiberxavfsizlik va muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini amalga oshirishni baholash usullarini belgilash va baholash;
+muhim axborot infratuzilmasi obyektlarini toifalashtirish mezonlarini belgilash va toifalashtirish;
+kiberxavfsizlik subyektlarining kiberxavfsizligini taʼminlashga jalb etilgan xodimlarni qonunchilikda belgilangan tartibda attestatsiyadan oʻtkazish.
+Vakolatli davlat organining qonuniy talablarini (koʻrsatmalarini) bajarish majburiydir.
+12-modda. Vakolatli davlat organining huquqlari
+Vakolatli davlat organi kiberxavfsizlik sohasidagi vakolatlarni amalga oshirish chogʻida quyidagi huquqlarga ega:
+kiberhujumlarni aniqlash, ularning oldini olish va oqibatlarini bartaraf etish, shuningdek kiberxavfsizlik hodisalariga nisbatan choralar koʻrish uchun moʻljallangan texnik, dasturiy va apparat-dasturiy vositalarni ijaraga olish;
+kiberhujumlarga barham berish boʻyicha kechiktirib boʻlmaydigan choralar koʻrish uchun texnik qurilmalar va xizmatlardan tekin foydalanish;
+davlat organlariga va boshqa tashkilotlarga kirish, zarur hujjatlar va materiallar bilan tanishish, shuningdek davlat organlaridan va boshqa tashkilotlardan, fuqarolardan maʼlumotlarni hamda boshqa zarur hujjatlarni va materiallarni soʻrash hamda olish, ularni identifikatsiyalashni amalga oshirish va ulardan kiberxavfsizlik hodisalari boʻyicha tergov harakatlarida foydalanish;
+kiberxavfsizlikni taʼminlash boʻyicha ishchi organni tashkil etish, shuningdek oʻz vakolatlarining bir qismini unga oʻtkazish;
+kiberxavfsizlik subyektlariga kiberxavfsizlikka tahdid soluvchi huquqbuzarliklar sodir etilishiga imkon bergan sabablar va shart-sharoitlarni bartaraf etish toʻgʻrisida bajarilishi majburiy boʻlgan taqdimnomalar hamda koʻrsatmalar kiritish;
+kiberxavfsizlik holati taʼminlanganligi yuzasidan davlat nazorati va tekshiruvi vazifasini amalga oshirish maqsadida davlat organlari hamda tashkilotlarining, muhim axborot infratuzilmasi obyektlarining axborot tizimlariga va resurslariga belgilangan tartibda toʻsqinliksiz kirish hamda ularga ulanish, shuningdek ushbu obyektlardagi axborot tizimlarining va resurslarning kiberxavfsizligini taʼminlash vositalarining joriy etilishiga hamda ulardan foydalanilishiga doir maʼlumotlarni oʻrganish;
+kiberxavfsizlikni taʼminlash boʻyicha monitoring ishlarini bajarish chogʻida tashkiliy-texnik tadbirlarni amalga oshirish uchun monitoring tizimlariga yoki muhim axborot infratuzilmasi obyektlariga kirish;
+jismoniy va yuridik shaxslarning turar joylariga va boshqa obyektlariga toʻsqinliksiz kirish, zarurat boʻlganda qulflash moslamalarini va boshqa ashyolarni buzgan holda kirish, bu joylarni axborot texnologiyalari sohasida jinoyatlar sodir etganlikda gumon qilinayotgan shaxslarni taʼqib qilish chogʻida yoxud u erda jinoyat sodir etilyapti yoki sodir etilgan yoxud huquqni muhofaza qiluvchi organlardan yashiringan shaxs bor deb hisoblash uchun yetarli asoslar mavjud boʻlgan taqdirda yoxud agar kechiktirish fuqarolarning hayotini va sogʻligʻini tahdid ostida qoldiradigan boʻlsa, yigirma toʻrt soat ichida prokurorga bu haqda xabar bergan holda, shuningdek yetkazilgan zararning oʻrnini qonunchilikda belgilangan tartibda qoplagan holda koʻzdan kechirish.
+13-modda. Vakolatli davlat organining majburiyatlari
+Vakolatli davlat organi kiberxavfsizlik sohasida zimmasiga yuklatilgan vakolatlarni amalga oshirish chogʻida:
+kiberjinoyatlarning oldini olish, aniqlash va bartaraf etish boʻyicha barcha zarur choralarni koʻrishi;
+kiberxavfsizlik sohasidagi davlat dasturlarini ishlab chiqish va amalga oshirishda ishtirok etishi;
+kiberxavfsizlik sohasidagi muammolar yuzasidan ilmiy-tadqiqot va tashkiliy-uslubiy faoliyatni amalga oshirishi;
+kiberjinoyatlar hamda kiberxavfsizlikka tahdid soluvchi huquqbuzarliklar toʻgʻrisidagi murojaatlar va maʼlumotlarni roʻyxatdan oʻtkazishi, ular yuzasidan qonunchilikda belgilangan tartibda oʻz vaqtida choralar koʻrishi;
+kiberxavfsizlikka tahdid soluvchi huquqbuzarliklarning oldini olish, ularning sodir etilishiga imkon bergan sabablar va shart-sharoitlarni aniqlash hamda ularni bartaraf etish choralarini koʻrishi;
+vakolatli davlat organi xodimlari jismoniy va yuridik shaxslarning turar joylariga hamda boshqa obyektlariga mulkdorlar va ular vakillarining roziligisiz yoki ushbu shaxslar yoʻqligida kirganligi toʻgʻrisidagi barcha holatlar yuzasidan prokurorni yigirma toʻrt soat ichida yozma shaklda xabardor qilishi shart.
+Vakolatli davlat organining zimmasiga qonunchilikka muvofiq boshqa majburiyatlar ham yuklatilishi mumkin.
+3-bob. Davlat organlari va tashkilotlarining kiberxavfsizlikni taʼminlash borasidagi huquq va majburiyatlari. Maʼlumotlarning zaxira nusxalarini koʻchirish
+14-modda. Davlat organlari va tashkilotlarining kiberxavfsizlikni taʼminlash borasidagi huquq va majburiyatlari
+Davlat organlari va tashkilotlari quyidagi huquqlarga ega:
+kiberxavfsizlikni taʼminlash maqsadida vakolatli davlat organidan kibertahdidlar, dasturiy taʼminotdagi, uskunalar va texnologiyalardagi zaifliklar toʻgʻrisidagi axborotni olish;
+vakolatli davlat organidan kiberhujumlardan himoya qilish vositalari va usullari, ularni aniqlash hamda bartaraf etish yoʻllari toʻgʻrisida axborot va maslahatlar olish;
+kiberxavfsizlikni taʼminlashga doir chora-tadbirlarni ishlab chiqish va amalga oshirish.
+Davlat organlari va tashkilotlari:
+oʻz tasarrufidagi axborot tizimlari va resurslarining kiberxavfsizligini, tarmoqlar ishining barqarorligini taʼminlashi, shuningdek kiberxavfsizlik boʻyicha oʻz majburiyatlarini bajarishi, vakolatli davlat organini kiberhujumlar toʻgʻrisida ogohlantirishi;
+oʻz axborot tizimlari va resurslarida saqlanayotgan maʼlumotlarning oʻgʻirlanishi hamda qalbakilashtirilishi holatlarining oldini olish choralarini koʻrishi;
+oʻz axborot tizimlari va resurslarini kiberhimoya qilish uchun sertifikatlashtirilgan apparat, apparat-dasturiy va dasturiy taʼminotdan foydalanishi;
+kiberxavfsizlik sohasida ishlab chiqiladigan normativ-huquqiy hujjatlarni va texnik jihatdan tartibga solish sohasidagi normativ hujjatlarni vakolatli davlat organi bilan kelishishi shart.
+15-modda. Maʼlumotlarning zaxira nusxalarini koʻchirish
+Davlat organlari va tashkilotlarining, shuningdek muhim axborot infratuzilmasi obyektlarining axborot tizimlari hamda resurslari maʼlumotlarining saqlanishini taʼminlash ichki axborot xavfsizligi siyosatiga muvofiq maʼlumotlarning zaxira nusxalarini yaratish yoʻli bilan amalga oshiriladi, ularning saqlanish muddati oxirgi uch oydan kam boʻlmasligi kerak.
+4-bob. Kiberxavfsizlikni taʼminlash
+16-modda. Kiberxavfsizlik subyektlarining huquq va majburiyatlari
+Kiberxavfsizlik subyektlari quyidagi huquqlarga ega:
+oʻz kiberxavfsizligini taʼminlash maqsadida vakolatli davlat organidan kibertahdidlar, dasturiy taʼminotdagi, uskunalar va texnologiyalardagi zaifliklar toʻgʻrisidagi maʼlumotlarni olish;
+kiberhujumlardan himoya qilish vositalari va usullari, shuningdek ularni aniqlash hamda bartaraf etish usullari toʻgʻrisida vakolatli davlat organidan maʼlumotlar va maslahatlar olish;
+oʻz kiberxavfsizligini taʼminlash boʻyicha chora-tadbirlarni ishlab chiqish va amalga oshirish.
+Kiberxavfsizlik subyektlari:
+axborot tizimlari va resurslaridagi maʼlumotlarning qonunga xilof ravishda tarqatilishi, oʻgʻirlanishi, yoʻqolishi, yaxlitligining buzilishi, bloklanishi va qalbakilashtirilishining, shuningdek axborot tizimlari va resurslariga ruxsatsiz kirishning boshqa koʻrinishlarining oldini olishi, bunday hollar aniqlanganda oʻz vaqtida tegishli choralar koʻrishi;
+axborot tizimlari va resurslariga kirish tartibi buzilganda hamda ularga ruxsatsiz kirish natijasida ushbu tizimlar hamda resurslar oʻzgartirilgan yoki yoʻq qilingan taqdirda salbiy oqibatlarni kamaytirish maqsadida ularni tezkorlik bilan tiklash choralarini koʻrishi;
+sodir boʻlgan kiberxavfsizlik hodisalari va kiberjinoyatlar toʻgʻrisida vakolatli davlat organini xabardor qilishi, ushbu hodisalarni toʻliq fosh etish uchun tegishli raqamli izlarning yoʻqolishiga yoʻl qoʻymaslik choralarini koʻrishi, shuningdek kiberxavfsizlik hodisalarini tahlil qilish va kiberjinoyatlarni tekshirish uchun zarur boʻlgan maʼlumotlarning doimiy saqlanishini taʼminlashi;
+kiberxavfsizlik obyektlarini muhofaza qilish va ularning xavfsiz ishlashi monitoringini oʻtkazish sohasidagi maʼlumotlarni vakolatli davlat organi bilan oʻzaro almashishni amalga oshirishi;
+axborot tizimlari va resurslarining kiberhimoyasini taʼminlashda vakolatli davlat organi tomonidan belgilangan kiberxavfsizlik talablariga rioya etishi;
+kiberxavfsizlik hodisalariga nisbatan choralar koʻrish mexanizmlarining ishlab turishini va kiberxavfsizlikni taʼminlash boʻlinmalarining ishlashini taʼminlashi, ular mavjud boʻlmagan taqdirda esa vakolatli davlat organining ruxsati bilan autsorsing xizmatlaridan belgilangan tartibda foydalanishi;
+vakolatli davlat organiga kiberxavfsizlikni taʼminlash monitoringining tashkiliy-texnik tadbirlarini amalga oshirish uchun monitoring tizimlariga va (yoki) kiberxavfsizlik obyektlariga kirish huquqini berishi shart.
+17-modda. Kiberxavfsizlik obyektlarini tasniflash
+Kiberxavfsizlik obyektlarini tasniflash kiberxavfsizlik obyektlari turining tashkiliy-texnik jihatdan murakkabligi darajasini aniqlashga qaratilgan tashkiliy tadbirlar majmuidan iboratdir.
+Tasniflanishi lozim boʻlgan kiberxavfsizlik obyektlarining toifalari qonunchilikka muvofiq belgilanadi.
+18-modda. Kiberxavfsizlik talablariga muvofiqlik yuzasidan ekspertiza
+Kiberxavfsizlik talablariga muvofiqlik yuzasidan ekspertiza majburiy tartibda yoki kiberxavfsizlik subyektlarining tashabbusiga koʻra amalga oshiriladi.
+Quyidagilar kiberxavfsizlik talablariga muvofiqlik yuzasidan majburiy tartibda ekspertizadan oʻtkazilishi lozim:
+davlat organlarining axborot resurslari;
+davlat organlarining axborot tizimlari;
+muhim axborot infratuzilmasi obyektlari toifasiga kiritilgan axborot tizimlari.
+Kiberxavfsizlik talablariga muvofiqlik yuzasidan ekspertiza oʻtkazish tartibi vakolatli davlat organi tomonidan belgilanadi.
+19-modda. Axborot tizimlari va resurslarining kiberxavfsizligini taʼminlash uchun qoʻllaniladigan apparat, apparat-dasturiy hamda dasturiy vositalarni sertifikatlashtirish
+Davlat organlari va tashkilotlari axborot tizimlari hamda resurslarining, shuningdek muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash uchun qoʻllaniladigan apparat, apparat-dasturiy va dasturiy vositalar majburiy tartibda sertifikatlashtirilishi lozim.
+Axborot tizimlari va resurslarining kiberxavfsizligini taʼminlash uchun qoʻllaniladigan apparat, apparat-dasturiy hamda dasturiy vositalarni sertifikatlashtirish tartibi vakolatli davlat organi tomonidan belgilanadi.
+20-modda. Axborotlashtirish obyektlarining va muhim axborot infratuzilmasi obyektlarining attestatsiyasi
+Axborotlashtirish obyektlarining hamda muhim axborot infratuzilmasi obyektlarining attestatsiyasi axborotlashtirish obyektlarining haqiqiy himoyalanganlik holatining kiberxavfsizlik sohasidagi davlat standartlari va normativ-huquqiy hujjatlar talablariga muvofiqligini aniqlashga qaratilgan tashkiliy-texnik tadbirlar majmuidan iboratdir.
+Attestatsiyadan oʻtkazilishi lozim boʻlgan axborotlashtirish obyektlarining va muhim axborot infratuzilmasi obyektlarining toifalari qonunchilikka muvofiq belgilanadi.
+Axborotlashtirish obyektlarining va muhim axborot infratuzilmasi obyektlarining kiberxavfsizlik talablariga muvofiqligini attestatsiyadan oʻtkazish tartibi vakolatli davlat organi tomonidan belgilanadi.
+21-modda. Kiberxavfsizlikning taʼminlanganlik darajasini baholash
+Kiberxavfsizlikning taʼminlanganlik darajasini baholash axborot tizimlari va resurslarining himoyalanganlik holatini, shuningdek koʻrilayotgan tashkiliy choralarning samaradorligini aniqlashga qaratilgan tashkiliy-texnik tadbirlar majmuidan iboratdir.
+Baholanishi shart boʻlgan axborotlashtirish obyektlarining va muhim axborot infratuzilmasi obyektlarining toifalari qonunchilikka muvofiq belgilanadi.
+Kiberxavfsizlikning taʼminlanganlik darajasini baholash tartibi vakolatli davlat organi tomonidan belgilanadi.
+Vakolatli davlat organi baholash natijasida aniqlangan kamchiliklarni bartaraf etish toʻgʻrisida bajarilishi shart boʻlgan koʻrsatmalar beradi.
+5-bob. Kiberxavfsizlik hodisalari
+22-modda. Kiberxavfsizlik hodisalarini tekshirish
+Kiberxavfsizlik hodisalari vakolatli davlat organi yoki kiberxavfsizlikni taʼminlash boʻyicha ishchi organning mansabdor shaxslari tomonidan tekshiriladi.
+Kiberxavfsizlik hodisasi sodir boʻlgan axborot resursining yoki axborot tizimining egasi, agar u tekshiruv oʻtkazish uchun zarur boʻlgan resurslarga va texnik imkoniyatlarga ega boʻlsa, kiberxavfsizlik hodisasining tekshiruvini oʻtkazishi mumkin. Bunda vakolatli davlat organi tekshiruv natijalari toʻgʻrisida xabardor qilinishi kerak.
+23-modda. Kiberxavfsizlik subyektlari tomonidan kiberxavfsizlik hodisalari boʻyicha choralar koʻrish
+Kiberxavfsizlik subyektlari tomonidan kiberxavfsizlik hodisalariga nisbatan choralar koʻrish quyidagi shakllarda amalga oshirilishi mumkin:
+dasturiy taʼminotdagi va qurilmalardagi zaifliklarni hamda xatoliklarni bartaraf etish;
+zararli dasturlarni yoʻq qilish, ularning tarqalishini cheklash, kiberhujumlar manbaini texnik jihatdan cheklash;
+axborotlashtirish obyektlarini mavjud kibertahdidlardan ajratib qoʻyish;
+huquqni muhofaza qiluvchi organlarga kiberxavfsizlik hodisalari toʻgʻrisida maʼlumotlar taqdim etish.
+24-modda. Kiberxavfsizlik hodisalari toʻgʻrisidagi axborotni oshkor qilish
+Axborot tizimlari va resurslarida aniqlangan zaifliklar, kibertahdidlar, kiberhujumlar hamda boshqa buzgʻunchilik harakatlari toʻgʻrisidagi, shuningdek axborotlashtirish obyektlari haqidagi axborot ularni himoya qilish boʻyicha tegishli choralar koʻrilganidan keyin kiberxavfsizlik subyektining ruxsati bilan oshkor qilinishi mumkin.
+Aniqlangan kibertahdidlar va zaifliklar toʻgʻrisidagi axborotdan faqat ularni bartaraf etish hamda qonunga xilof harakatlarning oldini olish uchun foydalanilishi kerak.
+6-bob. Muhim axborot infratuzilmasi obyektlari
+25-modda. Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlashning asosiy yoʻnalishlari
+Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlashning asosiy yoʻnalishlari quyidagilardan iborat:
+muhim axborot infratuzilmasi obyektlarining normativ-huquqiy, tashkiliy va texnik jihatdan himoya qilinishini tartibga solish boʻyicha yagona chora-tadbirlar majmuini yaratish;
+davlat organlari va tashkilotlarining axborot tizimlarida hamda resurslarida, muhim axborot infratuzilmasi obyektlarida kiberxavfsizlikni taʼminlashga doir talablarni belgilash;
+muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini samarali taʼminlash uchun shart-sharoitlar yaratishga koʻmaklashish.
+26-modda. Muhim axborot infratuzilmasi obyektlarini toifalashtirish
+Muhim axborot infratuzilmasi obyektlarini toifalashtirish muhim axborot infratuzilmasi obyektlarining ushbu moddaning ikkinchi qismida nazarda tutilgan toifalarga muvofiqligini aniqlash, shuningdek toifalashtirish natijalariga doir maʼlumotlarni tekshirish maqsadida amalga oshiriladi.
+Muhim axborot infratuzilmasi obyektlari quyidagi toifalarga boʻlinadi:
+yuqori darajadagi muhim axborot infratuzilmasi obyektlari;
+oʻrta darajadagi muhim axborot infratuzilmasi obyektlari;
+past darajadagi muhim axborot infratuzilmasi obyektlari.
+Muhim axborot infratuzilmasi obyektlarini toifalashtirish mezonlari vakolatli davlat organi tomonidan belgilanadi.
+27-modda. Muhim axborot infratuzilmasi obyektlarining yagona reyestri
+Vakolatli davlat organi muhim axborot infratuzilmasi obyektlarining yagona reyestrini yuritadi.
+Muhim axborot infratuzilmasi obyektlarining yagona reyestriga kiritilishi shart boʻlgan kiberxavfsizlik obyektlarining toifalari qonunchilikka muvofiq belgilanadi.
+Kiberxavfsizlik obyektlarini muhim axborot infratuzilmasi obyektlarining yagona reyestriga kiritish tartibi vakolatli davlat organi tomonidan belgilanadi.
+28-modda. Muhim axborot infratuzilmasi subyektlarining huquq va majburiyatlari
+Muhim axborot infratuzilmasi subyektlari:
+muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash maqsadida vakolatli davlat organidan kibertahdidlar, dasturiy taʼminotning, asbob-uskunalar va texnologiyalarning zaifliklari toʻgʻrisida maʼlumotlar olish;
+kiberhujumlardan himoya qilish vositalari va usullari, shuningdek ularni aniqlash hamda ularning oldini olish usullari haqida vakolatli davlat organidan maʼlumotlar va maslahatlar olish;
+muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlashga doir chora-tadbirlarni ishlab chiqish hamda amalga oshirish huquqiga ega.
+Muhim axborot infratuzilmasi subyektlari:
+muhim axborot infratuzilmasi obyektlari axborot tizimlarining uzluksiz ishlashini taʼminlashi;
+kiberxavfsizlik hodisalari toʻgʻrisidagi axborotni vakolatli davlat organiga yetkazishi;
+kiberhujumlarning oqibatlarini aniqlashda, ularning oldini olishda va ularni bartaraf etishda, kiberxavfsizlik hodisalarining kelib chiqish sabablarini hamda shart-sharoitlarini aniqlashda vakolatli davlat organining yoki kiberxavfsizlikni taʼminlash boʻyicha ishchi organning mansabdor shaxslariga koʻmaklashishi;
+muhim axborot infratuzilmasi obyektlarida kiberhujumlarning oldini olish, ularning oqibatlarini bartaraf etish, shuningdek kiberxavfsizlik hodisalariga nisbatan choralar koʻrish uchun apparat, apparat-dasturiy va dasturiy vositalardan foydalanishning texnik talablariga rioya etgan holda monitoring tizimlarini oʻrnatishi hamda ulardan foydalanishi;
+kiberxavfsizlik talablariga muvofiq muhim axborot infratuzilmasi obyektlarining xavfsizligini taʼminlashi;
+muhim axborot infratuzilmasi obyektlarida kiberxavfsizlikni taʼminlash borasida aniqlangan huquqbuzarliklarni bartaraf etish yuzasidan vakolatli davlat organining koʻrsatmalarini bajarishi;
+muhim axborot infratuzilmasi obyektlariga nisbatan kiberxavfsizlik hodisalari va kiberhujumlarning oqibatlarini bartaraf etish choralarini koʻrishi;
+vakolatli davlat organiga kiberxavfsizlikni taʼminlash holati monitoringining tashkiliy-texnik tadbirlarini amalga oshirish uchun monitoring tizimlariga yoki muhim axborot infratuzilmasi obyektlariga kirish huquqini berishi;
+muhim axborot infratuzilmasi obyektlarining yagona reyestriga kiritilgan obyekt toʻgʻrisidagi maʼlumotlar oʻzgarganda vakolatli davlat organini xabardor qilishi shart.
+29-modda. Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash boʻyicha talablar
+Muhim axborot infratuzilmasi subyektlari oʻziga tegishli boʻlgan muhim axborot infratuzilmasi obyektlarida kiberxavfsizlikni taʼminlash yuzasidan vakolatli davlat organi tomonidan belgilangan talablarni bajarishi shart.
+Muhim axborot infratuzilmasi subyektlari vakolatli davlat organi bilan kelishgan holda, muhim axborot infratuzilmasi obyektlari ishining oʻziga xos jihatlaridan kelib chiqib, kiberxavfsizlikni taʼminlash uchun qoʻshimcha talablarni belgilashi mumkin.
+Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligi taʼminlanishi uchun masʼul boʻlgan xodimlar qonunchilikda belgilangan tartibda vakolatli davlat organi tomonidan oʻtkaziladigan attestatsiyadan oʻtadi.
+Muhim axborot infratuzilmasi subyekti tomonidan yaratilgan muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash tizimi vakolatli davlat organining muhim axborot infratuzilmasi obyektlaridagi monitoring va kiberxavfsizlik hodisalarini boshqarish tizimiga vakolatli davlat organining qaroriga asosan ulanadi.
+30-modda. Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash tizimi
+Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash tizimi quyidagilardan iborat:
+vakolatli davlat organining muhim axborot infratuzilmasi obyektlarining kiberxavfsizlik hodisalarini monitoring qilish va boshqarish tizimi;
+muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash tizimlari.
+Kiberxavfsizlikni taʼminlash tizimidagi kiberxavfsizlik hodisalari toʻgʻrisidagi axborotning tarqatilishi cheklangan boʻladi. Mazkur axborot hodisalar toʻliq bartaraf etilganidan keyin oshkor etilishi mumkin.
+31-modda. Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini baholash
+Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini baholash kiberxavfsizlik sohasidagi davlat nazorati doirasida ushbu obyektlarning turli xil kibertahdidlardan himoyalanganlik holatini (darajasini) aniqlash maqsadida amalga oshiriladi.
+Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini baholash ixtisoslashtirilgan tashkilotlar jalb etilgan holda, vakolatli davlat organining ruxsati bilan amalga oshiriladi.
+7-bob. Kiberxavfsizlik sohasini qoʻllab-quvvatlash va rivojlantirish
+32-modda. Kiberxavfsizlik subyektlarini davlat tomonidan qoʻllab-quvvatlash
+Kiberxavfsizlik subyektlarini davlat tomonidan qoʻllab-quvvatlash quyidagilardan iborat:
+kiberxavfsizlik sohasidagi normativ-huquqiy bazani takomillashtirish;
+kiberxavfsizlik subyektlariga soliq, bojxona imtiyozlari va preferensiyalar berish;
+xoʻjalik yurituvchi subyektlarning mablagʻlarini kiberxavfsizlik sohasini moliyalashtirish uchun jalb etishga shart-sharoitlar yaratish;
+kiberxavfsizlik sohasida ilmiy-texnika yutuqlariga asoslangan mahsulotlarning va ilgʻor texnologiyalarning kafolatlangan tarzda joriy etilishini taʼminlash maqsadiga qaratilgan davlat xaridlarini tashkil etish;
+kiberxavfsizlik sohasida kadrlarni tayyorlashga, qayta tayyorlashga, shuningdek ularning malakasini oshirishga koʻmaklashish.
+33-modda. Kiberxavfsizlik sohasida ilmiy-texnik va innovatsion faoliyatni qoʻllab-quvvatlash
+Davlat boshqaruvi organlari, mahalliy davlat hokimiyati organlari va xoʻjalik yurituvchi subyektlar tomonidan kiberxavfsizlik sohasidagi ilmiy-texnik va innovatsion faoliyatni qoʻllab-quvvatlash quyidagilar vositasida amalga oshiriladi:
+ilmiy-tadqiqot, tajriba-konstruktorlik va texnologik ishlarni davlat buyurtmasi doirasida bajarish uchun buyurtmalarni joylashtirish;
+investitsiya loyihalarini amalga oshirish jarayonida amalga oshiriladigan ilmiy-tadqiqot, konstruktorlik va texnologik ishlarni moliyalashtirish uchun kiberxavfsizlik subyektlariga subsidiyalar ajratish;
+innovatsion mahsulotlarga boʻlgan talabni, shu jumladan davlat ehtiyojlari uchun sotib olinadigan tovarlarning (ishlarning, xizmatlarning) maqbullashtirilishini ragʻbatlantirish;
+kiberxavfsizlik darajasini yaxshilash boʻyicha loyihalarni amalga oshiradigan, shu jumladan mavjud ilgʻor texnologiyalardan foydalangan holda xizmatlar koʻrsatish borasidagi innovatsion faoliyat bilan shugʻullanadigan tashkilotlarga moliyaviy yordam koʻrsatish;
+kiberxavfsizlik sohasida ilmiy, ilmiy-texnik va innovatsion faoliyatni amalga oshirish hamda muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash uchun shart-sharoitlar yaratish;
+kiberxavfsizlikni taʼminlash bilan bogʻliq davlat xaridlarini amalga oshirishda mamlakatimizda ishlab chiqarilgan mahsulotga ustuvorlik berish.
+34-modda. Kiberxavfsizlikni taʼminlash sohasidagi kadrlar salohiyatini rivojlantirish va qoʻllab-quvvatlash
+Davlat boshqaruvi organlarining, mahalliy davlat hokimiyati organlarning va xoʻjalik yurituvchi subyektlarning kiberxavfsizlikni taʼminlash sohasidagi kadrlari salohiyatini rivojlantirish va qoʻllab-quvvatlash quyidagilar vositasida amalga oshirilishi mumkin:
+kiberxavfsizlikni taʼminlash sohasidagi kadrlarni qayta tayyorlash va ularning malakasini oshirish boʻyicha faoliyatni amalga oshiruvchi tashkilotlarga moliyaviy, axborot-maslahat yordami koʻrsatish;
+kiberxavfsizlikni taʼminlash sohasida oʻquv-uslubiy va ilmiy-pedagogik yordam koʻrsatish.
+Muhim axborot infratuzilmasi subyektlarining kiberxavfsizlikni taʼminlash uchun masʼul boʻlgan xodimlari xalqaro standartlarga hamda davlat standartlariga va talablariga muvofiq oʻz malakasini doimiy asosda oshirib borishi kerak.
+35-modda. Muhim axborot infratuzilmasi obyektlarining kiberxavfsizligini taʼminlash uchun masʼul boʻlgan xodimlarni ragʻbatlantirish
+Muhim axborot infratuzilmasi obyektlarining kiberxavfsizlikni taʼminlash uchun masʼul boʻlgan xodimlarini ragʻbatlantirish qonunchilikda belgilangan tartibda amalga oshiriladi.
+8-bob. Yakunlovchi qoidalar
+36-modda. Kiberxavfsizlik sohasidagi xalqaro hamkorlik
+Vakolatli davlat organi kiberxavfsizlik sohasidagi xalqaro hamkorlikni oʻz vakolatlari doirasida amalga oshiradi.
+Vakolatli davlat organi Oʻzbekiston Respublikasining qonunchiligiga va xalqaro shartnomalariga muvofiq xalqaro kiberjinoyatchilikka qarshi kurashish masalalariga doir axborotni chet davlatlarga va xalqaro tashkilotlarga soʻrov boʻyicha taqdim etadi.
+Xalqaro kiberjinoyatlarga qarshi kurashish masalalariga doir axborot, agar bunday maʼlumotlar dastlabki tergov harakatlariga yoki sud jarayonlariga toʻsqinlik qilmasa hamda kiberhujumlarni toʻxtatishga, kibermakondan foydalanilgan holda sodir etiladigan jinoiy xatti-harakatlarni oʻz vaqtida aniqlashga va ularga barham berishga xizmat qilsa, chet davlatlarga va xalqaro tashkilotlarga oldindan soʻrovsiz berilishi mumkin.
+37-modda. Kiberxavfsizlik toʻgʻrisidagi qonunchilikni buzganlik uchun javobgarlik
+Kiberxavfsizlik toʻgʻrisidagi qonunchilikni buzganlikda aybdor boʻlgan shaxslar belgilangan tartibda javobgarlikka tortiladi.
+38-modda. Ushbu Qonunning ijrosini, yetkazilishini, mohiyati va ahamiyati tushuntirilishini taʼminlash
+Oʻzbekiston Respublikasi Davlat xavfsizlik xizmati va boshqa manfaatdor tashkilotlar ushbu Qonunning ijrosini, ijrochilarga yetkazilishini hamda mohiyati va ahamiyati aholi oʻrtasida tushuntirilishini taʼminlasin.
+39-modda. Qonunchilikni ushbu Qonunga muvofiqlashtirish
+Oʻzbekiston Respublikasi Vazirlar Mahkamasi:
+hukumat qarorlarini ushbu Qonunga muvofiqlashtirsin;
+davlat boshqaruvi organlari ushbu Qonunga zid boʻlgan oʻz normativ-huquqiy hujjatlarini qayta koʻrib chiqishlari va bekor qilishlarini taʼminlasin.
+40-modda. Ushbu Qonunning kuchga kirishi
+Ushbu Qonun rasmiy eʼlon qilingan kundan eʼtiboran uch oy oʻtgach kuchga kiradi.
+Oʻzbekiston Respublikasining Prezidenti Sh. MIRZIYOYEV
+Toshkent sh.,
+2022-yil 15-aprel,
+OʻRQ-764-son
+(Qonunchilik maʼlumotlari milliy bazasi, 16.04.2022-y., 03/22/764/0313-son)
+Марказ ҳақида
+Сайт янгиликлари
+Сайтда реклама
+RSS
+© Ўзбекистон Республикаси Адлия вазирлиги қошидаги “Адолат” миллий ҳуқуқий ахборот маркази давлат муассасаси

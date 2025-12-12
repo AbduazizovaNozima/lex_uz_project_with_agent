@@ -1,0 +1,14 @@
+pyautogen==0.2.35
+fastapi
+uvicorn
+psycopg2-binary
+pgvector
+sentence-transformers
+python-dotenv
+requests
+beautifulsoup4
+streamlit
+numpy
+openai
+selenium
+webdriver-manager

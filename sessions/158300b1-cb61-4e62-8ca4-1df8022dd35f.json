@@ -1,0 +1,26 @@
+{
+  "session_id": "158300b1-cb61-4e62-8ca4-1df8022dd35f",
+  "user_id": "anonymous",
+  "created_at": "2025-12-12T15:05:01.033000",
+  "last_active": "2025-12-12T15:05:11.626574",
+  "messages": [
+    {
+      "role": "user",
+      "content": "saytni tilini ozgartirish uchun nima qilaman\n\n",
+      "timestamp": "2025-12-12T15:05:01.036260",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Sayt tilini o'zgartirish uchun quyidagi amallarni bajaring:\n\n1. Saytning yuqori qismidagi til tugmasini toping (O'z/Ўз/Ru).\n2. Kerakli tilni tanlang:\n   - **O'z** - Lotin alifbosi\n   - **Ўз** - Kirill alifbosi\n   - **Ru** - Rus tili\n3. Sahifa avtomatik yangilanadi.\n\nQuyida tilni o'zgartirish jarayonini ko'rsatadigan rasm mavjud:\n\n![Saytni tilini o'zgartirish](sandbox:/home/nozima/langchain_first_project/static/language_change.png)\n\nAgar yana savollaringiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T15:05:11.626564",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "/home/nozima/langchain_first_project/static/language_change.png"
+    }
+  ],
+  "metadata": {}
+}

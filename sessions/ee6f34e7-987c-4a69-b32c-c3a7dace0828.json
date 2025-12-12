@@ -1,0 +1,42 @@
+{
+  "session_id": "ee6f34e7-987c-4a69-b32c-c3a7dace0828",
+  "user_id": "anonymous",
+  "created_at": "2025-12-12T14:51:34.851531",
+  "last_active": "2025-12-12T14:51:58.315625",
+  "messages": [
+    {
+      "role": "user",
+      "content": "salom",
+      "timestamp": "2025-12-12T14:51:34.870584",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Sizni qanday yordam bera olishim mumkin?",
+      "timestamp": "2025-12-12T14:51:34.921022",
+      "agent_path": [
+        "SocialBot"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "registratsiya qilish uchun nima qilay?",
+      "timestamp": "2025-12-12T14:51:44.472536",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Registratsiya qilish uchun Lex.uz saytida quyidagi amallarni bajaring:\n\n1. Saytning yuqori o'ng burchagidagi **'Kirish'** tugmasini bosing.\n2. **'Ro'yxatdan o'tish'** havolasini tanlang.\n3. Elektron pochta manzilingizni va parolingizni kiriting.\n4. Tasdiqlash kodini elektron pochtangizga yuborilgan xabarda toping.\n5. Kodni kiritib, ro'yxatdan o'tishni yakunlang.\n\nQuyida ro'yxatdan o'tish jarayoni ko'rsatilgan rasmni ham ko'rishingiz mumkin:\n\n![Ro'yxatdan o'tish jarayoni](sandbox:/home/nozima/langchain_first_project/static/registration.png)\n\nAgar qo'shimcha savollaringiz bo'lsa, bemalol so'rang!",
+      "timestamp": "2025-12-12T14:51:58.315612",
+      "agent_path": [
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": "sandbox:/home/nozima/langchain_first_project/static/registration.png"
+    }
+  ],
+  "metadata": {}
+}

@@ -1,4 +1,10 @@
-DATA = {
+import os
+from typing import Optional, Dict, List, Union
+
+# Typings for the DATA structure
+DataType = Dict[str, Dict[str, Union[str, List[str]]]]
+
+DATA: DataType = {
     "registration": {
         "text": "Lex.uz saytida ro'yxatdan o'tish uchun:\n1. Saytning yuqori o'ng burchagidagi **'Kirish'** tugmasini bosing.\n2. **'Ro'yxatdan o'tish'** havolasini tanlang.\n3. Elektron pochta manzilingizni va parolingizni kiriting.\n4. Tasdiqlash kodini elektron pochtangizga yuborilgan xabarda toping.\n5. Kodni kiritib, ro'yxatdan o'tishni yakunlang.",
         "image": "static/registration.png",
@@ -26,19 +32,18 @@ DATA = {
     },
 }
 
-def search_guide_by_tags(user_query: str):
+def search_guide_by_tags(user_query: str) -> Optional[str]:
     """
     Foydalanuvchi so'rovi asosida taglar ichidan qidiradi.
     Agent uchun to'liq formatda qaytaradi.
     """
-    import os
     query = user_query.lower()
 
     # 1. To'g'ridan-to'g'ri kalit so'z tekshirish (Exact match)
     if query in DATA:
         result = DATA[query]
         # Rasm yo'lini to'liq yo'lga aylantirish
-        image_path = os.path.abspath(result['image'])
+        image_path = os.path.abspath(str(result['image']))
         return f"""📱 LEX.UZ SAYTI BO'YICHA YORDAM
 
 {result['text']}
@@ -50,7 +55,7 @@ def search_guide_by_tags(user_query: str):
     for key, info in DATA.items():
         if any(tag in query for tag in info["tags"]):
             # Rasm yo'lini to'liq yo'lga aylantirish
-            image_path = os.path.abspath(info['image'])
+            image_path = os.path.abspath(str(info['image']))
             return f"""📱 LEX.UZ SAYTI BO'YICHA YORDAM
 
 {info['text']}

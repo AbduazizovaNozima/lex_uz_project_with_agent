@@ -1,274 +1,320 @@
-# 🤖 Lex.uz AI Assistant
+# 🤖 Lex.uz AI Legal Assistant
 
-O'zbekiston qonunchilik bo'yicha professional AI yordamchi - avtomatik parsing, session management va chiroyli UI bilan.
+A professional AI assistant for Uzbekistan legal queries — with automatic law scraping, session management, semantic search, and a modern UI.
 
-## ✨ Xususiyatlar
+## ✨ Features
 
-- 🔄 **Avtomatik Parsing**: Lex.uz dan 20+ qonunni avtomatik parsing qilish
-- 📅 **Har Kuni Yangilanish**: Cron job orqali avtomatik yangilanish
-- 💬 **Session Management**: Ko'p foydalanuvchi va chat tarixi
-- 🎨 **Zamonaviy UI**: Streamlit asosida chiroyli interfeys
-- ⚡ **Tez Qidiruv**: Vector database bilan semantic search
-- 🤖 **Multi-Agent System**: AutoGen bilan professional javoblar
+- 🔄 **Auto Scraping** — Parses 20+ laws from Lex.uz automatically
+- 📅 **Daily Updates** — Cron job keeps the legal database current
+- 💬 **Session Management** — Multi-user support with chat history
+- 🎨 **Modern UI** — Clean Streamlit interface
+- ⚡ **Hybrid Search** — JSON-based exact lookup + PostgreSQL vector semantic search
+- 🤖 **Multi-Agent System** — AutoGen pipeline with specialized agents
 
-## 📋 Qo'llab-quvvatlanadigan Qonunlar
+---
 
-1. Konstitutsiya
-2. Mehnat Kodeksi
-3. Fuqarolik Kodeksi
-4. Jinoyat Kodeksi
-5. Oila Kodeksi
-6. Soliq Kodeksi
-7. Yer Kodeksi
-8. Suv Kodeksi
-9. Uy-Joy Kodeksi
-10. Ma'muriy Javobgarlik Kodeksi
-11. Jinoyat Protsessual Kodeksi
-12. Fuqarolik Protsessual Kodeksi
-13. Iqtisodiy Protsessual Kodeksi
-14. Ma'muriy Sud Ishlarini Yuritish Kodeksi
-15. Budjet Kodeksi
-16. Shaharsozlik Kodeksi
-17. Bojxona Kodeksi
-18. Havo Kodeksi
-19. Jinoyat Ijroiya Kodeksi
-20. Saylov Kodeksi
+## 📋 Supported Laws
 
-## 🚀 O'rnatish
+| # | Law |
+|---|-----|
+| 1 | Constitution (Konstitutsiya) |
+| 2 | Labour Code (Mehnat Kodeksi) |
+| 3 | Civil Code (Fuqarolik Kodeksi) |
+| 4 | Criminal Code (Jinoyat Kodeksi) |
+| 5 | Family Code (Oila Kodeksi) |
+| 6 | Tax Code (Soliq Kodeksi) |
+| 7 | Land Code (Yer Kodeksi) |
+| 8 | Water Code (Suv Kodeksi) |
+| 9 | Housing Code (Uy-Joy Kodeksi) |
+| 10 | Administrative Liability Code |
+| 11 | Criminal Procedure Code |
+| 12 | Civil Procedure Code |
+| 13 | Economic Procedure Code |
+| 14 | Administrative Court Code |
+| 15 | Budget Code |
+| 16 | Urban Planning Code |
+| 17 | Customs Code |
+| 18 | Air Code |
+| 19 | Criminal Executive Code |
+| 20 | Electoral Code |
+| 21 | Cybersecurity Law |
 
-### 1. Repository'ni clone qilish
+---
+
+## 🚀 Installation
+
+### 1. Clone the repository
 
 ```bash
 git clone <repository-url>
-cd langchain_first_project
+cd lex_uz_project_with_agent
 ```
 
-### 2. Virtual environment yaratish
+### 2. Create a virtual environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# yoki
-venv\\Scripts\\activate  # Windows
+source venv/bin/activate      # Linux / macOS
+# or
+venv\Scripts\activate         # Windows
 ```
 
-### 3. Dependencies o'rnatish
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Environment variables
+### 4. Configure environment variables
 
-`.env` fayl yarating va quyidagilarni qo'shing:
+Create a `.env` file in the project root:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
-DATABASE_URL=postgresql://user:password@localhost:5432/lexuz_db
+DB_PASSWORD=12345
+DB_PORT=5433
 ```
 
-### 5. Database setup (PostgreSQL + pgvector)
+> **Note:** On this system PostgreSQL runs on port **5433** (not the default 5432).  
+> Check your actual port with: `pg_lsclusters`
+
+### 5. Set up PostgreSQL + pgvector
 
 ```bash
-# PostgreSQL o'rnatish
-sudo apt-get install postgresql postgresql-contrib
+# Check PostgreSQL cluster and port
+pg_lsclusters
 
-# pgvector extension o'rnatish
-# https://github.com/pgvector/pgvector
+# Install pgvector (if not installed)
+sudo apt-get install postgresql-16-pgvector
 
-# Database yaratish
-createdb lexuz_db
+# Create the database (if not exists)
+createdb -U postgres lexuz_db
 ```
 
-### 6. Dastlabki parsing
+### 6. Initialize the database (run once)
+
+This creates the table schema and loads all law articles into the vector database:
+
+```bash
+python database.py
+```
+
+> This takes 5–15 minutes depending on your hardware — it embeds all law articles.
+
+### 7. Scrape laws from Lex.uz (optional — pre-scraped JSONs are included)
 
 ```bash
 python auto_scraper.py
 ```
 
-Bu 20 ta qonunni parsing qilib, `lex_structured/` papkaga saqlaydi.
+This downloads the latest version of all laws from Lex.uz and saves them to `lex_structured/`.
 
-### 7. Cron job o'rnatish (ixtiyoriy)
+---
 
-```bash
-chmod +x setup_cron.sh
-./setup_cron.sh
-```
+## 🎯 Running the Application
 
-## 🎯 Ishga Tushirish
-
-### API Server
+### Start the API server
 
 ```bash
 python api.py
 ```
 
-Server `http://localhost:8000` da ishga tushadi.
+Server runs at `http://localhost:8000`
 
-### Frontend
-
-Yangi terminalda:
+### Start the frontend (in a new terminal)
 
 ```bash
 streamlit run frontend.py
 ```
 
-Browser'da `http://localhost:8501` ochiladi.
+Open `http://localhost:8501` in your browser.
 
-## 📖 Foydalanish
+---
+
+## 📖 Usage
 
 ### Web Interface
 
-1. Browserda `http://localhost:8501` ochish
-2. "Yangi Chat" tugmasini bosish
-3. Savolingizni yozish
-4. Javobni olish
+1. Open `http://localhost:8501`
+2. Click **"Yangi Chat"** to start a new session
+3. Type your question (in Uzbek)
+4. Get AI-powered legal answers
 
-### API
+### API Endpoints
 
 ```bash
 # Health check
-curl http://localhost:8000/health
+curl http://localhost:8000/
 
-# Chat
-curl -X POST http://localhost:8000/chat \\
-  -H "Content-Type: application/json" \\
+# Ask a question
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
   -d '{
     "question": "Mehnat kodeksi 131-modda haqida",
     "session_id": "optional-session-id"
   }'
 
-# Sessionlar ro'yxati
+# List sessions
 curl http://localhost:8000/sessions
 
-# Yangi session
+# Create new session
 curl -X POST http://localhost:8000/sessions/new
 
-# Session tarixini olish
+# Get session history
 curl http://localhost:8000/sessions/{session_id}/history
 ```
 
 ### Auto Scraper
 
 ```bash
-# Barcha qonunlarni parsing qilish
+# Scrape all laws
 python auto_scraper.py
 
-# Parsing qilingan qonunlar ro'yxati
-python auto_scraper.py list
-
-# Bitta qonunni yangilash
-python auto_scraper.py update Konstitutsiya
+# Then reload the database with fresh data
+python database.py
 ```
 
-## 📁 Fayl Tuzilmasi
+---
+
+## 📁 Project Structure
 
 ```
-langchain_first_project/
-├── api.py                 # FastAPI backend
-├── frontend.py            # Streamlit UI
-├── agents.py              # AutoGen agents
-├── database.py            # Vector database
-├── session_manager.py     # Session management
-├── auto_scraper.py        # Auto parsing
-├── knowledge_base.py      # Site guides
-├── setup_cron.sh          # Cron setup
-├── .env                   # Environment variables
-├── requirements.txt       # Dependencies
-├── sessions/              # Session storage
-├── lex_structured/        # Parsed JSON files
-└── logs/                  # Log files
+lex_uz_project_with_agent/
+├── api.py                # FastAPI backend
+├── frontend.py           # Streamlit UI
+├── agents.py             # AutoGen multi-agent pipeline
+├── database.py           # PostgreSQL vector DB (search + ingestion)
+├── session_manager.py    # Session/chat history management
+├── auto_scraper.py       # Automated law scraping
+├── scraper.py            # Core scraper logic
+├── knowledge_base.py     # Lex.uz site usage guides
+├── setup_cron.sh         # Cron job setup for daily scraping
+├── .env                  # Environment variables (not committed)
+├── requirements.txt      # Python dependencies
+├── lex_structured/       # Parsed law JSON files (21 laws)
+├── lex_data/             # Raw scraped text files
+├── sessions/             # Session storage
+├── static/               # Static assets (images)
+└── logs/                 # Application logs
 ```
 
-## 🔧 Konfiguratsiya
+---
 
-### API Endpoints
+## 🔧 Configuration
 
-- `POST /chat` - Savol yuborish
-- `GET /sessions` - Barcha sessionlar
-- `POST /sessions/new` - Yangi session
-- `GET /sessions/{id}` - Session ma'lumotlari
-- `GET /sessions/{id}/history` - Chat tarixi
-- `DELETE /sessions/{id}` - Sessionni o'chirish
-- `GET /health` - Health check
+### API Endpoints Reference
 
-### Cron Schedule
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/chat` | Send a question |
+| `GET` | `/sessions` | List all sessions |
+| `POST` | `/sessions/new` | Create new session |
+| `GET` | `/sessions/{id}/history` | Get chat history |
+| `DELETE` | `/sessions/{id}` | Delete session |
+| `GET` | `/` | Health check |
 
-Default: Har kuni soat 02:00 da
+### Cron Schedule for Auto-Scraping
 
-O'zgartirish uchun:
+Default: every day at 02:00 AM.
+
 ```bash
+# Setup cron job
+chmod +x setup_cron.sh
+./setup_cron.sh
+
+# View scheduled jobs
+crontab -l
+
+# Edit schedule
 crontab -e
 ```
 
-## 🐛 Muammolarni Hal Qilish
+---
 
-### Port band bo'lsa
+## 🐛 Troubleshooting
+
+### Port already in use
 
 ```bash
-# API port (8000)
+# Kill API server (port 8000)
 lsof -ti:8000 | xargs kill -9
 
-# Frontend port (8501)
+# Kill frontend (port 8501)
 lsof -ti:8501 | xargs kill -9
 ```
 
-### Parsing ishlamasa
+### PostgreSQL connection refused
 
-1. Internet ulanishini tekshiring
-2. Lex.uz saytining ishlashini tekshiring
-3. Loglarni ko'ring: `cat logs/scraper.log`
+```bash
+# Find actual PostgreSQL port
+pg_lsclusters
 
-### API qotib qolsa
+# Start PostgreSQL cluster if stopped
+sudo pg_ctlcluster 16 main start
 
-1. Serverni to'xtating: `Ctrl+C`
-2. Port'ni tozalang: `lsof -ti:8000 | xargs kill -9`
-3. Qayta ishga tushiring: `python api.py`
+# Update .env file with correct port
+echo "DB_PORT=5433" >> .env
+```
+
+### Database table doesn't exist
+
+```bash
+# Initialize database (run once)
+python database.py
+```
+
+### Scraping fails
+
+1. Check internet connectivity
+2. Verify Lex.uz is accessible: `curl -I https://lex.uz`
+3. Check logs: `cat logs/scraper.log`
+
+### API hangs / not responding
+
+1. Stop the server: `Ctrl+C`
+2. Clean up: `lsof -ti:8000 | xargs kill -9`
+3. Restart: `python api.py`
+
+---
 
 ## 📊 Monitoring
-
-### Loglar
 
 ```bash
 # Scraper logs
 tail -f logs/scraper.log
 
-# Cron logs
+# Cron execution log
 tail -f logs/cron.log
 
-# API errors
+# API error log
 tail -f logs/api_errors.log
+
+# Last scraping run summary
+cat logs/last_run.json
 ```
 
-### Cron Job
-
-```bash
-# Cron job'larni ko'rish
-crontab -l
-
-# Cron log'larini ko'rish
-grep CRON /var/log/syslog
-```
+---
 
 ## 🤝 Contributing
 
-Pull request'lar qabul qilinadi! Katta o'zgarishlar uchun avval issue oching.
+Pull requests are welcome! For major changes, please open an issue first.
 
 ## 📝 License
 
 MIT
 
-## 👨‍💻 Muallif
+## � Author
 
-Nozima
+Nozima Abduazizova
 
-## 🙏 Minnatdorchilik
+## 🙏 Acknowledgements
 
-- [AutoGen](https://github.com/microsoft/autogen)
-- [Streamlit](https://streamlit.io/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Lex.uz](https://lex.uz/)
+- [AutoGen](https://github.com/microsoft/autogen) — Multi-agent framework
+- [Streamlit](https://streamlit.io/) — Frontend UI
+- [FastAPI](https://fastapi.tiangolo.com/) — Backend API
+- [pgvector](https://github.com/pgvector/pgvector) — Vector similarity search
+- [Lex.uz](https://lex.uz/) — Official Uzbekistan legal portal
 
 ---
 
-**Savol yoki muammo bo'lsa, issue oching!** 🚀
+*Questions or issues? Open a GitHub issue.* 🚀

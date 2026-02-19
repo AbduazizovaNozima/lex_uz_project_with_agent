@@ -1,443 +1,18 @@
-# import os
-# import autogen
-# from database import search_lexuz_tool
-#
-# # 1. API KEY
-# raw_api_key = os.getenv("OPENAI_API_KEY", "")
-# api_key = raw_api_key.strip().strip('"').strip("'")
-# if not api_key: raise ValueError("API Key yo'q!")
-#
-# config_list = [{"model": "gpt-3.5-turbo-0125", "api_key": api_key}]
-#
-# # ==============================================================================
-# # 1. AGENTLARNI YARATISH
-# # ==============================================================================
-#
-# # --- ROUTER (DISPETCHER) ---
-# # Uning vazifasi faqat qaror qabul qilish.
-# router = autogen.AssistantAgent(
-#     name="Router",
-#     system_message="""
-#     Sen dispetchersan. Foydalanuvchi xabarini tahlil qil va yo'nalishni aniqla.
-#
-#     QOIDALAR:
-#     1. Agar savol Qonun, Pul, Oylik, Ish, Sud, Hujjat, Ariza, Jarima haqida bo'lsa -> "LEGAL" deb yoz.
-#     2. Agar savol Salomlashish, Hol-ahvol yoki Tanishuv bo'lsa -> "CASUAL" deb yoz.
-#
-#     Javobing faqat bitta so'z bo'lsin.
-#     """,
-#     llm_config={"config_list": config_list, "temperature": 0}
-# )
-#
-# # --- SOCIAL BOT (ODDIY SUHBAT) ---
-# social_bot = autogen.AssistantAgent(
-#     name="SocialBot",
-#     system_message="""
-#     Sen Lexi - samimiy yordamchisan.
-#     Vazifang: Foydalanuvchi bilan salomlashish va kayfiyatini ko'tarish.
-#
-#     Qoidalar:
-#     - Qonuniy maslahat berma.
-#     - Agar qonun so'rasa, "Yurist hamkasbimga yuzlaning" de.
-#     - Javob oxirida TERMINATE deb yoz.
-#     """,
-#     llm_config={"config_list": config_list, "temperature": 0.7}
-# )
-#
-# # --- LEGAL BOT (YURIST) ---
-# # Tool sxemasi
-# tool_schema = {
-#     "type": "function",
-#     "function": {
-#         "name": "search_lexuz_tool",
-#         "description": "PostgreSQL bazasidan qonun qidirish",
-#         "parameters": {
-#             "type": "object",
-#             "properties": {"sorov": {"type": "string"}},
-#             "required": ["sorov"]
-#         }
-#     }
-# }
-#
-# legal_bot = autogen.AssistantAgent(
-#     name="LegalBot",
-#     system_message="""
-#     Sen Professional Yuristsan.
-#
-#     Vazifang:
-#     1. Har doim 'search_lexuz_tool' funksiyasini chaqirib, bazadan javob izla.
-#     2. Topilgan matnga asoslanib, aniq va lo'nda javob ber.
-#     3. Javob oxirida TERMINATE deb yoz.
-#     """,
-#     llm_config={
-#         "config_list": config_list,
-#         "temperature": 0,
-#         "tools": [tool_schema]
-#     }
-# )
-#
-# # --- USER PROXY (IJROCHI) ---
-# user_proxy = autogen.UserProxyAgent(
-#     name="UserProxy",
-#     human_input_mode="NEVER",
-#     max_consecutive_auto_reply=10,
-#     code_execution_config=False
-# )
-#
-# # Toolni ro'yxatdan o'tkazish
-# user_proxy.register_function(function_map={"search_lexuz_tool": search_lexuz_tool})
-#
-#
-# # ==============================================================================
-# # 2. BOSHQARUV LOGIKASI (CUSTOM SPEAKER SELECTION)
-# # Bu AutoGenning eng kuchli qismi. Kim gapirishini biz kod bilan hal qilamiz.
-# # ==============================================================================
-# # ... (tepadagi kodlar o'sha-o'sha)
-#
-# # ==============================================================================
-# # BOSHQARUV LOGIKASI
-# # ==============================================================================
-# def state_transition(last_speaker, groupchat):
-#     messages = groupchat.messages
-#
-#     # 1. Boshlanishi -> Router
-#     if last_speaker is user_proxy:
-#         return router
-#
-#     # 2. Router -> Legal yoki Casual
-#     if last_speaker is router:
-#         last_msg = messages[-1]["content"].strip().upper()
-#         if "LEGAL" in last_msg:
-#             return legal_bot
-#         else:
-#             return social_bot
-#
-#     # 3. LegalBot logikasi
-#     if last_speaker is legal_bot:
-#         # Agar tool chaqirsa -> UserProxy bajarsin
-#         if messages[-1].get("tool_calls") or messages[-1].get("function_call"):
-#             return user_proxy
-#         # Agar javob bersa -> TUGATISH
-#         return None
-#
-#         # 4. SocialBot -> TUGATISH
-#     if last_speaker is social_bot:
-#         return None
-#
-#     # 5. UserProxy (Tool natijasi) -> LegalBot
-#     if last_speaker is user_proxy:
-#         return legal_bot
-#
-#     return None
-#
-#
-# # GroupChat va Manager
-# groupchat = autogen.GroupChat(
-#     agents=[user_proxy, router, legal_bot, social_bot],
-#     messages=[],
-#     max_round=10,
-#     speaker_selection_method=state_transition
-# )
-#
-# manager = autogen.GroupChatManager(
-#     groupchat=groupchat,
-#     llm_config={"config_list": config_list}
-# )
-
-
-# import os
-# import autogen
-# from database import search_lexuz_tool
-# from typing import Dict, List, Optional
-#
-# # API sozlamalari
-# raw_api_key = os.getenv("OPENAI_API_KEY", "")
-# api_key = raw_api_key.strip().strip('"').strip("'")
-# if not api_key:
-#     raise ValueError("⚠️ OPENAI_API_KEY topilmadi!")
-#
-# config_list = [{"model": "gpt-4o-mini", "api_key": api_key}]
-#
-# # ==============================================================================
-# # 1. ORCHESTRATOR - Bosh Boshqaruvchi Agent
-# # ==============================================================================
-# orchestrator = autogen.AssistantAgent(
-#     name="Orchestrator",
-#     system_message="""Sen bosh koordinatorsan. Vazifang:
-#     1. Foydalanuvchi savolini tahlil qilish
-#     2. Qaysi agentga yo'naltirishni aniqlash
-#     3. Jarayonni kuzatish
-#
-#     Yo'naltirish qoidalari:
-#     - "Salom", "Qalay", "Kim" - SOCIAL agentga
-#     - Qonun, Oylik, Ish, Sud, Huquq - CLASSIFIER agentga
-#     - Noaniq holatlarda CLASSIFIER dan yordam so'ra
-#
-#     Javobda faqat agent nomini yoz: SOCIAL yoki CLASSIFIER""",
-#     llm_config={"config_list": config_list, "temperature": 0}
-# )
-#
-# # ==============================================================================
-# # 2. CLASSIFIER - Savol Tasniflovchi
-# # ==============================================================================
-# classifier = autogen.AssistantAgent(
-#     name="Classifier",
-#     system_message="""Sen savollarni tasniflash mutaxassisisan.
-#
-#     Vazifang: Savol qonuniy yoki oddiy ekanligini aniqlash.
-#
-#     QONUNIY SAVOLLAR:
-#     - Oylik, ish haqi, mehnat to'lovi
-#     - Ishdan bo'shatish, ish shartnomasi
-#     - Fuqarolik, jinoyat, sud jarayonlari
-#     - Huquq, majburiyat, javobgarlik
-#     - Soliq, jarima, litsenziya
-#
-#     ODDIY SAVOLLAR:
-#     - Salomlashish, tanishish
-#     - Umumiy savol-javob
-#     - Bot haqida ma'lumot
-#
-#     Javobda faqat bitta so'z yoz: LEGAL yoki CASUAL""",
-#     llm_config={"config_list": config_list, "temperature": 0}
-# )
-#
-# # ==============================================================================
-# # 3. SOCIAL BOT - Oddiy Suhbat Agenti
-# # ==============================================================================
-# social_bot = autogen.AssistantAgent(
-#     name="SocialBot",
-#     system_message="""Sen Lexi - Lex.uz saytining do'stona yordamchisisan.
-#
-#     Shaxsiyating:
-#     - Mehribon va samimiy
-#     - Aniq va qisqa javob beruvchi
-#     - O'zbek tilida professional gaplashuvchi
-#
-#     Vazifalaringiz:
-#     1. Salomlashish va tanishish
-#     2. Bot imkoniyatlari haqida ma'lumot berish
-#     3. Foydalanuvchini yo'naltirish
-#
-#     MUHIM:
-#     - Qonuniy maslahat BERMA (yuristga yo'nalt)
-#     - Javobda bot kabi emas, odam kabi gapir
-#     - Emoji ishlatma, professional bo'l
-#     - Javob oxirida TERMINATE yozma
-#
-#     Misol javoblar:
-#     "Assalomu alaykum! Men Lexi, sizga qanday yordam bera olaman?"
-#     "Men O'zbekiston qonunchiligini tushuntirib berishda yordam beraman."
-#     "Qonuniy savolingiz bo'lsa, batafsil so'rang - men tegishli moddalani topaman."
-#     """,
-#     llm_config={"config_list": config_list, "temperature": 0.8}
-# )
-#
-# # ==============================================================================
-# # 4. LEGAL SEARCHER - Bazadan Qidiruvchi
-# # ==============================================================================
-# legal_searcher = autogen.AssistantAgent(
-#     name="LegalSearcher",
-#     system_message="""Sen qonun bazasidan qidirish mutaxassisisan.
-#
-#     Vazifang:
-#     1. Har doim 'search_lexuz_tool' funksiyasini ishlatish
-#     2. Topilgan natijalarni Legal Analyzer ga uzatish
-#     3. Agar natija bo'lmasa, xabar berish
-#
-#     MUHIM: Javob berma, faqat qidiruv natijasini uzat!""",
-#     llm_config={
-#         "config_list": config_list,
-#         "temperature": 0,
-#         "tools": [{
-#             "type": "function",
-#             "function": {
-#                 "name": "search_lexuz_tool",
-#                 "description": "PostgreSQL bazasidan qonun qidirish",
-#                 "parameters": {
-#                     "type": "object",
-#                     "properties": {"sorov": {"type": "string"}},
-#                     "required": ["sorov"]
-#                 }
-#             }
-#         }]
-#     }
-# )
-#
-# # ==============================================================================
-# # 5. LEGAL ANALYZER - Qonuniy Tahlilchi
-# # ==============================================================================
-# legal_analyzer = autogen.AssistantAgent(
-#     name="LegalAnalyzer",
-#     system_message="""Sen professional yurist-tahlilchisan.
-#
-#     Vazifang: Topilgan qonun matnlarini tahlil qilib, aniq javob berish.
-#
-#     Javob formati:
-#
-#     📋 [Mavzu]
-#
-#     Javob: [Aniq va tushunarli tushuntirish]
-#
-#     📚 Qonuniy asos:
-#     - [Qonun nomi, modda raqami]
-#
-#     💡 Maslahat: [Amaliy tavsiya]
-#
-#     QOIDALAR:
-#     1. Faqat berilgan kontekstga asoslan
-#     2. Modda raqamlarini ko'rsat
-#     3. Oddiy tilda yoz, yuridik jargonsiz
-#     4. Agar ma'lumot yetarli bo'lmasa, ochiq ayt
-#     5. Emoji kam ishlatma (faqat bo'limlar uchun)
-#     """,
-#     llm_config={"config_list": config_list, "temperature": 0.3}
-# )
-#
-# # ==============================================================================
-# # 6. RESPONSE FORMATTER - Javob Formatlash Agenti
-# # ==============================================================================
-# response_formatter = autogen.AssistantAgent(
-#     name="ResponseFormatter",
-#     system_message="""Sen javoblarni formatlash va tekshirish mutaxassisisan.
-#
-#     Vazifang:
-#     1. Javobni yakuniy formatga keltirish
-#     2. Ortiqcha ma'lumotlarni tozalash
-#     3. Foydalanuvchiga qulay ko'rinish berish
-#
-#     TOZALASH qoidalari:
-#     - "TERMINATE" so'zini o'chir
-#     - Tool chaqiruvlarini ko'rsatma
-#     - Agent nomlarini olib tashlama
-#     - Formatni saqla
-#
-#     So'nggi javobni shu holatda qaytar.""",
-#     llm_config={"config_list": config_list, "temperature": 0}
-# )
-#
-# # ==============================================================================
-# # 7. USER PROXY - Ijrochi Agent
-# # ==============================================================================
-# user_proxy = autogen.UserProxyAgent(
-#     name="UserProxy",
-#     human_input_mode="NEVER",
-#     max_consecutive_auto_reply=15,
-#     code_execution_config=False,
-#     is_termination_msg=lambda x: x.get("content", "").rstrip().endswith("TERMINATE")
-# )
-#
-# # Tool ro'yxatga olish
-# user_proxy.register_function(function_map={"search_lexuz_tool": search_lexuz_tool})
-#
-#
-# # ==============================================================================
-# # STATE MACHINE - Holatlar Mashinasi
-# # ==============================================================================
-# def intelligent_speaker_selection(last_speaker, groupchat):
-#     """
-#     Bu funksiya qaysi agent navbatda gaplashishini aniqlaydi.
-#     AutoGenning eng kuchli xususiyati - to'liq boshqaruv.
-#     """
-#     messages = groupchat.messages
-#
-#     if not messages:
-#         return orchestrator
-#
-#     last_msg = messages[-1]
-#     content = last_msg.get("content", "").strip().upper()
-#     speaker_name = last_speaker.name if last_speaker else None
-#
-#     # 1. BOSHLANG'ICH: UserProxy → Orchestrator
-#     if speaker_name == "UserProxy" and len(messages) == 1:
-#         return orchestrator
-#
-#     # 2. ORCHESTRATOR QAROR QABUL QILDI
-#     if speaker_name == "Orchestrator":
-#         if "SOCIAL" in content:
-#             return social_bot
-#         elif "CLASSIFIER" in content:
-#             return classifier
-#         return None  # Noaniq holat
-#
-#     # 3. CLASSIFIER TASNIFI
-#     if speaker_name == "Classifier":
-#         if "CASUAL" in content:
-#             return social_bot
-#         elif "LEGAL" in content:
-#             return legal_searcher
-#         return None
-#
-#     # 4. SOCIAL BOT JAVOB BERDI
-#     if speaker_name == "SocialBot":
-#         return response_formatter
-#
-#     # 5. LEGAL SEARCHER QIDIRUV QILMOQDA
-#     if speaker_name == "LegalSearcher":
-#         # Agar tool chaqiruvchi bo'lsa
-#         if last_msg.get("tool_calls") or last_msg.get("function_call"):
-#             return user_proxy  # Tool bajarish uchun
-#         # Tool natijasi kelganidan keyin
-#         return legal_analyzer
-#
-#     # 6. USER PROXY TOOL BAJARIBDI
-#     if speaker_name == "UserProxy" and len(messages) > 1:
-#         prev_speaker = messages[-2].get("name")
-#         if prev_speaker == "LegalSearcher":
-#             return legal_analyzer
-#
-#     # 7. LEGAL ANALYZER TAHLIL QILDI
-#     if speaker_name == "LegalAnalyzer":
-#         return response_formatter
-#
-#     # 8. RESPONSE FORMATTER YAKUNLADI
-#     if speaker_name == "ResponseFormatter":
-#         return None  # Tugadi
-#
-#     return None
-#
-#
-# # ==============================================================================
-# # GROUP CHAT VA MANAGER
-# # ==============================================================================
-# groupchat = autogen.GroupChat(
-#     agents=[
-#         user_proxy,
-#         orchestrator,
-#         classifier,
-#         social_bot,
-#         legal_searcher,
-#         legal_analyzer,
-#         response_formatter
-#     ],
-#     messages=[],
-#     max_round=20,
-#     speaker_selection_method=intelligent_speaker_selection
-# )
-#
-# manager = autogen.GroupChatManager(
-#     groupchat=groupchat,
-#     llm_config={"config_list": config_list}
-# )
-#
-# # ==============================================================================
-# # TESTING
-# # ==============================================================================
-# if __name__ == "__main__":
-#     print("🧪 Agent tizimi test rejimida ishga tushdi")
-#     print("Barcha agentlar:")
-#     for agent in groupchat.agents:
-#         print(f"  ✓ {agent.name}")
-
-
 import os
 import json
 import re
+import glob
 import autogen
 from database import search_lexuz_tool
-from typing import Dict, List, Optional
+from knowledge_base import search_guide_by_tags
+from typing import Dict, List, Optional, Union, Any
 
-# API sozlamalari
+# ==============================================================================
+# CONFIGURATION
+# ==============================================================================
+STRUCTURED_FOLDER = "lex_structured"
+
+# API Key Handling
 raw_api_key = os.getenv("OPENAI_API_KEY", "")
 api_key = raw_api_key.strip().strip('"').strip("'")
 if not api_key:
@@ -445,167 +20,101 @@ if not api_key:
 
 config_list = [{"model": "gpt-4o-mini", "api_key": api_key}]
 
-STRUCTURED_FOLDER = "lex_structured"
-
-
 # ==============================================================================
-# YANGI: JSON DAN ANIQ MODDA QIDIRISH
+# HELPER FUNCTIONS
 # ==============================================================================
-def search_article_direct(query: str) -> str:
+def search_article_direct(query: str) -> Optional[str]:
     """
-    Aniq modda raqami so'ralganda JSON dan qidirish
-
-    Masalan:
+    Search for a specific article in the JSON files directly.
+    
+    Examples:
     - "Konstitutsiya 80-modda"
     - "Mehnat kodeksi 131-modda"
     - "80-modda prezident"
-    - "88-modda" (barcha kodekslardan qidiradi)
     """
+    # 1. Map document names
+    json_files = glob.glob(f"{STRUCTURED_FOLDER}/*.json")
+    doc_mapping: Dict[str, str] = {}
 
-    # 1. Hujjat nomini aniqlash
-    doc_mapping = {
+    for jf in json_files:
+        basename = os.path.basename(jf).replace(".json", "")
+        clean_name = basename.lower().replace("_", " ")
+        
+        # 1. Full name
+        doc_mapping[clean_name] = basename
+        
+        # 2. First word (if long enough)
+        parts = clean_name.split()
+        if parts and len(parts[0]) > 3:
+            doc_mapping[parts[0]] = basename
+            
+        # 3. Variations
+        if "kodeks" in clean_name:
+            doc_mapping[clean_name.replace(" kodeksi", "")] = basename
+        if "qonun" in clean_name:
+            doc_mapping[clean_name.replace(" qonuni", "")] = basename
+
+    manual_aliases = {
         "konstitutsiya": "Konstitutsiya",
-        "mehnat": "Mehnat_Kodeksi",
-        "fuqarolik": "Fuqarolik_Kodeksi",
-        "jinoyat": "Jinoyat_Kodeksi",
-        "oila": "Oila_Kodeksi",
-        "ma'muriy": "Ma'muriy_Javobgarlik_Kodeksi",
         "mamuriy": "Ma'muriy_Javobgarlik_Kodeksi",
-        "soliq": "Soliq_Kodeksi",
-        "yer": "Yer_Kodeksi",
-        "uy-joy": "Uy_Joy_Kodeksi",
-        "uy joy": "Uy_Joy_Kodeksi",
-        "suv": "Suv_Kodeksi",
-        # Kiberxavfsizlik - ko'p variantlar
-        "kiberxavfsizlik": "Kiberxavfsizlik_Qonuni",
-        "kiber xavfsizlik": "Kiberxavfsizlik_Qonuni",
-        "kibir xafsizlik": "Kiberxavfsizlik_Qonuni",  # typo variant
-        "kibir xavfsizlik": "Kiberxavfsizlik_Qonuni",
-        "kiber": "Kiberxavfsizlik_Qonuni",
-        "cyber": "Kiberxavfsizlik_Qonuni",
-        # Axborotlashtirish - ko'p variantlar
-        "axborotlashtirish": "Axborotlashtirish_Qonuni",
-        "axborot": "Axborotlashtirish_Qonuni",
-        "informatizatsiya": "Axborotlashtirish_Qonuni",
-        # Shaxsiy ma'lumotlar
-        "shaxsiy ma'lumot": "Shaxsiy_Malumotlar_Qonuni",
-        "shaxsiy malumot": "Shaxsiy_Malumotlar_Qonuni",
-        "shaxsiy": "Shaxsiy_Malumotlar_Qonuni",
-        # Ta'lim
-        "ta'lim": "Talim_Qonuni",
-        "talim": "Talim_Qonuni",
-        "maktabgacha": "Maktabgacha_Talim_Qonuni",
-        # Boshqalar
-        "tadbirkorlik": "Tadbirkorlik_Kafolatlari_Qonuni",
-        "tabiat": "Tabiatni_Muhofaza_Qilish_Qonuni",
-        "jinoyat protsessual": "Jinoyat_Protsessual_Kodeksi",
-        "fuqarolik protsessual": "Fuqarolik_Protsessual_Kodeksi",
-        "iqtisodiy protsessual": "Iqtisodiy_Protsessual_Kodeksi",
-        "ma'muriy sud": "Mamuriy_Sud_Ishlarini_Yuritish_Kodeksi",
-        "budjet": "Budjet_Kodeksi",
-        "shaharsozlik": "Shaharsozlik_Kodeksi",
-        "bojxona": "Bojxona_Kodeksi",
-        "havo": "Havo_Kodeksi",
-        "jinoyat ijroiya": "Jinoyat_Ijroiya_Kodeksi",
-        "saylov": "Saylov_Kodeksi"
+        "ma'muriy": "Ma'muriy_Javobgarlik_Kodeksi",
+        "cyber": "Kiberxavfsizlik_Qonuni"
     }
+    doc_mapping.update(manual_aliases)
 
     query_lower = query.lower()
-    doc_name = None
+    doc_name: Optional[str] = None
 
-    for key, value in doc_mapping.items():
+    # Find document match (longest match first)
+    sorted_keys = sorted(doc_mapping.keys(), key=len, reverse=True)
+    for key in sorted_keys:
         if key in query_lower:
-            doc_name = value
+            doc_name = doc_mapping[key]
             break
 
-    # 2. Modda raqamini topish
+    # 2. Find article number
     article_match = re.search(r'(\d+)-(?:модда|modda)', query_lower)
     if not article_match:
         article_match = re.search(r'(?:модда|modda)\s*(\d+)', query_lower)
-    
-    # Agar faqat raqam bo'lsa (masalan "88-modda")
     if not article_match:
         article_match = re.search(r'(\d+)', query_lower)
 
-    # Agar modda raqami yo'q va faqat hujjat nomi bo'lsa
-    if not article_match and doc_name:
-        json_path = f"{STRUCTURED_FOLDER}/{doc_name}.json"
+    # CASE A: Document found AND Article found
+    if article_match:
+        article_num = article_match.group(1)
+
+        # If we have a doc name, look in that specific file
+        if doc_name:
+            return _get_article_from_file(doc_name, article_num)
         
-        if os.path.exists(json_path):
-            try:
-                with open(json_path, 'r', encoding='utf-8') as f:
-                    articles = json.load(f)
-                
-                total_articles = len(articles)
-                first_articles = sorted(articles.keys(), key=int)[:5]
-                
-                result = f"""📚 {doc_name.replace('_', ' ')} HAQIDA UMUMIY MA'LUMOT:
+        # If no doc name, search ALL files
+        return _search_article_in_all_files(article_num, json_files)
 
-============================================================
-📄 Hujjat: {doc_name.replace('_', ' ')}
-📊 Jami moddalar soni: {total_articles}
-📌 Dastlabki moddalar: {', '.join(first_articles)}...
+    # CASE B: Document found BUT Article NOT found -> Return Summary
+    if doc_name and not article_match:
+        return _get_document_summary(doc_name)
 
-💡 Aniq modda haqida ma'lumot olish uchun modda raqamini ko'rsating.
-   Masalan: "{doc_name.replace('_', ' ')} 1-modda"
+    # CASE C: Neither found -> List available laws
+    if json_files:
+        law_names = sorted([
+            os.path.basename(f).replace(".json", "").replace("_", " ")
+            for f in json_files
+        ])
+        law_list = "\n".join([f"  {i+1}. {name}" for i, name in enumerate(law_names)])
+        return f"""📚 LEX.UZ BAZASIDAGI QONUNLAR RO'YXATI:
 
-============================================================
-✅ Ma'lumot rasmiy manba asosida"""
-                
-                return result
-            except Exception as e:
-                return f"❌ Xato: {str(e)}"
-        else:
-            return None
+{law_list}
 
-    if not article_match:
-        return None  # Modda raqami yo'q
+💡 Aniq ma'lumot olish uchun qonun nomi va modda raqamini ko'rsating.
+   Masalan: "Mehnat kodeksi 131-modda" yoki "Konstitutsiya 1-modda"
+"""
+    return None
 
-    article_num = article_match.group(1)
-
-    # 3. Agar hujjat nomi yo'q bo'lsa, barcha JSON fayllardan qidirish
-    if not doc_name:
-        import glob
-        json_files = glob.glob(f"{STRUCTURED_FOLDER}/*.json")
-        
-        results = []
-        for json_path in json_files:
-            try:
-                with open(json_path, 'r', encoding='utf-8') as f:
-                    articles = json.load(f)
-                
-                if article_num in articles:
-                    doc_name_from_file = os.path.basename(json_path).replace('.json', '')
-                    article = articles[article_num]
-                    results.append({
-                        'doc': doc_name_from_file,
-                        'article': article
-                    })
-            except:
-                continue
-        
-        if results:
-            # Agar bir nechta topilsa, barchasini ko'rsatish
-            result_text = f"📚 {article_num}-MODDA QUYIDAGI HUJJATLARDA TOPILDI:\n\n"
-            
-            for i, res in enumerate(results, 1):
-                result_text += f"{'=' * 60}\n"
-                result_text += f"📄 {i}. {res['doc'].replace('_', ' ')}\n"
-                result_text += f"📌 {res['article']['title']}\n\n"
-                result_text += f"{res['article']['content']}\n\n"
-            
-            result_text += f"{'=' * 60}\n"
-            result_text += f"✅ Jami {len(results)} ta hujjatda topildi"
-            
-            return result_text
-        else:
-            return None  # Hech qayerda topilmadi
-
-    # 4. Aniq hujjatdan qidirish
+def _get_article_from_file(doc_name: str, article_num: str) -> Optional[str]:
+    """Helper to read a specific article from a specific JSON file."""
     json_path = f"{STRUCTURED_FOLDER}/{doc_name}.json"
-
     if not os.path.exists(json_path):
-        return f"❌ {doc_name}.json fayli topilmadi. Scraper'ni ishga tushiring."
+         return f"❌ {doc_name}.json fayli topilmadi."
 
     try:
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -613,8 +122,7 @@ def search_article_direct(query: str) -> str:
 
         if article_num in articles:
             article = articles[article_num]
-
-            result = f"""📚 QONUN BAZASIDAN TOPILGAN ANIQ MODDA:
+            return f"""📚 QONUN BAZASIDAN TOPILGAN ANIQ MODDA:
 
 ============================================================
 📄 Hujjat: {doc_name.replace('_', ' ')}
@@ -626,31 +134,88 @@ MAZMUNI:
 
 ============================================================
 ✅ Ma'lumot to'liq va rasmiy manba asosida"""
-
-            return result
-        else:
-            available = sorted(articles.keys(), key=int)[:10]
-            return f"""❌ {article_num}-modda topilmadi.
-
-💡 {doc_name}da mavjud moddalar (dastlabki 10 ta):
-{', '.join(available)}...
-
-Iltimos, modda raqamini tekshiring."""
-
+        return None
     except Exception as e:
         return f"❌ Xato: {str(e)}"
 
+def _search_article_in_all_files(article_num: str, json_files: List[str]) -> Optional[str]:
+    """Helper to search for an article number across all JSON files."""
+    results = []
+    for json_path in json_files:
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                articles = json.load(f)
+            
+            if article_num in articles:
+                doc_name_from_file = os.path.basename(json_path).replace('.json', '')
+                article = articles[article_num]
+                results.append({
+                    'doc': doc_name_from_file,
+                    'article': article
+                })
+        except:
+            continue
+    
+    if results:
+        result_text = f"📚 {article_num}-MODDA QUYIDAGI HUJJATLARDA TOPILDI:\n\n"
+        for i, res in enumerate(results, 1):
+            result_text += f"{'=' * 60}\n"
+            result_text += f"📄 {i}. {res['doc'].replace('_', ' ')}\n"
+            result_text += f"📌 {res['article']['title']}\n\n"
+            result_text += f"{res['article']['content']}\n\n"
+        result_text += f"{'=' * 60}\n"
+        result_text += f"✅ Jami {len(results)} ta hujjatda topildi"
+        return result_text
+    
+    return None
 
-# Tool funksiyasi sifatida ro'yxatga olish uchun
+def _get_document_summary(doc_name: str) -> str:
+    """Helper to return a summary of a document."""
+    json_path = f"{STRUCTURED_FOLDER}/{doc_name}.json"
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                articles = json.load(f)
+            
+            total_articles = len(articles)
+            
+            # Validation: Check if it's potentially a bad parse (few articles but huge text)
+            if total_articles < 4:
+                full_content = "".join([a.get("content", "") for a in articles.values()])
+                if len(full_content) < 3000: 
+                    return None
+
+            first_articles = sorted(articles.keys(), key=lambda x: int(x) if x.isdigit() else 999)[:5]
+            
+            return f"""📚 {doc_name.replace('_', ' ')} HAQIDA UMUMIY MA'LUMOT:
+
+
+============================================================
+📄 Hujjat: {doc_name.replace('_', ' ')}
+📊 Jami bo'limlar/moddalar: {total_articles}
+📌 Dastlabki qismlar: {', '.join(first_articles)}...
+
+💡 Aniq modda haqida ma'lumot olish uchun modda raqamini ko'rsating.
+   Masalan: "{doc_name.replace('_', ' ')} 1-modda"
+
+============================================================
+✅ Ma'lumot rasmiy manba asosida"""
+        except Exception as e:
+            return f"❌ Xato: {str(e)}"
+    return None
+
+
+# Tool Wrapper
 def search_article_tool(sorov: str) -> str:
     """
-    Tool interface uchun wrapper
+    Tool interface wrapper.
+    Tries direct JSON search first, then falls back to vector search.
     """
     result = search_article_direct(sorov)
     if result:
         return result
     else:
-        # Agar aniq modda topilmasa, oddiy qidiruvga o'tadi
+        # Fallback to vector/keyword search in DB
         return search_lexuz_tool(sorov)
 
 
@@ -729,7 +294,7 @@ social_bot = autogen.AssistantAgent(
     - "Yuristga murojaat qiling" dema
     - Ortiqcha tushuntirma berma
     """,
-    llm_config={"config_list": config_list, "temperature": 0.9}
+    llm_config={"config_list": config_list, "temperature": 0.5}
 )
 
 # ==============================================================================
@@ -788,7 +353,7 @@ legal_searcher = autogen.AssistantAgent(
     """,
     llm_config={
         "config_list": config_list,
-        "temperature": 0,
+        "temperature": 0.0,
         "tools": [{
             "type": "function",
             "function": {
@@ -796,7 +361,12 @@ legal_searcher = autogen.AssistantAgent(
                 "description": "Qonun bazasidan qidirish (JSON va embeddings)",
                 "parameters": {
                     "type": "object",
-                    "properties": {"sorov": {"type": "string"}},
+                    "properties": {
+                        "sorov": {
+                            "type": "string",
+                            "description": "Qidiruv so'rovi (masalan: 'Mehnat kodeksi 131-modda' yoki 'ta'til muddati')"
+                        }
+                    },
                     "required": ["sorov"]
                 }
             }
@@ -811,28 +381,18 @@ legal_analyzer = autogen.AssistantAgent(
     name="LegalAnalyzer",
     system_message="""Sen professional yurist-tahlilchisan.
 
-    VAZIFA: Qonun matnlarini oddiy tilda tushuntirish.
-
-    JAVOB FORMATI:
-    📋 [Qisqa sarlavha]
-
-    [Asosiy javob - oddiy va tushunarli. Yuridik atamalarni izohla.]
-
-    📚 Qonuniy asos:
-    - [Aniq qonun/kodeks nomi va modda raqami]
-
-    💡 Amaliy maslahat:
-    [Foydalanuvchi nima qilishi kerak]
+    Vazifang: Legal Searcher topgan qonun matnlarini tahlil qilib, foydalanuvchi savoliga javob berish.
 
     QOIDALAR:
-    1. Faqat berilgan ma'lumotga asoslan
-    2. Agar ma'lumot yetarli bo'lmasa: "Afsuski, bazada bu mavzu bo'yicha batafsil ma'lumot yo'q"
-    3. Modda raqamlarini doimo ko'rsat
-    4. Oddiy va tushunarli yoz, jargon ishlatma
-    5. Javob hajmi: 3-5 gap (juda qisqa)
-    6. Agar aniq modda topilgan bo'lsa, uning asosiy qismini keltir
+    1. Faqat berilgan qonun matniga asoslan (MATNDA YO'Q NARSA HAQIDA GAPIRMA)
+    2. Javob formatini saqla:
+       - Mavzu (bold)
+       - Javob (aniq va lo'nda)
+       - Asos (Qonun nomi va Modda raqami)
+    3. Agar topilgan matn savolga javob bermasa, "Berilgan ma'lumotlar asosida javob bera olmayman" de.
+    4. Javobingni O'zbek tilida, professional va xatolarsiz yoz.
     """,
-    llm_config={"config_list": config_list, "temperature": 0.2}
+    llm_config={"config_list": config_list, "temperature": 0.3}
 )
 
 # ==============================================================================
@@ -840,19 +400,16 @@ legal_analyzer = autogen.AssistantAgent(
 # ==============================================================================
 response_formatter = autogen.AssistantAgent(
     name="ResponseFormatter",
-    system_message="""Sen javoblarni yakuniy ko'rinishga keltiruvchisan.
+    system_message="""Sen javoblarni yakuniy formatlovchisan.
 
-    VAZIFA: Javobni foydalanuvchi uchun qulay formatga keltir.
+    Vazifang:
+    1. Boshqa agentlar (ayniqsa LegalAnalyzer) bergan javobni o'qib chiq.
+    2. Agar javobda texnik belgilar, tool chaqiruvlari yoki ortiqcha takrorlashlar bo'lsa, tozalab tashla.
+    3. Javobni chiroyli Markdown formatiga keltir.
+    4. Eng oxirida TERMINATE deb yoz.
 
-    TOZALASH:
-    1. "TERMINATE" so'zini o'chir
-    2. Tool chaqiruvlarini ko'rsatma
-    3. Texnik ma'lumotlarni olib tashla
-    4. Emoji va formatni saqla
-    5. Agent nomlarini ko'rsatma
-    6. MUHIM: Agar matnda rasm (image) linklari yoki markdown formatdagi rasmlar bo'lsa, ularni albatta saqlab qol!
-
-    QOIDA: Faqat javob matnini qaytar, boshqa hech narsa qo'shma.
+    AGAR RASM BO'LSA:
+    - Rasm linkini saqlab qol (📷 Rasm: ...)
     """,
     llm_config={"config_list": config_list, "temperature": 0}
 )
@@ -868,27 +425,22 @@ user_proxy = autogen.UserProxyAgent(
     is_termination_msg=lambda x: x.get("content", "").rstrip().endswith("TERMINATE")
 )
 
-# Tool'larni ro'yxatga olish
-from knowledge_base import search_guide_by_tags
-
+# Tool Registration
 user_proxy.register_function(function_map={
     "search_article_tool": search_article_tool,
-    "search_lexuz_tool": search_lexuz_tool,  # Backup uchun
-    "search_guide_by_tags": search_guide_by_tags  # Sayt foydalanish uchun
+    "search_guide_by_tags": search_guide_by_tags
 })
 
 
 # ==============================================================================
 # STATE MACHINE - Holatlar Mashinasi
 # ==============================================================================
-def intelligent_speaker_selection(last_speaker, groupchat):
+def intelligent_speaker_selection(last_speaker: autogen.Agent, groupchat: autogen.GroupChat) -> Optional[autogen.Agent]:
     """
-    Bu funksiya qaysi agent navbatda gaplashishini aniqlaydi.
+    State machine for agent transitions.
+    Defines who speaks next based on the last speaker and message content.
     """
     messages = groupchat.messages
-    
-    # Debug logging
-    print(f"🔄 [Speaker Selection] Last: {last_speaker.name if last_speaker else 'None'}, Messages: {len(messages)}")
 
     if not messages:
         return orchestrator
@@ -896,102 +448,65 @@ def intelligent_speaker_selection(last_speaker, groupchat):
     last_msg = messages[-1]
     content = last_msg.get("content", "").strip().upper()
     speaker_name = last_speaker.name if last_speaker else None
-    
-    print(f"   Content preview: {content[:50]}...")
 
-    # 1. BOSHLANG'ICH: UserProxy → Orchestrator
+    # 1. Start: UserProxy -> Orchestrator
     if speaker_name == "UserProxy" and len(messages) == 1:
-        print("   → Orchestrator")
         return orchestrator
 
-    # 2. ORCHESTRATOR QAROR QABUL QILDI
+    # 2. Orchestrator Decision
     if speaker_name == "Orchestrator":
         if "SOCIAL" in content:
-            print("   → SocialBot")
             return social_bot
-        elif "KNOWLEDGE" in content:
-            print("   → KnowledgeBot")
-            return knowledge_bot
         elif "CLASSIFIER" in content:
-            print("   → Classifier")
             return classifier
-        print("   → None (Orchestrator unclear)")
-        return None
+        return classifier  # Default to classifier for safety
 
-    # 3. CLASSIFIER TASNIFI
+    # 3. Classifier Decision
     if speaker_name == "Classifier":
         if "KNOWLEDGE" in content:
-            print("   → KnowledgeBot")
             return knowledge_bot
         elif "LEGAL" in content:
-            print("   → LegalSearcher")
             return legal_searcher
-        print("   → None (Classifier unclear)")
-        return None
+        return legal_searcher # Default to legal
 
-    # 4. SOCIAL BOT JAVOB BERDI
+    # 4. Social Bot -> Formatter
     if speaker_name == "SocialBot":
-        # SocialBot should always terminate after responding
-        # Auto-append TERMINATE if not present to ensure termination
-        if last_msg.get("content"):
-            content_raw = last_msg.get("content", "")
-            if "TERMINATE" not in content_raw:
-                # Append TERMINATE to the message
-                last_msg["content"] = content_raw + "\n\nTERMINATE"
-                content = last_msg["content"].strip().upper()  # Update content variable
-                print("   ⚠️ Auto-appended TERMINATE to SocialBot response")
-        
-        # Check if TERMINATE is in the message
-        if "TERMINATE" in content:
-            print("   → None (SocialBot terminated)")
-            return None
-        print("   → ResponseFormatter")
         return response_formatter
 
-    # 5. KNOWLEDGE BOT QIDIRUV QILMOQDA
+    # 5. Knowledge Bot -> Formatter
     if speaker_name == "KnowledgeBot":
-        # Agar tool chaqiruvchi bo'lsa
+        # Check if tool was called
         if last_msg.get("tool_calls") or last_msg.get("function_call"):
-            print("   → UserProxy (tool execution)")
-            return user_proxy  # Tool bajarish uchun
-        # Tool natijasi kelganidan keyin
-        print("   → ResponseFormatter")
+            return user_proxy
         return response_formatter
 
-    # 6. LEGAL SEARCHER QIDIRUV QILMOQDA
+    # 6. Legal Searcher -> Tool or Analyzer
     if speaker_name == "LegalSearcher":
         if last_msg.get("tool_calls") or last_msg.get("function_call"):
-            print("   → UserProxy (tool execution)")
             return user_proxy
-        print("   → LegalAnalyzer")
         return legal_analyzer
 
-    # 7. USER PROXY TOOL BAJARIBDI
+    # 7. User Proxy (Tool Executor)
     if speaker_name == "UserProxy" and len(messages) > 1:
         prev_speaker = messages[-2].get("name")
         if prev_speaker == "LegalSearcher":
-            print("   → LegalAnalyzer")
             return legal_analyzer
-        elif prev_speaker == "KnowledgeBot":
-            print("   → KnowledgeBot")
-            return knowledge_bot  # KnowledgeBot o'zi javob beradi
+        if prev_speaker == "KnowledgeBot":
+            return knowledge_bot # Return to KnowledgeBot to formulate answer
 
-    # 8. LEGAL ANALYZER TAHLIL QILDI
+    # 8. Legal Analyzer -> Formatter
     if speaker_name == "LegalAnalyzer":
-        print("   → ResponseFormatter")
         return response_formatter
 
-    # 9. RESPONSE FORMATTER YAKUNLADI
+    # 9. Response Formatter -> END
     if speaker_name == "ResponseFormatter":
-        print("   → None (conversation ended)")
         return None
 
-    print(f"   → None (no match for {speaker_name})")
     return None
 
 
 # ==============================================================================
-# GROUP CHAT VA MANAGER
+# GROUP CHAT MANAGER
 # ==============================================================================
 groupchat = autogen.GroupChat(
     agents=[
@@ -1014,18 +529,6 @@ manager = autogen.GroupChatManager(
     llm_config={"config_list": config_list}
 )
 
-# ==============================================================================
-# TESTING
-# ==============================================================================
 if __name__ == "__main__":
-    print("🧪 Agent tizimi test rejimida ishga tushdi")
-    print("Barcha agentlar:")
-    for agent in groupchat.agents:
-        print(f"  ✓ {agent.name}")
-
-    print("\n📦 JSON qidiruv tizimi:")
-    if os.path.exists(STRUCTURED_FOLDER):
-        files = os.listdir(STRUCTURED_FOLDER)
-        print(f"  ✅ {len(files)} ta JSON fayl topildi")
-    else:
-        print(f"  ⚠️ {STRUCTURED_FOLDER} papkasi yo'q. Scraper'ni ishga tushiring!")
+    print("🧪 Agent System Test Mode")
+    print("Agents loaded:", [agent.name for agent in groupchat.agents])

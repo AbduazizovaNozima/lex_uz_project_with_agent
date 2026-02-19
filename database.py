@@ -1,147 +1,63 @@
-# import os
-# import psycopg2
-# from sentence_transformers import SentenceTransformer
-# from dotenv import load_dotenv
-#
-# load_dotenv()
-#
-# DB_PASSWORD = os.getenv("DB_PASSWORD", "12345")
-#
-# DB_PARAMS = {
-#     "dbname": "lexuz_db",
-#     "user": "postgres",
-#     "password": DB_PASSWORD,
-#     "host": "localhost",
-#     "port": "5432"
-# }
-#
-# # 2. MODELNI YUKLASH
-# # Bu jarayon og'ir bo'lgani uchun fayl boshida bir marta bajariladi.
-# # Har safar funksiya chaqirilganda qayta yuklamaslik kerak.
-# print("📚 [Database] Embedding modeli yuklanmoqda... (Biroz kuting)")
-# try:
-#     embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
-#     print("✅ [Database] Model tayyor!")
-# except Exception as e:
-#     print(f"❌ [Database] Model yuklashda xatolik: {e}")
-#     raise e
-#
-#
-# # 3. TOOL FUNKSIYASI (Legal Agent uchun)
-# def search_lexuz_tool(sorov: str) -> str:
-#     """
-#     Bu funksiya Legal Agent (Yurist) uchun 'ko'z' va 'qo'l' vazifasini bajaradi.
-#     PostgreSQL bazasidan pgvector yordamida eng o'xshash qonunlarni topadi.
-#
-#     Args:
-#         sorov (str): Foydalanuvchi bergan savol yoki kalit so'zlar.
-#
-#     Returns:
-#         str: Topilgan qonun manbalari va matnlari birlashtirilgan string holatida.
-#     """
-#     print(f"\n🔍 [DB TOOL] Bazadan qidirilmoqda: {sorov}")
-#
-#     conn = None
-#     try:
-#         # 1. Savolni vektorga o'giramiz
-#         query_vec = embedding_model.encode(sorov).tolist()
-#
-#         # 2. Bazaga ulanamiz
-#         conn = psycopg2.connect(**DB_PARAMS)
-#         cur = conn.cursor()
-#
-#         # 3. SQL so'rov (Kosinus masofasi bo'yicha qidirish)
-#         # <=> operatori pgvector da masofani o'lchaydi
-#         # LIMIT 4 - Eng mos 4 ta parchani olamiz (kontekst yetarli bo'lishi uchun)
-#         sql = """
-#             SELECT source, content
-#             FROM documents
-#             ORDER BY embedding <=> %s::vector
-#             LIMIT 4;
-#         """
-#
-#         cur.execute(sql, (query_vec,))
-#         rows = cur.fetchall()
-#
-#         # 4. Natijalarni formatlash
-#         if not rows:
-#             return "Afsuski, bazadan so'rovingizga mos hech qanday ma'lumot topilmadi."
-#
-#         result_text = "TIZIM: Qidiruv natijasida quyidagi qonun hujjatlari topildi:\n\n"
-#
-#         for i, (source, content) in enumerate(rows, 1):
-#             # Matn juda uzun bo'lsa, GPT tokeni to'lib qolmasligi uchun 1500 belgida kesamiz
-#             clean_content = content.strip()[:1500]
-#             result_text += f"--- {i}-MANBA: {source} ---\nMATN: {clean_content}\n\n"
-#
-#         return result_text
-#
-#     except psycopg2.Error as db_err:
-#         return f"Bazaga ulanishda xatolik: {db_err}"
-#
-#     except Exception as e:
-#         return f"Texnik xatolik yuz berdi: {e}"
-#
-#     finally:
-#         # Ulanishni albatta yopish kerak
-#         if conn:
-#             conn.close()
-#
-#
-# # Test uchun (faqat shu faylni o'zini ishlatsangiz tekshirish uchun)
-# if __name__ == "__main__":
-#     print("Test qidiruv: Konstitutsiya")
-#     print(search_lexuz_tool("Konstitutsiya"))
-
-
 import os
+import json
+import glob
 import psycopg2
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
-from typing import List, Tuple
+from typing import List, Dict, Any, Optional, Tuple, Union
 
 load_dotenv()
 
 # ============================================================================
-# KONFIGURATSIYA
+# CONFIGURATION
 # ============================================================================
 DB_PASSWORD = os.getenv("DB_PASSWORD", "12345")
+DB_PORT = os.getenv("DB_PORT", "5433")  # PostgreSQL default port is 5432, but using 5433 here
+DB_HOST = "localhost"
+DB_USER = "postgres"
+DB_NAME = "lexuz_db"
+
 DB_PARAMS = {
-    "dbname": "lexuz_db",
-    "user": "postgres",
+    "dbname": DB_NAME,
+    "user": DB_USER,
     "password": DB_PASSWORD,
-    "host": "localhost",
-    "port": "5432"
+    "host": DB_HOST,
+    "port": DB_PORT
 }
 
+# Model Configuration
+EMBEDDING_MODEL_NAME = 'all-MiniLM-L6-v2'
+CHUNK_SIZE = 1500
+
 # ============================================================================
-# EMBEDDING MODEL (Bir marta yuklanadi)
+# EMBEDDING MODEL (loaded once at startup)
 # ============================================================================
-print("🔄 [Database] Embedding modeli yuklanmoqda...")
+print("🔄 [Database] Loading embedding model...")
 try:
-    embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
-    print("✅ [Database] Model tayyor!")
+    embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+    print("✅ [Database] Model ready!")
 except Exception as e:
-    print(f"❌ [Database] Model yuklash xatosi: {e}")
+    print(f"❌ [Database] Model load error: {e}")
     raise
 
+# ============================================================================
+# DATABASE SETUP
+# ============================================================================
+def get_db_connection():
+    """Establishes and returns a database connection."""
+    return psycopg2.connect(**DB_PARAMS)
 
-# ============================================================================
-# BAZANI TAYYORLASH
-# ============================================================================
-def setup_database():
-    """
-    Dastlabki baza strukturasini yaratish
-    """
+def setup_database() -> None:
+    """Create documents table and pgvector extension if not exists."""
     conn = None
     try:
-        conn = psycopg2.connect(**DB_PARAMS)
+        conn = get_db_connection()
         cur = conn.cursor()
 
-        # pgvector kengaytmasini faollashtirish
+        # Enable pgvector extension
         cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
 
-        # Jadval yaratish
+        # Create documents table
         cur.execute("""
             CREATE TABLE IF NOT EXISTS documents (
                 id SERIAL PRIMARY KEY,
@@ -152,7 +68,7 @@ def setup_database():
             );
         """)
 
-        # Index yaratish (tezroq qidiruv uchun)
+        # Create index for fast cosine search
         cur.execute("""
             CREATE INDEX IF NOT EXISTS embedding_idx 
             ON documents USING ivfflat (embedding vector_cosine_ops)
@@ -160,10 +76,10 @@ def setup_database():
         """)
 
         conn.commit()
-        print("✅ [Database] Baza strukturasi tayyor")
+        print("✅ [Database] Table structure ready")
 
     except Exception as e:
-        print(f"❌ [Database] Setup xatosi: {e}")
+        print(f"❌ [Database] Setup error: {e}")
         if conn:
             conn.rollback()
         raise
@@ -171,81 +87,46 @@ def setup_database():
         if conn:
             conn.close()
 
-
 # ============================================================================
-# MATNLARNI BAZAGA YUKLASH
+# TEXT SPLITTING
 # ============================================================================
-def insert_documents_from_folder(folder_path: str = "./lex_data"):
+def split_text(text: str, chunk_size: int = CHUNK_SIZE) -> List[str]:
     """
-    Scrape qilingan fayllarni bazaga yuklash
+    Split text into logical chunks.
+    Priority:
+    1. Split by double newline (\n\n)
+    2. Split by single newline (\n)
+    3. Split by sentence/space (if paragraph is huge)
     """
-    import glob
+    text = text.strip()
+    if not text:
+        return []
 
-    conn = None
-    try:
-        conn = psycopg2.connect(**DB_PARAMS)
-        cur = conn.cursor()
-
-        # Oldingi ma'lumotlarni o'chirish (yangilash uchun)
-        cur.execute("TRUNCATE TABLE documents RESTART IDENTITY;")
-
-        files = glob.glob(f"{folder_path}/*.txt")
-        print(f"\n📁 {len(files)} ta fayl topildi")
-
-        total_chunks = 0
-
-        for file_path in files:
-            source = os.path.basename(file_path)
-            print(f"📄 {source} ishlanmoqda...")
-
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-
-            # Matnni bo'laklarga ajratish (1500 belgilik qismlar)
-            chunks = split_text(content, chunk_size=1500)
-
-            for i, chunk in enumerate(chunks):
-                if len(chunk.strip()) < 100:  # Juda qisqa bo'laklar kerak emas
-                    continue
-
-                # Embedding yaratish
-                embedding = embedding_model.encode(chunk).tolist()
-
-                # Bazaga yozish
-                cur.execute("""
-                    INSERT INTO documents (source, content, embedding)
-                    VALUES (%s, %s, %s::vector)
-                """, (source, chunk, embedding))
-
-                total_chunks += 1
-
-            print(f"  ✅ {len(chunks)} ta bo'lak yuklandi")
-
-        conn.commit()
-        print(f"\n🎉 Jami {total_chunks} ta yozuv bazaga qo'shildi!")
-
-    except Exception as e:
-        print(f"❌ [Database] Yuklash xatosi: {e}")
-        if conn:
-            conn.rollback()
-        raise
-    finally:
-        if conn:
-            conn.close()
-
-
-def split_text(text: str, chunk_size: int = 1500) -> List[str]:
-    """
-    Matnni mantiqiy bo'laklarga ajratish
-    """
-    # Paragraflar bo'yicha ajratish
+    # Strategy 1: Split by paragraphs (\n\n)
     paragraphs = text.split('\n\n')
+    
+    # If we only got 1 huge paragraph, try splitting by single newlines
+    if len(paragraphs) == 1 and len(text) > chunk_size:
+        paragraphs = text.split('\n')
+
     chunks = []
     current_chunk = ""
 
     for para in paragraphs:
         para = para.strip()
         if not para:
+            continue
+            
+        # If a single paragraph is still HUGE (bigger than chunk_size), hard split it
+        if len(para) > chunk_size:
+            # Check if we have a current chunk pending
+            if current_chunk:
+                chunks.append(current_chunk.strip())
+                current_chunk = ""
+            
+            # Simple fixed-size splitting for huge blob
+            for i in range(0, len(para), chunk_size):
+                chunks.append(para[i:i + chunk_size])
             continue
 
         if len(current_chunk) + len(para) < chunk_size:
@@ -260,80 +141,227 @@ def split_text(text: str, chunk_size: int = 1500) -> List[str]:
 
     return chunks
 
-
 # ============================================================================
-# QIDIRUV FUNKSIYASI (Agent uchun)
+# DATA INGESTION FROM JSON FILES
 # ============================================================================
-def search_lexuz_tool(sorov: str) -> str:
+def insert_documents_from_json(json_folder: str = "./lex_structured") -> None:
     """
-    Vector search orqali eng mos qonunlarni topish
-
-    Args:
-        sorov: Foydalanuvchi savoli
-
-    Returns:
-        Formatlangan qidiruv natijalari
+    Load law articles from lex_structured/*.json into the vector database.
+    Each article's text is embedded and stored for semantic search.
     """
-    print(f"\n🔍 [Tool] Qidiruv: {sorov}")
+    json_files = glob.glob(f"{json_folder}/*.json")
+    if not json_files:
+        print(f"⚠️  No JSON files found in {json_folder}")
+        return
 
     conn = None
     try:
-        # Savolni vektorga aylantirish
-        query_vec = embedding_model.encode(sorov).tolist()
-
-        # Bazaga ulanish
-        conn = psycopg2.connect(**DB_PARAMS)
+        conn = get_db_connection()
         cur = conn.cursor()
 
-        # Vector qidiruv (Cosine similarity)
-        sql = """
-            SELECT source, content, 1 - (embedding <=> %s::vector) as similarity
-            FROM documents 
-            WHERE 1 - (embedding <=> %s::vector) > 0.3
-            ORDER BY embedding <=> %s::vector 
-            LIMIT 5;
-        """
+        # Clear existing data for a clean reload
+        cur.execute("TRUNCATE TABLE documents RESTART IDENTITY;")
+        conn.commit()
 
-        cur.execute(sql, (query_vec, query_vec, query_vec))
-        rows = cur.fetchall()
+        total_inserted = 0
 
-        # Natijalarni formatlash
-        if not rows:
-            return """
-❌ Afsuski, so'rovingizga mos ma'lumot topilmadi.
+        for json_path in sorted(json_files):
+            source_name = os.path.basename(json_path).replace(".json", "").replace("_", " ")
+            print(f"📄 Loading: {source_name}...")
 
-💡 Tavsiya:
-- Savolingizni boshqacha so'zlar bilan ifoda qiling
-- Aniqroq atamalar ishlating (masalan: "oylik" o'rniga "ish haqi")
-"""
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    articles: Dict[str, Dict[str, str]] = json.load(f)
+            except Exception as e:
+                print(f"  ⚠️  Could not read {json_path}: {e}")
+                continue
 
-        result = "📚 QONUN BAZASIDAN TOPILGAN MA'LUMOTLAR:\n\n"
+            batch_count = 0
+            for article_num, article_data in articles.items():
+                title = article_data.get("title", "")
+                content = article_data.get("content", "")
 
-        for i, (source, content, similarity) in enumerate(rows, 1):
-            # O'xshashlik foizini ko'rsatish
-            match_percent = int(similarity * 100)
+                if not content or len(content.strip()) < 30:
+                    continue
 
-            # Matnni kesish
-            clean_content = content.strip()[:1200]
+                # If content is huge (full law in one block), split into chunks
+                if len(content) > CHUNK_SIZE * 2:
+                    chunks = split_text(content, chunk_size=CHUNK_SIZE)
+                else:
+                    # Small article: keep as single chunk
+                    chunks = [content]
 
-            result += f"{'=' * 60}\n"
-            result += f"📄 Manba #{i}: {source}\n"
-            result += f"🎯 Mos kelish: {match_percent}%\n\n"
-            result += f"{clean_content}\n\n"
+                for chunk_idx, chunk in enumerate(chunks):
+                    if len(chunk.strip()) < 50:
+                        continue
 
-        result += f"{'=' * 60}\n"
-        result += f"✅ Jami {len(rows)} ta manba topildi"
+                    prefix = f"{source_name}"
+                    if title and title != source_name:
+                        prefix += f" — {title}"
+                    chunk_text = f"{prefix}\n\n{chunk}"
 
-        print(f"✅ [Tool] {len(rows)} ta natija qaytarildi")
-        return result
+                    # Generate embedding
+                    try:
+                        embedding = embedding_model.encode(chunk_text).tolist()
+                    except Exception as e:
+                        print(f"  ⚠️  Embedding error (article {article_num}, chunk {chunk_idx}): {e}")
+                        continue
 
-    except psycopg2.Error as db_err:
-        error_msg = f"❌ Bazaga ulanishda xatolik: {db_err}"
-        print(error_msg)
-        return error_msg
+                    cur.execute(
+                        "INSERT INTO documents (source, content, embedding) VALUES (%s, %s, %s::vector)",
+                        (source_name, chunk_text, embedding)
+                    )
+                    batch_count += 1
+
+            conn.commit()
+            total_inserted += batch_count
+            print(f"  ✅ {batch_count} articles inserted")
+
+        print(f"\n🎉 Total: {total_inserted} articles loaded into vector DB!")
 
     except Exception as e:
-        error_msg = f"❌ Qidiruv xatosi: {e}"
+        print(f"❌ [Database] Ingestion error: {e}")
+        if conn:
+            conn.rollback()
+        raise
+    finally:
+        if conn:
+            conn.close()
+
+# ============================================================================
+# SEARCH FUNCTION (used by agents)
+# ============================================================================
+def search_lexuz_tool(sorov: str) -> str:
+    """
+    Semantic vector search — finds the most relevant law articles for the query.
+
+    Args:
+        sorov: User's question or keywords
+
+    Returns:
+        Formatted search results string
+    """
+    print(f"\n🔍 [Tool] Searching DB: {sorov}")
+
+    conn = None
+    try:
+        # Encode query to vector
+        query_vec = embedding_model.encode(sorov).tolist()
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        limit = 5 # Number of results to retrieve from each search type
+
+        # 1. Semantic Search (Vector)
+        # Using cosine distance (1 - cosine similarity) -> Order by distance ASC
+        cur.execute("""
+            SELECT content, source, 1 - (embedding <=> %s::vector) as similarity
+            FROM documents
+            ORDER BY embedding <=> %s::vector
+            LIMIT %s;
+        """, (query_vec, query_vec, limit))
+        vector_results: List[Tuple[str, str, float]] = cur.fetchall()
+
+        # 2. Keyword Search (Enhanced)
+        # Split query into words to match source names partially
+        words = sorov.split()
+        keywords = [w for w in words if len(w) > 3]
+        if not keywords:
+            keywords = words
+
+        # Build dynamic ILIKE clauses for source matching
+        # Source must match AT LEAST ONE of the significant keywords
+        source_conditions = []
+        source_params = []
+        for w in keywords:
+            source_conditions.append("source ILIKE %s")
+            source_params.append(f"%{w}%")
+        
+        source_clause = " OR ".join(source_conditions) if source_conditions else "FALSE"
+
+        # Parameters for the query:
+        # 1. websearch_to_tsquery (query)
+        # 2. ... source_params ...
+        # 3. limit
+        params = [sorov] + source_params + [limit]
+
+        query_sql = f"""
+            SELECT content, source, 0.9 as similarity
+            FROM documents
+            WHERE to_tsvector('simple', content) @@ websearch_to_tsquery('simple', %s)
+            OR ({source_clause})
+            LIMIT %s;
+        """
+
+        cur.execute(query_sql, tuple(params))
+        keyword_results: List[Tuple[str, str, float]] = cur.fetchall()
+
+        # Merge results (deduplicate by content)
+        seen_content = set()
+        results: List[Dict[str, Any]] = []
+
+        # Prioritize keyword matches if they are relevant laws
+        for r in keyword_results:
+            content = r[0]
+            if content not in seen_content:
+                results.append({"content": content, "source": r[1], "similarity": r[2]})
+                seen_content.add(content)
+
+        for r in vector_results:
+            content = r[0]
+            if content not in seen_content:
+                results.append({"content": content, "source": r[1], "similarity": r[2]})
+                seen_content.add(content)
+        
+        # Take the top N merged results
+        final_rows = results[:limit]
+
+        if not final_rows:
+            return """❌ No matching results found in the database.
+
+💡 Tips:
+- Be more specific (e.g., "Mehnat kodeksi 131-modda")
+- Use law name + article number for best results
+"""
+
+        result_text = "📚 RESULTS FROM LEGAL DATABASE:\n\n"
+
+        for i, row in enumerate(final_rows, 1):
+            source = row['source']
+            content = row['content']
+            similarity = row['similarity']
+            
+            match_percent = int(similarity * 100)
+            clean_content = content.strip()[:1200]
+
+            result_text += f"{'=' * 60}\n"
+            result_text += f"📄 Source #{i}: {source}\n"
+            result_text += f"🎯 Relevance: {match_percent}%\n\n"
+            result_text += f"{clean_content}\n\n"
+
+        result_text += f"{'=' * 60}\n"
+        result_text += f"✅ Found {len(final_rows)} result(s)"
+
+        print(f"✅ [Tool] Returned {len(final_rows)} results")
+        return result_text
+
+    except psycopg2.OperationalError as db_err:
+        # DB not available — log only, don't expose raw error to agents
+        print(f"❌ DB connection failed: {db_err}")
+        return """❌ No results found in the database.
+
+💡 Tips:
+- Try specifying the law name and article number (e.g., "Mehnat kodeksi 131-modda")
+- For general questions about available laws, try asking "qanday qonunlar mavjud"
+"""
+
+    except psycopg2.Error as db_err:
+        print(f"❌ DB error: {db_err}")
+        return "❌ Database error. Please try again."
+
+    except Exception as e:
+        error_msg = f"❌ Search error: {e}"
         print(error_msg)
         return error_msg
 
@@ -341,62 +369,53 @@ def search_lexuz_tool(sorov: str) -> str:
         if conn:
             conn.close()
 
-
 # ============================================================================
-# BAZANI TEKSHIRISH
+# DATABASE STATUS CHECK
 # ============================================================================
-def check_database():
-    """
-    Bazadagi ma'lumotlarni tekshirish
-    """
+def check_database() -> None:
+    """Print database statistics."""
     conn = None
     try:
-        conn = psycopg2.connect(**DB_PARAMS)
+        conn = get_db_connection()
         cur = conn.cursor()
 
         cur.execute("SELECT COUNT(*) FROM documents;")
         count = cur.fetchone()[0]
 
-        cur.execute("SELECT DISTINCT source FROM documents;")
+        cur.execute("SELECT DISTINCT source FROM documents ORDER BY source;")
         sources = [row[0] for row in cur.fetchall()]
 
-        print(f"\n📊 BAZA HOLATI:")
-        print(f"  📝 Jami yozuvlar: {count}")
-        print(f"  📚 Manba fayllar: {len(sources)}")
+        print(f"\n📊 DATABASE STATUS:")
+        print(f"  📝 Total records: {count}")
+        print(f"  📚 Sources: {len(sources)}")
         for source in sources:
             cur.execute("SELECT COUNT(*) FROM documents WHERE source = %s", (source,))
             s_count = cur.fetchone()[0]
-            print(f"    - {source}: {s_count} ta bo'lak")
+            print(f"    - {source}: {s_count} articles")
 
     except Exception as e:
-        print(f"❌ Tekshirish xatosi: {e}")
+        print(f"❌ Check error: {e}")
     finally:
         if conn:
             conn.close()
 
-
 # ============================================================================
-# TEST VA INITIALIZATION
+# MAIN — Run this once to initialize the database
 # ============================================================================
 if __name__ == "__main__":
-    print("🔧 Database moduli ishga tushdi\n")
+    print("🔧 Database initialization started\n")
+    print(f"📡 Connecting to: {DB_PARAMS['host']}:{DB_PARAMS['port']}/{DB_PARAMS['dbname']}")
 
-    # Bazani tayyorlash
+    # Step 1: Create table structure
+    print("\n[1/3] Setting up database schema...")
     setup_database()
 
-    # Ma'lumotlarni yuklash (agar kerak bo'lsa)
-    if input("\n📥 Fayllarni bazaga yuklash? (y/n): ").lower() == 'y':
-        insert_documents_from_folder()
+    # Step 2: Load JSON data into vector DB
+    print("\n[2/3] Loading law articles from lex_structured/...")
+    insert_documents_from_json()
 
-    # Bazani tekshirish
+    # Step 3: Verify
+    print("\n[3/3] Verifying database...")
     check_database()
 
-    # Test qidiruv
-    if input("\n🧪 Test qidiruv o'tkazish? (y/n): ").lower() == 'y':
-        test_query = input("Savol: ")
-        result = search_lexuz_tool(test_query)
-        print("\n" + result)
-
-
-
-
+    print("\n✅ Database ready! Restart api.py to apply changes.")

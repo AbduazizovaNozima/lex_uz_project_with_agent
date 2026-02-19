@@ -1,0 +1,84 @@
+{
+  "session_id": "cce279ec-9880-42a5-b9aa-082c28afd074",
+  "user_id": "anonymous",
+  "created_at": "2026-02-19T12:14:18.964101",
+  "last_active": "2026-02-19T12:16:38.745513",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Konstitutsiyada nechta bo'lim va modda bor?",
+      "timestamp": "2026-02-19T12:14:18.968445",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, bu mavzu bo'yicha ma'lumot yo'q. Agar boshqa savollaringiz bo'lsa, yordam berishdan mamnunman!",
+      "timestamp": "2026-02-19T12:14:25.630145",
+      "agent_path": [
+        "Classifier",
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Jinoyat kodeksida 94-modda nima?",
+      "timestamp": "2026-02-19T12:14:55.854867",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, Jinoyat kodeksida 94-modda haqida ma'lumot topilmadi. Agar boshqa savollaringiz bo'lsa, yordam berishdan mamnunman!",
+      "timestamp": "2026-02-19T12:15:02.694436",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Fuqarolik kodeksi nima?",
+      "timestamp": "2026-02-19T12:15:56.739639",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Fuqarolik kodeksi — O'zbekistonda fuqarolik huquqlarini va majburiyatlarini tartibga soluvchi asosiy qonun. U fuqarolar va yuridik shaxslar o'rtasidagi munosabatlarni, mulk huquqini, shartnomalarni va boshqa huquqiy masalalarni belgilaydi. Bu kodeks fuqarolarning huquqlarini himoya qilish va ularni amalga oshirish tartibini belgilaydi.\n\n📚 Qonuniy asos:\n- O'zbekiston Respublikasi Fuqarolik kodeksi, ORQ-683-sonli Qonuni (2021-yil 21-aprel)\n\n💡 Amaliy maslahat:\nAgar siz fuqarolik huquqlaringizni bilmoqchi bo'lsangiz yoki shartnoma tuzmoqchi bo'lsangiz, Fuqarolik kodeksini o'rganishingiz muhimdir.",
+      "timestamp": "2026-02-19T12:16:10.557251",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Fuqarolik kodeksida nechta modda bor?",
+      "timestamp": "2026-02-19T12:16:28.908158",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, Fuqarolik kodeksida nechta modda borligi haqida ma'lumot topilmadi. Agar boshqa savollaringiz bo'lsa, yordam berishdan mamnunman!",
+      "timestamp": "2026-02-19T12:16:38.745501",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

@@ -10,7 +10,7 @@ echo "========================================"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_PATH="$PROJECT_DIR/venv"
 PYTHON_PATH="$VENV_PATH/bin/python"
-SCRAPER_SCRIPT="$PROJECT_DIR/auto_scraper.py"
+SCRAPER_SCRIPT="$PROJECT_DIR/scraper.py"
 LOG_FILE="$PROJECT_DIR/logs/cron.log"
 
 echo "📁 Project: $PROJECT_DIR"

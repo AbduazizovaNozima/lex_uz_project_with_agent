@@ -1,0 +1,44 @@
+{
+  "session_id": "e6518f84-e1e7-427a-8c49-013f1a72d58f",
+  "user_id": "anonymous",
+  "created_at": "2025-12-22T19:57:08.042923",
+  "last_active": "2025-12-22T19:57:45.317898",
+  "messages": [
+    {
+      "role": "user",
+      "content": "salom",
+      "timestamp": "2025-12-22T19:57:08.047554",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Yana qanday yordam bera olishim mumkin?",
+      "timestamp": "2025-12-22T19:57:08.102959",
+      "agent_path": [
+        "SocialBot"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "manga ko'chmas mulk haqidagi qonunlardan aytib ber",
+      "timestamp": "2025-12-22T19:57:33.554416",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "📋 **Ko'chmas mulk qonunlari**\n\nKo'chmas mulk qonunlari, odatda, mulkni sotish, ijaraga berish, va mulk huquqlarini himoya qilish kabi masalalarni tartibga soladi. Bu qonunlar mulk egalarining huquqlarini belgilaydi va mulkni boshqarish jarayonida qanday harakat qilish kerakligini ko'rsatadi.\n\n📚 **Qonuniy asos:**\n- Afsuski, bazada bu mavzu bo'yicha batafsil ma'lumot yo'q.\n\n💡 **Amaliy maslahat:**\nAgar siz ko'chmas mulk bilan bog'liq muammolarga duch kelsangiz, malakali yurist bilan maslahatlashishingiz tavsiya etiladi.",
+      "timestamp": "2025-12-22T19:57:45.317889",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

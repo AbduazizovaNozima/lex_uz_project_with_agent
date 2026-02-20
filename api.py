@@ -136,13 +136,13 @@ async def chat_endpoint(req: ChatRequest) -> ChatResponse:
 
     # 4. Agent Execution (with Timeout)
     try:
-        print("⏳ Chat started (30s timeout)...")
+        print("⏳ Chat started (60s timeout)...")
         await asyncio.wait_for(
             user_proxy.a_initiate_chat(
                 manager,
                 message=full_message
             ),
-            timeout=30.0
+            timeout=60.0
         )
         print("✅ Chat completed successfully")
     

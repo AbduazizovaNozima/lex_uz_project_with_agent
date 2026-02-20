@@ -1,0 +1,47 @@
+{
+  "session_id": "7a8700a1-7881-4536-a998-9ac314e35964",
+  "user_id": "anonymous",
+  "created_at": "2026-02-19T13:21:08.578144",
+  "last_active": "2026-02-19T13:22:10.120115",
+  "messages": [
+    {
+      "role": "user",
+      "content": "konstitutsiyani nechta moddasi bor?\n\n",
+      "timestamp": "2026-02-19T13:21:08.582396",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "**Javob**: Konstitutsiyada jami 1 modda mavjud.\n\n**Asos**: Konstitutsiya, jami bo'limlar/moddalar.",
+      "timestamp": "2026-02-19T13:21:16.500852",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "manga 20-moddani  ayt",
+      "timestamp": "2026-02-19T13:22:01.851776",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "**Javob**: O'zbekiston Respublikasi Konstitutsiyasining 20-moddasi haqida ma'lumot berishim mumkin emas, chunki bu modda haqida aniq ma'lumot topilmadi. Agar sizda boshqa savollar bo'lsa, iltimos, so'rang.",
+      "timestamp": "2026-02-19T13:22:10.120105",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

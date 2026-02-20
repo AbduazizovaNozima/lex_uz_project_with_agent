@@ -1,0 +1,178 @@
+{
+  "session_id": "073d010d-5e42-4785-85a7-b2e23c737743",
+  "user_id": "anonymous",
+  "created_at": "2026-02-19T18:16:38.826778",
+  "last_active": "2026-02-19T19:43:16.803647",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Fuqarolik kodeksida nechta modda bor?\n\n",
+      "timestamp": "2026-02-19T18:16:38.831484",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Fuqarolik Kodeksidagi Modda Soni\n\nO'zbekiston Respublikasining Fuqarolik kodeksi 386 ta modda va bo'limdan iborat. Ushbu moddalarda fuqarolik huquqining asosiy tamoyillari, shartnomalar, mulk huquqi, majburiyatlar va boshqa muhim masalalar ko'rib chiqiladi. Har bir modda o'ziga xos huquqiy tartiblarni belgilaydi va fuqarolar o'rtasidagi munosabatlarni tartibga soladi.\n\n### Sizning Huquqlaringiz\nFuqarolik kodeksidagi moddalardan foydalanish orqali siz o'z huquqlaringizni himoya qilish, shartnomalar tuzish va boshqa fuqarolik huquqiy munosabatlarda o'z pozitsiyangizni belgilash imkoniyatiga egasiz.\n\n### Tavsiyalar\nAgar sizda Fuqarolik kodeksidagi muayyan modda yoki masala bo'yicha savollar bo'lsa, aniq modda raqamini ko'rsatib, qo'shimcha ma'lumot so'rashingiz mumkin. Agar sizga huquqiy masalalar bo'yicha batafsil maslahat kerak bo'lsa, malakali huquqshunos bilan bog'lanishingiz tavsiya etiladi.\n\n### Asos\nO'zbekiston Respublikasi Fuqarolik kodeksi.",
+      "timestamp": "2026-02-19T18:16:54.814518",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Jinoyat kodeksida 94-modda nima?\n\n",
+      "timestamp": "2026-02-19T18:17:03.308941",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Jinoyat Kodeksidagi 94-modda\n\nO'zbekiston Respublikasining Jinoyat kodeksining 94-moddasi tibbiy yoʻsindagi majburlov choralarini tayinlashni tartibga soladi. Ushbu modda ruhiy holati buzilgan shaxslar, shuningdek, vaqtincha ruhiy holati buzilgan shaxslar uchun majburiy davolanish va kuzatuv choralarini belgilaydi. \n\n### Moddaning Mazmuni\nAgar shaxsning ruhiy holati ijtimoiy xavfli qilmishlar sodir etishiga olib kelishi mumkin bo'lsa, u holda u psixiatrik muassasalarda majburiy davolanishga yuborilishi mumkin. Bu, shuningdek, jazoni ijro etish muassasalarida ham qo'llanilishi mumkin. Modda ruhiy holati buzilgan shaxslarning xavfsizligini ta'minlash va ularning davolanishini nazorat qilish maqsadida qabul qilingan.\n\n### Sizning Huquqlaringiz\nAgar siz ruhiy holati buzilgan shaxs sifatida tibbiy majburlov choralariga duch kelsangiz, sizning huquqlaringiz quyidagilardan iborat:\n- Davolanish va kuzatuv uchun zarur sharoitlar ta'minlanishi.\n- Sizning shaxsiy hayotingiz va ma'lumotlaringizni himoya qilish.\n- Davolanish jarayonida adolatli muomala va insoniy munosabatlar.\n\n### Tavsiyalar\nAgar siz yoki sizning yaqinlaringiz 94-modda doirasida majburiy davolanishga duch kelsa, quyidagi qadamlarni amalga oshirishingiz tavsiya etiladi:\n1. Psixiatrik muassasa bilan bog'laning va sizning huquqlaringizni tushuntiring.\n2. Agar sizning huquqlaringiz buzilayotganini his qilsangiz, advokat bilan maslahatlashishni o'ylab ko'ring.\n3. Tibbiy hujjatlaringizni va davolanish jarayonini diqqat bilan kuzatib boring.\n4. Zarur bo'lsa, psixologik yordam oling.\n\n### Asos\n- O'zbekiston Respublikasi Jinoyat kodeksi, 94-modda.",
+      "timestamp": "2026-02-19T18:17:27.370134",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "man 1ta odamni o'ldirib qoydim, manga jazo berishmoqchi qanday qilib o'zimni oqlab chiqib ketishim mumkin?\n\n",
+      "timestamp": "2026-02-19T18:18:30.937301",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Qasddan Odam O'ldirish va Jazo\n\nO'zbekiston Respublikasining Jinoyat kodeksining 97-moddasi qasddan odam o'ldirishni tartibga soladi. Agar siz qasddan odamni o'ldirgan bo'lsangiz, sizga jazo sifatida 8 yildan 15 yilgacha ozodlikdan mahrum qilish yoki umrbod ozodlikdan mahrum qilish jazosi tayinlanishi mumkin. \n\nAgar sizning harakatlaringiz o'z-o'zidan o'ldirishga olib kelgan bo'lsa, bu holatni yengillashtiruvchi omil sifatida ko'rib chiqilishi mumkin, lekin bu sizning o'zingizni oqlashingizga yordam bermaydi.\n\n### Sizning Huquqlaringiz\n\nSizda advokat yollash huquqi mavjud. Siz o'zingizni himoya qilish uchun barcha huquqlarga egasiz, shu jumladan, o'z fikrlaringizni bildirish va huquqiy yordam olish.\n\n### Tavsiyalar\n\n1. **Tezda malakali advokat bilan bog'laning.** U sizning holatingizni tahlil qilib, sizga eng yaxshi himoya strategiyasini taklif qiladi.\n2. **O'z harakatlaringizni va voqealarni batafsil tushuntiring.** Bu advokatga sizni himoya qilishda yordam beradi.\n3. **Sud jarayonida o'z huquqlaringizni bilish va ulardan foydalanish muhimdir.**\n\n### Asos\n\n- O'zbekiston Respublikasining Jinoyat kodeksi, 97-modda (qasddan odam o'ldirish).",
+      "timestamp": "2026-02-19T18:18:53.040570",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Fuqarolik kodeksida nechta modda bor?\n\n",
+      "timestamp": "2026-02-19T18:28:58.020002",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Fuqarolik Kodeksidagi Modda Soni\n\nO'zbekiston Respublikasining Fuqarolik kodeksi 386 ta modda va bo'limdan iborat. Ushbu moddalarda fuqarolik huquqining asosiy tamoyillari, shartnomalar, mulk huquqi va boshqa masalalar tartibga solinadi.\n\n**Asos**: Fuqarolik kodeksi, umumiy ma'lumot.",
+      "timestamp": "2026-02-19T18:29:05.816124",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "man 1ta odamni o'ldirib qoydim, manga jazo berishmoqchi qanday qilib o'zimni oqlab chiqib ketishim mumkin?\n\n",
+      "timestamp": "2026-02-19T18:29:24.116701",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Qasddan Odam O'ldirish va Jazo\n\n**Huquqiy tahlil**: O'zbekiston Respublikasining Jinoyat kodeksining 97-moddasi qasddan odam o'ldirishni tartibga soladi. Agar siz qasddan odamni o'ldirgan bo'lsangiz, sizga jazo sifatida qattiq jazolar, jumladan, ozodlikdan mahrum qilish ta'sir etilishi mumkin. O'ldirish holati o'z-o'zidan yoki boshqa sharoitlarda sodir bo'lgan bo'lsa, bu holatni yengillashtiruvchi omillar sifatida ko'rib chiqilishi mumkin.\n\n**Sizning huquqlaringiz**: Sizda advokat yollash va o'z huquqlaringizni himoya qilish huquqi mavjud. Siz o'z pozitsiyangizni himoya qilish uchun sudda o'z advokatingiz orqali murojaat qilishingiz mumkin.\n\n**Tavsiyalar**: Siz darhol malakali advokat bilan bog'lanishingiz kerak. U sizga o'z holatingizni qanday himoya qilish va sud jarayonida qanday strategiyalarni qo'llash bo'yicha yordam beradi. O'z pozitsiyangizni aniq va to'g'ri ifodalash juda muhimdir.\n\n**Asos**: O'zbekiston Respublikasining Jinoyat kodeksi, 97-modda.",
+      "timestamp": "2026-02-19T18:29:37.552482",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "qasddan emas bilmasdan o'ldirib qoydim",
+      "timestamp": "2026-02-19T18:30:00.523249",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Qasddan Odam O'ldirish va Jazo\n\n- **Huquqiy tahlil**: O'zbekiston Respublikasining Jinoyat kodeksining 97-moddasi qasddan odam o'ldirishni tartibga soladi. Agar siz odamni bilmasdan o'ldirgan bo'lsangiz, bu holat \"qasddan o'ldirish\" deb hisoblanmaydi va sizga boshqa modda bo'yicha jazo berilishi mumkin.\n\n- **Sizning huquqlaringiz**: Sizning huquqlaringiz, shuningdek, advokat yollash va o'z huquqlaringizni himoya qilish imkoniyatini o'z ichiga oladi. Sizning holatingizni to'g'ri baholash uchun advokat bilan maslahatlashish muhimdir.\n\n- **Tavsiyalar**: Siz darhol malakali advokat bilan bog'lanishingiz va o'z holatingizni tushuntirishingiz kerak. Advokat sizga qanday mudofaa strategiyasini tanlashda yordam beradi.\n\n- **Asos**: Jinoyat kodeksi, 97-modda.",
+      "timestamp": "2026-02-19T18:30:12.573177",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "salom",
+      "timestamp": "2026-02-19T19:42:18.703020",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Sizga qanday yordam bera olishim mumkin? Qonunlar yoki Lex.uz sayti haqida savollaringiz bormi?",
+      "timestamp": "2026-02-19T19:42:23.462395",
+      "agent_path": [
+        "SocialBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "man 1ta odamni o'ldirib qoydim, manga jazo berishmoqchi qanday qilib o'zimni oqlab chiqib ketishim mumkin?\n\n",
+      "timestamp": "2026-02-19T19:42:35.439770",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Qasddan Odam O'ldirish va Jazo\n\n**Huquqiy tahlil**: O'zbekiston Respublikasining Jinoyat kodeksining 97-moddasi qasddan odam o'ldirishni tartibga soladi. Agar siz odamni bilmasdan o'ldirgan bo'lsangiz, bu holat \"qasddan o'ldirish\" sifatida baholanmaydi. Bunday vaziyatda, sizga \"qasddan o'ldirish\" bo'yicha jazo berilishi mumkin emas, lekin boshqa jinoyat moddalari doirasida javobgarlik yuzaga kelishi mumkin.\n\n**Amaliy maslahat**: Sizga zarur bo'lgan huquqiy yordamni olish uchun malakali advokat bilan bog'lanishingizni tavsiya qilaman. U sizning holatingizni batafsil tahlil qilib, qanday himoya strategiyalarini qo'llash mumkinligini ko'rsatadi.",
+      "timestamp": "2026-02-19T19:42:49.915771",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "qasddan emas bilmasdan o'ldirib qoydim\n\n",
+      "timestamp": "2026-02-19T19:43:00.775551",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "## Qasddan Odam O'ldirish va Jazo\n\n**Huquqiy tahlil**: O'zbekiston Respublikasining Jinoyat kodeksining 97-moddasi qasddan odam o'ldirishni tartibga soladi. Agar siz odamni bilmasdan o'ldirgan bo'lsangiz, bu holat \"qasddan\" emas, balki \"beparvolik\" yoki \"sabab bo'lish\" sifatida ko'rilishi mumkin. Bunday holatda, Jinoyat kodeksining 99-moddasi (beparvolik oqibatida odam o'ldirish) qo'llanilishi mumkin.\n\n**Huquqiy oqibatlar**: Agar sizning harakatlaringiz beparvolik bilan bog'liq bo'lsa, jazo kamayishi mumkin, lekin bu holatda ham jinoiy javobgarlikdan qochish qiyin.\n\n**Amaliy maslahat**: Sizga malakali advokat bilan maslahatlashishni tavsiya qilaman, chunki har bir holat individual va o'ziga xosdir. Advokat sizning holatingizni to'liq tahlil qilib, eng yaxshi strategiyani ishlab chiqishi mumkin.",
+      "timestamp": "2026-02-19T19:43:16.803636",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

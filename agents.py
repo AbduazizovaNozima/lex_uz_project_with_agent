@@ -26,11 +26,6 @@ config_list = [{"model": "gpt-4o-mini", "api_key": api_key}]
 def search_article_direct(query: str) -> Optional[str]:
     """
     Search for a specific article in the JSON files directly.
-    
-    Examples:
-    - "Konstitutsiya 80-modda"
-    - "Mehnat kodeksi 131-modda"
-    - "80-modda prezident"
     """
     # 1. Map document names
     json_files = glob.glob(f"{STRUCTURED_FOLDER}/*.json")
@@ -66,18 +61,29 @@ def search_article_direct(query: str) -> Optional[str]:
     doc_name: Optional[str] = None
 
     # Find document match (longest match first)
-    sorted_keys = sorted(doc_mapping.keys(), key=len, reverse=True)
+    sorted_keys = sorted(doc_mapping.keys(), key=len, reverse=True)     
     for key in sorted_keys:
         if key in query_lower:
             doc_name = doc_mapping[key]
             break
 
-    # 2. Find article number
-    article_match = re.search(r'(\d+)-(?:модда|modda)', query_lower)
+    # 2. Find article number (Enhanced Regex)
+    # Pattern 1: Standard "123-modda" or "123 modda"
+    article_match = re.search(r'(\d+)\s*-(?:модда|modda)', query_lower)
+    
+    # Pattern 2: "modda 123"
     if not article_match:
         article_match = re.search(r'(?:модда|modda)\s*(\d+)', query_lower)
+        
+    # Pattern 3: Simple number if it's a short query or explicitly likely a law search
     if not article_match:
-        article_match = re.search(r'(\d+)', query_lower)
+        # Avoid matching years like 2024, but match 1-3 digit numbers
+        # This is risky but helpful for "manga 20 ni ayt" style queries if we know context
+        possible_nums = re.findall(r'\b(\d{1,3})\b', query_lower)
+        if possible_nums:
+             # Take the last one as it's often the article number in conversational queries
+             # e.g. "Konstitutsiya 25" -> 25
+             return _get_article_from_file(doc_name, possible_nums[-1]) if doc_name else _search_article_in_all_files(possible_nums[-1], json_files)
 
     # CASE A: Document found AND Article found
     if article_match:
@@ -90,9 +96,21 @@ def search_article_direct(query: str) -> Optional[str]:
         # If no doc name, search ALL files
         return _search_article_in_all_files(article_num, json_files)
 
-    # CASE B: Document found BUT Article NOT found -> Return Summary
+    # CASE B: Document found BUT Article NOT found
     if doc_name and not article_match:
-        return _get_document_summary(doc_name)
+        # If user asks ABOUT the document itself (count, overview)
+        summary_keywords = ['nechta', 'necha', 'qanday', 'haqida', 'umumiy', 'nima u', 'tarkibi']
+        if any(kw in query_lower for kw in summary_keywords):
+            return _get_document_summary(doc_name)
+        # Otherwise, search by content keywords within that document
+        return _search_articles_by_content(doc_name, query_lower)
+
+    # CASE B2: No document found, no article number — topic search across all files
+    if not doc_name and not article_match:
+        # Try content search across all files
+        result = _search_articles_by_content_all(query_lower, json_files)
+        if result:
+            return result
 
     # CASE C: Neither found -> List available laws
     if json_files:
@@ -205,115 +223,237 @@ def _get_document_summary(doc_name: str) -> str:
     return None
 
 
+def _normalize_uz(text: str) -> str:
+    """Normalize Uzbek text for matching — handle oʻ, gʻ variants."""
+    return text.lower().replace('oʻ', "o'").replace('gʻ', "g'").replace(
+        'ʻ', "'").replace('\u02bb', "'").replace('\u2018', "'").replace('\u2019', "'")
+
+
+def _search_articles_by_content(doc_name: str, query: str, max_results: int = 5) -> Optional[str]:
+    """Search through articles in a specific JSON file by keyword matching."""
+    json_path = f"{STRUCTURED_FOLDER}/{doc_name}.json"
+    if not os.path.exists(json_path):
+        return None
+
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            articles = json.load(f)
+    except Exception:
+        return None
+
+    # Normalize query and extract meaningful keywords (>3 chars, no stop words)
+    stop_words = {'bilan', 'uchun', 'haqida', 'manga', 'nima', 'qanday', 'kerak',
+                  'kodeksi', 'kodeks', 'qonuni', 'qonun', 'modda', 'jinoyat',
+                  'fuqarolik', 'mehnat', 'oila', 'soliq', 'konstitutsiya'}
+    query_norm = _normalize_uz(query)
+    keywords = [w for w in query_norm.split() if len(w) > 2 and w not in stop_words]
+
+    if not keywords:
+        return None
+
+    # Score each article by keyword match count
+    scored = []
+    for key, article in articles.items():
+        if key == '0':  # Skip preamble
+            continue
+        content_norm = _normalize_uz(article.get('content', ''))
+        title_norm = _normalize_uz(article.get('title', ''))
+
+        score = 0
+        for kw in keywords:
+            if kw in title_norm:
+                score += 3  # Title match is worth more
+            if kw in content_norm:
+                score += 1
+
+        if score > 0:
+            scored.append((score, key, article))
+
+    # Sort by score descending
+    scored.sort(key=lambda x: x[0], reverse=True)
+
+    if not scored:
+        return None
+
+    top = scored[:max_results]
+    doc_display = doc_name.replace('_', ' ')
+    result_text = f"📚 {doc_display} DAN TOPILGAN TEGISHLI MODDALAR:\n\n"
+
+    for i, (score, key, article) in enumerate(top, 1):
+        result_text += f"{'=' * 60}\n"
+        result_text += f"📄 {key}-modda: {article.get('title', '')[:100]}\n\n"
+        result_text += f"{article['content'][:800]}\n\n"
+
+    result_text += f"{'=' * 60}\n"
+    result_text += f"✅ Jami {len(top)} ta tegishli modda topildi"
+    return result_text
+
+
+def _search_articles_by_content_all(query: str, json_files: List[str], max_results: int = 5) -> Optional[str]:
+    """Search through ALL JSON files by keyword matching."""
+    stop_words = {'bilan', 'uchun', 'haqida', 'manga', 'nima', 'qanday', 'kerak',
+                  'kodeksi', 'kodeks', 'qonuni', 'qonun', 'modda'}
+    query_norm = _normalize_uz(query)
+    keywords = [w for w in query_norm.split() if len(w) > 2 and w not in stop_words]
+
+    if not keywords:
+        return None
+
+    all_scored = []
+    for json_path in json_files:
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                articles = json.load(f)
+            doc_name = os.path.basename(json_path).replace('.json', '')
+        except Exception:
+            continue
+
+        for key, article in articles.items():
+            if key == '0':
+                continue
+            content_norm = _normalize_uz(article.get('content', ''))
+            title_norm = _normalize_uz(article.get('title', ''))
+
+            score = 0
+            for kw in keywords:
+                if kw in title_norm:
+                    score += 3
+                if kw in content_norm:
+                    score += 1
+
+            if score > 0:
+                all_scored.append((score, doc_name, key, article))
+
+    all_scored.sort(key=lambda x: x[0], reverse=True)
+
+    if not all_scored:
+        return None
+
+    top = all_scored[:max_results]
+    result_text = "📚 QONUN BAZASIDAN TOPILGAN TEGISHLI MODDALAR:\n\n"
+
+    for i, (score, doc_name, key, article) in enumerate(top, 1):
+        doc_display = doc_name.replace('_', ' ')
+        result_text += f"{'=' * 60}\n"
+        result_text += f"📄 {doc_display} — {key}-modda: {article.get('title', '')[:100]}\n\n"
+        result_text += f"{article['content'][:800]}\n\n"
+
+    result_text += f"{'=' * 60}\n"
+    result_text += f"✅ Jami {len(top)} ta tegishli modda topildi"
+    return result_text
+
 # Tool Wrapper
 def search_article_tool(sorov: str) -> str:
     """
     Tool interface wrapper.
     Tries direct JSON search first, then falls back to vector search.
     """
+    # Direct search works best for specific article lookups (e.g., "94-modda")
     result = search_article_direct(sorov)
     if result:
         return result
-    else:
-        # Fallback to vector/keyword search in DB
-        return search_lexuz_tool(sorov)
+    
+    # Vector/keyword search for topic-based queries (e.g., "odam o'ldirish jazo")
+    return search_lexuz_tool(sorov)
 
 
 # ==============================================================================
-# 1. ORCHESTRATOR - Bosh Boshqaruvchi Agent
+# 1. ORCHESTRATOR - Main Coordination Agent
 # ==============================================================================
 orchestrator = autogen.AssistantAgent(
     name="Orchestrator",
-    system_message="""Sen bosh koordinatorsan. Vazifang:
-    1. Foydalanuvchi savolini tahlil qilish
-    2. Qaysi agentga yo'naltirishni aniqlash
-    3. Jarayonni kuzatish
+    system_message="""You are the main coordinator. Your task:
+    1. Analyze the user's question.
+    2. Determined which agent to route the query to.
+    3. Monitor the process.
 
-    Yo'naltirish qoidalari:
-    - "Salom", "Qalay", "Kim", "Nima qila olasan" - SOCIAL agentga
-    - Lex.uz saytidan foydalanish (registratsiya, til, qidiruv, sozlamalar) - KNOWLEDGE agentga
-    - Qonun, Oylik, Ish, Sud, Huquq, Kodeks, Modda - CLASSIFIER agentga
-    - Noaniq holatlarda CLASSIFIER dan yordam so'ra
+    Routing Rules:
+    - "Salom", "Qalay", "Kim", "Nima qila olasan" (Social queries) -> SOCIAL agent
+    - Site usage (registration, language, search, settings) -> KNOWLEDGE agent
+    - Legal queries (Law, Salary, Work, Court, Rights, Code, Article) -> CLASSIFIER agent
+    - Ambiguous cases -> ask CLASSIFIER for help
 
-    Javobda faqat agent nomini yoz: SOCIAL, KNOWLEDGE yoki CLASSIFIER""",
+    Response Format:
+    ONLY return the agent name: SOCIAL, KNOWLEDGE, or CLASSIFIER""",
     llm_config={"config_list": config_list, "temperature": 0}
 )
 
 # ==============================================================================
-# 2. CLASSIFIER - Savol Tasniflovchi
+# 2. CLASSIFIER - Question Classifier
 # ==============================================================================
 classifier = autogen.AssistantAgent(
     name="Classifier",
-    system_message="""Sen savollarni tasniflash mutaxassisisan.
+    system_message="""You are an expert at classifying questions.
 
-    Vazifang: Savol qonuniy yoki sayt foydalanish haqida ekanligini aniqlash.
+    Your Task: Determine if the question is LEGAL or related to SITE USAGE (KNOWLEDGE).
 
-    QONUNIY SAVOLLAR (LEGAL):
-    - Oylik, ish haqi, mehnat to'lovi
-    - Ishdan bo'shatish, ish shartnomasi
-    - Fuqarolik, jinoyat, sud jarayonlari
-    - Huquq, majburiyat, javobgarlik
-    - Soliq, jarima, litsenziya
-    - Kodeks, modda, qonun matni
+    LEGAL QUESTIONS (LEGAL):
+    - Salary, wages, labor payments
+    - Firing, employment contracts
+    - Civil, criminal, court proceedings
+    - Rights, obligations, liability
+    - Taxes, fines, licenses
+    - Codes, articles, law texts
 
-    SAYT FOYDALANISH SAVOLLARI (KNOWLEDGE):
-    - Lex.uz saytidan qanday foydalanish
-    - Registratsiya, kirish, akkaunt
-    - Til o'zgartirish
-    - Hujjat qidirish, yuklab olish
-    - Sozlamalar, bildirishnomalar
+    SITE USAGE QUESTIONS (KNOWLEDGE):
+    - How to use Lex.uz website
+    - Registration, login, account
+    - Changing language
+    - Searching for documents, downloading
+    - Settings, notifications
 
-    Javobda faqat bitta so'z yoz: LEGAL yoki KNOWLEDGE""",
+    Response Format:
+    ONLY return one word: LEGAL or KNOWLEDGE""",
     llm_config={"config_list": config_list, "temperature": 0}
 )
 
 # ==============================================================================
-# 3. SOCIAL BOT - Oddiy Suhbat Agenti
+# 3. SOCIAL BOT - Chit-chat Agent
 # ==============================================================================
 social_bot = autogen.AssistantAgent(
     name="SocialBot",
-    system_message="""Sen Lexi - Lex.uz saytining professional va do'stona yordamchisisan.
+    system_message="""You are Lexi - a professional and friendly assistant for the Lex.uz website.
 
-    ASOSIY QOIDALAR:
-    1. Har doim QISQA va ANIQ javob ber (maksimum 2-3 gap)
-    2. Har safar TURLICHA javob ber, takrorlanma
-    3. Tabiiy va samimiy bo'l, robot kabi emas
-    4. Javob oxirida TERMINATE yoz
+    CORE RULES:
+    1. Keep answers SHORT and CLEAR (maximum 2-3 sentences).
+    2. Vary your responses each time, do not be repetitive.
+    3. Be natural and sincere, not robotic.
+    4. End your response with TERMINATE.
+    5. CRITICAL: ALWAYS RESPOND IN UZBEK LANGUAGE.
 
-    JAVOB USLUBI:
-    - Salomlashish: Qisqa salom + yordam taklifi
-      Misol: "Salom! Nima haqida gaplashamiz?"
-    - Imkoniyatlar: Qisqa va aniq
-      Misol: "Men qonunlar va Lex.uz sayti bo'yicha yordam beraman."
-    - Umumiy savol: To'g'ridan-to'g'ri javob
-      Misol: "Albatta! Qanday yordam kerak?"
+    RESPONSE STYLE (Translate concepts to Uzbek):
+    - Greeting: Short greeting + offer help (e.g., "Salom! Nima haqida gaplashamiz?")
+    - Capabilities: Short and clear (e.g., "Men qonunlar va Lex.uz sayti bo'yicha yordam beraman.")
+    - General question: Direct answer (e.g., "Albatta! Qanday yordam kerak?")
 
-    QILMA:
-    - Uzun javoblar berma
-    - Bir xil gaplarni takrorlama
-    - "Yuristga murojaat qiling" dema
-    - Ortiqcha tushuntirma berma
+    DO NOT:
+    - Give long answers.
+    - Repeat the same phrases.
+    - Say "Consult a lawyer" unnecessarily.
+    - Give excessive explanations.
     """,
     llm_config={"config_list": config_list, "temperature": 0.5}
 )
 
 # ==============================================================================
-# 4. KNOWLEDGE BOT - Sayt Foydalanish Yordamchisi
+# 4. KNOWLEDGE BOT - Site Usage Assistant
 # ==============================================================================
 knowledge_bot = autogen.AssistantAgent(
     name="KnowledgeBot",
-    system_message="""Sen Lex.uz saytidan foydalanish bo'yicha mutaxassis yordamchisan.
+    system_message="""You are an expert assistant for using the Lex.uz website.
 
-    Vazifang:
-    1. Foydalanuvchi savolidan kalit so'zlarni ajratib ol.
-    2. 'search_guide_by_tags' funksiyasini ishlatib, yo'riqnoma qidir.
-    3. Topilgan ma'lumotni foydalanuvchiga tushunarli qilib yetkazish.
-    4. Agar rasm mavjud bo'lsa, uni ko'rsatish.
+    Your Task:
+    1. Extract keywords from the user's question.
+    2. Use the 'search_guide_by_tags' tool to find a guide.
+    3. Convey the found information to the user in a clear way.
+    4. If an image is available, display it.
 
-    MUHIM:
-    - Har doim avval tool chaqir, keyin javob ber.
-    - Javobingni do'stona va tushunarli qil.
-    - Agar ma'lumot topilmasa, "Afsuski, bu mavzu bo'yicha ma'lumot yo'q" deb javob ber.
+    IMPORTANT:
+    - Always call the tool first, then answer.
+    - Make your answer friendly and understandable.
+    - If no information is found, say "Afsuski, bu mavzu bo'yicha ma'lumot yo'q" (Unfortunately, no info on this topic).
+    - CRITICAL: ALWAYS RESPOND IN UZBEK LANGUAGE.
+    - End your response with TERMINATE.
     """,
     llm_config={
         "config_list": config_list,
@@ -322,7 +462,7 @@ knowledge_bot = autogen.AssistantAgent(
             "type": "function",
             "function": {
                 "name": "search_guide_by_tags",
-                "description": "Lex.uz saytidan foydalanish bo'yicha yo'riqnoma qidirish",
+                "description": "Search for guides on using the Lex.uz website",
                 "parameters": {
                     "type": "object",
                     "properties": {"user_query": {"type": "string"}},
@@ -334,22 +474,37 @@ knowledge_bot = autogen.AssistantAgent(
 )
 
 # ==============================================================================
-# 5. LEGAL SEARCHER - Bazadan Qidiruvchi (YANGILANGAN)
+# 5. LEGAL SEARCHER - Database Searcher
 # ==============================================================================
 legal_searcher = autogen.AssistantAgent(
     name="LegalSearcher",
-    system_message="""Sen qonun bazasidan qidirish mutaxassisisan.
+    system_message="""You are an expert legal database search specialist for Uzbekistan law.
 
-    Vazifang:
-    1. Foydalanuvchi savolidan kalit so'zlarni va agar mavjud bo'lsa, aniq modda raqamini ajratib ol.
-    2. 'search_article_tool' funksiyasini ishlatib, bazadan ma'lumot qidir.
-    3. Topilgan natijalarni Legal Analyzer ga uzatish.
-    4. Agar natija bo'lmasa, "Afsuski, bazadan ma'lumot topilmadi" deb javob ber.
+    CRITICAL RULE: Focus ONLY on the "YANGI SAVOL" (new question) at the end of the message. IGNORE previous conversation history when constructing your search query.
 
-    MUHIM: 
-    - Har doim faqat bitta tool chaqirish yetarli.
-    - Javob berma, faqat qidiruv natijasini uzat!
-    - Agar foydalanuvchi aniq moddani so'rasa (masalan "131-modda"), so'rovda buni aniq ko'rsat.
+    Your Task:
+    1. Analyze the YANGI SAVOL carefully.
+    2. Determine what legal topics the question relates to.
+    3. Construct a smart search query and call 'search_article_tool'.
+    4. Pass search results to the Legal Analyzer. Do NOT answer directly.
+
+    SEARCH STRATEGY:
+    - If user asks for a SPECIFIC article (e.g., "131-modda"): search with article number + law name.
+    - If user asks a REAL-LIFE question (e.g., "odam o'ldirdim", "ishdan haydashdi", "er ajrashmoqchi"):
+      * Translate the situation into LEGAL TERMS.
+      * Examples:
+        - "odam o'ldirib qoydim" → search "Jinoyat kodeksi qasddan odam o'ldirish jazo"
+        - "ishdan haydashdi" → search "Mehnat kodeksi ishdan bo'shatish asoslari"
+        - "er ajrashmoqchi" → search "Oila kodeksi nikohni bekor qilish tartibi"
+        - "uy-joy tortishuvi" → search "Fuqarolik kodeksi mulk huquqi"
+        - "jarimaga tortildi" → search "Ma'muriy javobgarlik kodeksi jarima"
+      * Use the LAW NAME + LEGAL TOPIC as your search query.
+    - If question is general (e.g., "nechta modda bor"): search with just the law name.
+
+    IMPORTANT:
+    - Call the tool exactly ONCE.
+    - Your search query should be in Uzbek Latin.
+    - Think like a lawyer: what law and topic is relevant to the user's situation?
     """,
     llm_config={
         "config_list": config_list,
@@ -358,13 +513,13 @@ legal_searcher = autogen.AssistantAgent(
             "type": "function",
             "function": {
                 "name": "search_article_tool",
-                "description": "Qonun bazasidan qidirish (JSON va embeddings)",
+                "description": "Search the legal database. For article lookups use 'Law name N-modda'. For topic searches use 'Law name topic keywords'.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "sorov": {
                             "type": "string",
-                            "description": "Qidiruv so'rovi (masalan: 'Mehnat kodeksi 131-modda' yoki 'ta'til muddati')"
+                            "description": "Search query. Examples: 'Mehnat kodeksi 131-modda', 'Jinoyat kodeksi qasddan odam o'ldirish', 'Oila kodeksi nikohni bekor qilish'"
                         }
                     },
                     "required": ["sorov"]
@@ -375,47 +530,44 @@ legal_searcher = autogen.AssistantAgent(
 )
 
 # ==============================================================================
-# 6. LEGAL ANALYZER - Qonuniy Tahlilchi
+# 6. LEGAL ANALYZER - Legal Analyst
 # ==============================================================================
 legal_analyzer = autogen.AssistantAgent(
     name="LegalAnalyzer",
-    system_message="""Sen professional yurist-tahlilchisan.
+    system_message="""You are a SENIOR LEGAL EXPERT in Uzbekistan law with 20 years experience.
 
-    Vazifang: Legal Searcher topgan qonun matnlarini tahlil qilib, foydalanuvchi savoliga javob berish.
+    GOLDEN RULE: Answer exactly what the user asked. Not more, not less.
 
-    QOIDALAR:
-    1. Faqat berilgan qonun matniga asoslan (MATNDA YO'Q NARSA HAQIDA GAPIRMA)
-    2. Javob formatini saqla:
-       - Mavzu (bold)
-       - Javob (aniq va lo'nda)
-       - Asos (Qonun nomi va Modda raqami)
-    3. Agar topilgan matn savolga javob bermasa, "Berilgan ma'lumotlar asosida javob bera olmayman" de.
-    4. Javobingni O'zbek tilida, professional va xatolarsiz yoz.
+    RESPONSE STYLE:
+    1. MODDA SO'RASA ("94-modda nima?", "131-moddani aytib ber"):
+       - Modda sarlavhasi va mazmunini qisqa, tushunarli tilda tushuntir.
+       - 3-5 gap yetarli. Tavsiya va huquqlar KERAK EMAS.
+
+    2. UMUMIY SAVOL ("nechta modda?", "qanday qonunlar?"):
+       - Faktik javob ber. 1-2 gap.
+
+    3. HAYOTIY MASALA / MASLAHAT ("ishdan haydashdi", "odam o'ldirdim"):
+       - Qaysi qonun va moddalar tegishli ekanini tushuntir.
+       - Huquqiy oqibatlarini ayt.
+       - Amaliy maslahat ber.
+       - Qidiruv natijalaridan aniq moddalarni keltir.
+       - O'rtacha uzunlikda yoz: juda qisqa emas, juda uzun emas.
+
+    MUHIM QOIDALAR:
+    - FAQAT O'ZBEK tilida javob ber.
+    - Faqat qidiruv natijalaridan foydalangan holda javob ber.
+    - Har safar bir xil shablon javob BERMA — har bir savolga individual yondash.
+    - Agar qidiruv natijalarida kerakli ma'lumot bo'lmasa, shuni ochiq ayt.
+    - Oldingi suhbatdagi javoblarni TAKRORLA MA.
+    - Javob oxirida TERMINATE yoz.
     """,
     llm_config={"config_list": config_list, "temperature": 0.3}
 )
 
-# ==============================================================================
-# 7. RESPONSE FORMATTER - Javob Formatlash Agenti
-# ==============================================================================
-response_formatter = autogen.AssistantAgent(
-    name="ResponseFormatter",
-    system_message="""Sen javoblarni yakuniy formatlovchisan.
 
-    Vazifang:
-    1. Boshqa agentlar (ayniqsa LegalAnalyzer) bergan javobni o'qib chiq.
-    2. Agar javobda texnik belgilar, tool chaqiruvlari yoki ortiqcha takrorlashlar bo'lsa, tozalab tashla.
-    3. Javobni chiroyli Markdown formatiga keltir.
-    4. Eng oxirida TERMINATE deb yoz.
-
-    AGAR RASM BO'LSA:
-    - Rasm linkini saqlab qol (📷 Rasm: ...)
-    """,
-    llm_config={"config_list": config_list, "temperature": 0}
-)
 
 # ==============================================================================
-# 8. USER PROXY - Ijrochi Agent
+# 8. USER PROXY - Executor Agent
 # ==============================================================================
 user_proxy = autogen.UserProxyAgent(
     name="UserProxy",
@@ -433,7 +585,7 @@ user_proxy.register_function(function_map={
 
 
 # ==============================================================================
-# STATE MACHINE - Holatlar Mashinasi
+# STATE MACHINE - Agent Transitions
 # ==============================================================================
 def intelligent_speaker_selection(last_speaker: autogen.Agent, groupchat: autogen.GroupChat) -> Optional[autogen.Agent]:
     """
@@ -469,16 +621,15 @@ def intelligent_speaker_selection(last_speaker: autogen.Agent, groupchat: autoge
             return legal_searcher
         return legal_searcher # Default to legal
 
-    # 4. Social Bot -> Formatter
+    # 4. Social Bot -> END
     if speaker_name == "SocialBot":
-        return response_formatter
+        return None
 
-    # 5. Knowledge Bot -> Formatter
+    # 5. Knowledge Bot -> Tool or END
     if speaker_name == "KnowledgeBot":
-        # Check if tool was called
         if last_msg.get("tool_calls") or last_msg.get("function_call"):
             return user_proxy
-        return response_formatter
+        return None
 
     # 6. Legal Searcher -> Tool or Analyzer
     if speaker_name == "LegalSearcher":
@@ -494,12 +645,8 @@ def intelligent_speaker_selection(last_speaker: autogen.Agent, groupchat: autoge
         if prev_speaker == "KnowledgeBot":
             return knowledge_bot # Return to KnowledgeBot to formulate answer
 
-    # 8. Legal Analyzer -> Formatter
+    # 8. Legal Analyzer -> END
     if speaker_name == "LegalAnalyzer":
-        return response_formatter
-
-    # 9. Response Formatter -> END
-    if speaker_name == "ResponseFormatter":
         return None
 
     return None
@@ -516,8 +663,7 @@ groupchat = autogen.GroupChat(
         social_bot,
         knowledge_bot,
         legal_searcher,
-        legal_analyzer,
-        response_formatter
+        legal_analyzer
     ],
     messages=[],
     max_round=20,

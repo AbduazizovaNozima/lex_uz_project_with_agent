@@ -1,0 +1,44 @@
+{
+  "session_id": "ba9f78b1-fd7e-428b-b1a9-fd1970cdc47e",
+  "user_id": "anonymous",
+  "created_at": "2026-02-19T12:59:35.777519",
+  "last_active": "2026-02-19T13:01:51.922152",
+  "messages": [
+    {
+      "role": "user",
+      "content": "salom",
+      "timestamp": "2026-02-19T12:59:35.790479",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Yana qanday yordam bera olishim mumkin?",
+      "timestamp": "2026-02-19T12:59:36.833612",
+      "agent_path": [
+        "SocialBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "konstitutsiyani nechta moddasi bor?",
+      "timestamp": "2026-02-19T13:01:45.531295",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Afsuski, konstitutsiya moddalari haqida ma'lumot yo'q. Agar boshqa savollaringiz bo'lsa, yordam berishga tayyorman!",
+      "timestamp": "2026-02-19T13:01:51.922135",
+      "agent_path": [
+        "Classifier",
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

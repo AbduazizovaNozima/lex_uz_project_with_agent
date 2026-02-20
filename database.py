@@ -1,6 +1,7 @@
 import os
 import json
 import glob
+import re
 import psycopg2
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
@@ -27,7 +28,7 @@ DB_PARAMS = {
 
 # Model Configuration
 EMBEDDING_MODEL_NAME = 'all-MiniLM-L6-v2'
-CHUNK_SIZE = 1500
+CHUNK_SIZE = 800
 
 # ============================================================================
 # EMBEDDING MODEL (loaded once at startup)
@@ -90,56 +91,56 @@ def setup_database() -> None:
 # ============================================================================
 # TEXT SPLITTING
 # ============================================================================
-def split_text(text: str, chunk_size: int = CHUNK_SIZE) -> List[str]:
-    """
-    Split text into logical chunks.
-    Priority:
-    1. Split by double newline (\n\n)
-    2. Split by single newline (\n)
-    3. Split by sentence/space (if paragraph is huge)
-    """
-    text = text.strip()
-    if not text:
-        return []
+# def split_text(text: str, chunk_size: int = CHUNK_SIZE) -> List[str]:
+#     """
+#     Split text into logical chunks.
+#     Priority:
+#     1. Split by double newline (\n\n)
+#     2. Split by single newline (\n)
+#     3. Split by sentence/space (if paragraph is huge)
+#     """
+#     text = text.strip()
+#     if not text:
+#         return []
 
-    # Strategy 1: Split by paragraphs (\n\n)
-    paragraphs = text.split('\n\n')
+#     # Strategy 1: Split by paragraphs (\n\n)
+#     paragraphs = text.split('\n\n')
     
-    # If we only got 1 huge paragraph, try splitting by single newlines
-    if len(paragraphs) == 1 and len(text) > chunk_size:
-        paragraphs = text.split('\n')
+#     # If we only got 1 huge paragraph, try splitting by single newlines
+#     if len(paragraphs) == 1 and len(text) > chunk_size:
+#         paragraphs = text.split('\n')
 
-    chunks = []
-    current_chunk = ""
+#     chunks = []
+#     current_chunk = ""
 
-    for para in paragraphs:
-        para = para.strip()
-        if not para:
-            continue
+#     for para in paragraphs:
+#         para = para.strip()
+#         if not para:
+#             continue
             
-        # If a single paragraph is still HUGE (bigger than chunk_size), hard split it
-        if len(para) > chunk_size:
-            # Check if we have a current chunk pending
-            if current_chunk:
-                chunks.append(current_chunk.strip())
-                current_chunk = ""
+#         # If a single paragraph is still HUGE (bigger than chunk_size), hard split it
+#         if len(para) > chunk_size:
+#             # Check if we have a current chunk pending
+#             if current_chunk:
+#                 chunks.append(current_chunk.strip())
+#                 current_chunk = ""
             
-            # Simple fixed-size splitting for huge blob
-            for i in range(0, len(para), chunk_size):
-                chunks.append(para[i:i + chunk_size])
-            continue
+#             # Simple fixed-size splitting for huge blob
+#             for i in range(0, len(para), chunk_size):
+#                 chunks.append(para[i:i + chunk_size])
+#             continue
 
-        if len(current_chunk) + len(para) < chunk_size:
-            current_chunk += para + "\n\n"
-        else:
-            if current_chunk:
-                chunks.append(current_chunk.strip())
-            current_chunk = para + "\n\n"
+#         if len(current_chunk) + len(para) < chunk_size:
+#             current_chunk += para + "\n\n"
+#         else:
+#             if current_chunk:
+#                 chunks.append(current_chunk.strip())
+#             current_chunk = para + "\n\n"
 
-    if current_chunk:
-        chunks.append(current_chunk.strip())
+#     if current_chunk:
+#         chunks.append(current_chunk.strip())
 
-    return chunks
+#     return chunks
 
 # ============================================================================
 # DATA INGESTION FROM JSON FILES
@@ -184,6 +185,9 @@ def insert_documents_from_json(json_folder: str = "./lex_structured") -> None:
                 if not content or len(content.strip()) < 30:
                     continue
 
+                # Clean the content before splitting/embedding
+                content = _clean_search_content(content)
+
                 # If content is huge (full law in one block), split into chunks
                 if len(content) > CHUNK_SIZE * 2:
                     chunks = split_text(content, chunk_size=CHUNK_SIZE)
@@ -227,6 +231,46 @@ def insert_documents_from_json(json_folder: str = "./lex_structured") -> None:
     finally:
         if conn:
             conn.close()
+
+# database.py ichidagi funksiyalarni almashtiring:
+
+# database.py ichidagi ushbu funksiyalarni almashtiring:
+
+def _clean_search_content(text: str) -> str:
+    """Lex.uz texnik matnlarini tozalash."""
+    if not text: return ""
+    # Handle literal \\n
+    cleaned = text.replace('\\n', '\n')
+    noise = [
+        r"Ҳужжатга таклиф юбориш", r"Аудиони тинглаш", 
+        r"Ҳужжат элементидан ҳавола олиш", r"\[OKOZ:.*?\]",
+        r"\[TSZ:.*?\]", r"LexUZ sharhi", r"Qarang:.*?\.",
+        r"\d+\.\d+\.\d+\.\d+\.\d+[^\n]*",
+        r"\b\d+\.\s*\n\s*\d+\.\d+\.\d+\.\d+[^\n]*",
+        r"\b\d{1,2}\.\d{2}\.\d{2}\.\d{2}\b[^\n]*",
+    ]
+    for pattern in noise:
+        cleaned = re.sub(pattern, " ", cleaned, flags=re.IGNORECASE | re.DOTALL)
+    cleaned = re.sub(r'\n\s*\n+', '\n', cleaned)
+    return re.sub(r'[ \t]+', ' ', cleaned).strip()
+
+def split_text(text: str, chunk_size: int = 1000) -> List[str]:
+    """Matnni moddalar bo'yicha aniq bo'lish."""
+    # Modda raqamlari bo'yicha bo'lish (masalan: 20-modda.)
+    parts = re.split(r'(\b\d+-(?:modda|модда)\.?)', text)
+    chunks = []
+    
+    if len(parts) > 1:
+        for i in range(1, len(parts), 2):
+            header = parts[i]
+            body = parts[i+1] if i+1 < len(parts) else ""
+            chunks.append(header + body)
+    else:
+        # Agar moddalar topilmasa, oddiy bo'laklash
+        for i in range(0, len(text), chunk_size):
+            chunks.append(text[i:i + chunk_size])
+    return chunks
+
 
 # ============================================================================
 # SEARCH FUNCTION (used by agents)
@@ -333,7 +377,10 @@ def search_lexuz_tool(sorov: str) -> str:
             similarity = row['similarity']
             
             match_percent = int(similarity * 100)
-            clean_content = content.strip()[:1200]
+            
+            # Clean the content to remove navigation links and noise
+            clean_content = _clean_search_content(content)
+            clean_content = clean_content.strip()[:1200]
 
             result_text += f"{'=' * 60}\n"
             result_text += f"📄 Source #{i}: {source}\n"

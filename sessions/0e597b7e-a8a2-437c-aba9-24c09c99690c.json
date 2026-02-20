@@ -1,0 +1,101 @@
+{
+  "session_id": "0e597b7e-a8a2-437c-aba9-24c09c99690c",
+  "user_id": "anonymous",
+  "created_at": "2026-02-19T17:34:24.705644",
+  "last_active": "2026-02-19T17:39:32.319720",
+  "messages": [
+    {
+      "role": "user",
+      "content": "salom",
+      "timestamp": "2026-02-19T17:34:24.710520",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "Salom! Nima haqida gaplashmoqchisiz?",
+      "timestamp": "2026-02-19T17:34:27.390917",
+      "agent_path": [
+        "SocialBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "konstitutsiyani nechta moddasi bor?\n\n",
+      "timestamp": "2026-02-19T17:34:55.911006",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "O'zbekiston Respublikasi Konstitutsiyasi 128 ta moddadan iborat. Ushbu moddalarda davlat tuzilishi, fuqarolarning huquqlari va erkinliklari, hamda davlat organlarining faoliyati haqida ma'lumotlar keltirilgan. \n\nAgar sizda qo'shimcha savollar bo'lsa, bemalol so'rang!",
+      "timestamp": "2026-02-19T17:35:01.711676",
+      "agent_path": [
+        "Classifier",
+        "KnowledgeBot",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Fuqarolik kodeksida nechta modda bor?\n\n",
+      "timestamp": "2026-02-19T17:35:09.761882",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "O'zbekiston Respublikasi Fuqarolik Kodeksida jami 386 ta modda mavjud.",
+      "timestamp": "2026-02-19T17:35:15.578923",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "Jinoyat kodeksida 94-modda nima?\n\n",
+      "timestamp": "2026-02-19T17:35:27.362381",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "**Mavzu**: Jinoyat kodeksidagi 94-modda\n\n**Javob**: 94-modda \"Tibbiy yoʻsindagi majburlov choralarini tayinlash\" deb nomlanadi. Ushbu modda ruhiy holati buzilgan shaxslar uchun majburiy ambulatoriya kuzatuvi va davolanishni tayinlash tartibini belgilaydi. Ruhiy holati vaqtincha buzilgan shaxslar, shuningdek, kasallik qaytarilishining oldini olish maqsadida, yashash joyi bo'yicha psixiatrik dispanserda kuzatilishi va davolanishi mumkin. Modda, shuningdek, ruhiy holati buzilgan shaxslar uchun maxsus reabilitatsiya bo'limlarida majburiy davolanishni ham ko'zda tutadi.\n\n**Asos**: O'zbekiston Respublikasi Jinoyat Kodeksi, 94-modda",
+      "timestamp": "2026-02-19T17:35:41.782576",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    },
+    {
+      "role": "user",
+      "content": "man 1ta odamni o'ldirib qoydim, manga jazo berishmoqchi qanday qilib o'zimni oqlab chiqib ketishim mumkin?",
+      "timestamp": "2026-02-19T17:39:17.509538",
+      "agent_path": [],
+      "image_path": null
+    },
+    {
+      "role": "assistant",
+      "content": "**Mavzu**: Jinoyat kodeksidagi 94-modda\n\n**Javob**: O'zbekiston Respublikasi Jinoyat Kodeksining 94-moddasi \"Tibbiy yoʻsindagi majburlov choralarini tayinlash\" deb nomlanadi. Ushbu modda ruhiy holati buzilgan shaxslar uchun majburiy ambulatoriya kuzatuvi va davolanishni ta'minlaydi. Agar shaxs ruhiy holati vaqtincha buzilgan bo'lsa yoki kasallik qaytarilishi xavfi mavjud bo'lsa, u holda u psixiatrik dispanserda kuzatilishi va davolanishi mumkin. Shuningdek, ijtimoiy xavfli qilmishlar sodir etishining oldini olish maqsadida, ruhiy holati buzilgan shaxslar uchun majburiy davolanish tartiblari belgilangan.\n\n**Asos**: O'zbekiston Respublikasi Jinoyat Kodeksi, 94-modda",
+      "timestamp": "2026-02-19T17:39:32.319708",
+      "agent_path": [
+        "Classifier",
+        "LegalSearcher",
+        "LegalAnalyzer",
+        "ResponseFormatter"
+      ],
+      "image_path": null
+    }
+  ],
+  "metadata": {}
+}

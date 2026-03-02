@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>LexAI — Milliy Qonunchilik AI Yordamchisi</title>
+    <meta name="description" content="O'zbekiston Respublikasi qonunchiligi bo'yicha professional AI yordamchi." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Lucide icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+        /* ─────────────────────────────────────────────────
+       DESIGN TOKENS
+    ───────────────────────────────────────────────── */
+        :root {
+            /* Brand */
+            --brand: #004A85;
+            --brand-mid: #0066CC;
+            --brand-light: #E8F2FB;
+
+            /* surfaces */
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --surface-2: #F1F5F9;
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.55);
+
+            /* text */
+            --text-1: #1E293B;
+            --text-2: #475569;
+            --text-3: #94A3B8;
+            --text-inv: #F8FAFC;
+
+            /* borders / shadows */
+            --border: #E2E8F0;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, .06);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, .08);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, .10);
+            --shadow-glass: 0 8px 32px rgba(0, 74, 133, .12);
+
+            /* sizing */
+            --r: 6px;
+            /* default radius */
+            --r-sm: 4px;
+            --chat-max: 760px;
+        }
+
+        [data-theme="dark"] {
+            --brand: #3B9EFF;
+            --brand-mid: #60B4FF;
+            --brand-light: #0C2340;
+
+            --bg: #0A0F1E;
+            --surface: #111827;
+            --surface-2: #0A0F1E;
+            --glass-bg: rgba(17, 24, 39, 0.80);
+            --glass-border: rgba(255, 255, 255, 0.08);
+
+            --text-1: #F8FAFC;
+            --text-2: #94A3B8;
+            --text-3: #475569;
+            --text-inv: #0A0F1E;
+
+            --border: #1E293B;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, .3);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, .4);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, .5);
+            --shadow-glass: 0 8px 32px rgba(0, 0, 0, .4);
+        }
+
+        /* ─────────────────────────────────────────────────
+       RESET
+    ───────────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-1);
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background .3s, color .3s;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─────────────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────────────── */
+        header {
+            flex-shrink: 0;
+            height: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            color: var(--text-1);
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--brand);
+            border-radius: var(--r-sm);
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .logo-mark svg {
+            color: white;
+        }
+
+        .logo-copy {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -.4px;
+            color: var(--brand);
+            line-height: 1;
+        }
+
+        .logo-tagline {
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--text-3);
+            letter-spacing: .3px;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Header right */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--r-sm);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-2);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: border-color .2s, color .2s, background .2s;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--brand);
+            color: var(--brand);
+            background: var(--brand-light);
+        }
+
+        .status-dot {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-3);
+            padding: 0 10px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+        }
+
+        .status-dot::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22C55E;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, .25);
+        }
+
+        /* ─────────────────────────────────────────────────
+       MAIN AREA
+    ───────────────────────────────────────────────── */
+        main {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-width: var(--chat-max);
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ─────────────────────────────────────────────────
+       LANDING (empty state)
+    ───────────────────────────────────────────────── */
+        #landing {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding-bottom: 120px;
+            /* space for input */
+            animation: appear .4s ease;
+        }
+
+        .landing-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--brand);
+            border-radius: var(--r);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 4px 24px rgba(0, 74, 133, .28);
+        }
+
+        .landing-icon svg {
+            color: white;
+        }
+
+        .landing-title {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -.5px;
+            color: var(--text-1);
+            text-align: center;
+            line-height: 1.35;
+        }
+
+        .landing-sub {
+            font-size: 14px;
+            color: var(--text-2);
+            text-align: center;
+            max-width: 380px;
+            line-height: 1.65;
+        }
+
+        /* ─────────────────────────────────────────────────
+       CHAT FEED
+    ───────────────────────────────────────────────── */
+        #feed {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            scroll-behavior: smooth;
+        }
+
+        #feed::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #feed::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #feed::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        /* Message row */
+        .msg-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            animation: appear .22s ease;
+        }
+
+        /* User message — left accent bar, no bubble */
+        .msg-row.user {
+            align-items: flex-end;
+        }
+
+        .msg-row.user .msg-content {
+            max-width: 78%;
+            padding: 10px 14px 10px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            border-left: 3px solid var(--brand);
+            font-size: 14px;
+            color: var(--text-1);
+            line-height: 1.65;
+            box-shadow: var(--shadow-xs);
+        }
+
+        /* AI message — very subtle light-blue bg */
+        .msg-row.ai {
+            align-items: flex-start;
+        }
+
+        .msg-row.ai .msg-header {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 6px;
+        }
+
+        .ai-icon {
+            width: 22px;
+            height: 22px;
+            background: var(--brand);
+            border-radius: 4px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .ai-icon svg {
+            color: white;
+        }
+
+        .ai-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            color: var(--brand);
+        }
+
+        .msg-row.ai .msg-content {
+            max-width: 92%;
+            background: var(--brand-light);
+            border: 1px solid rgba(0, 74, 133, .10);
+            border-radius: var(--r);
+            padding: 14px 18px;
+            font-size: 14px;
+            line-height: 1.75;
+            color: var(--text-1);
+        }
+
+        [data-theme="dark"] .msg-row.ai .msg-content {
+            background: #111827;
+            border-color: var(--border);
+        }
+
+        /* Legal text formatting */
+        .msg-content .art-ref {
+            font-weight: 700;
+            color: var(--brand-mid);
+        }
+
+        .msg-content .law-name {
+            font-style: italic;
+            color: var(--brand);
+        }
+
+        .msg-content .source-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .3px;
+            color: var(--brand);
+            background: var(--brand-light);
+            border: 1px solid rgba(0, 74, 133, .18);
+            padding: 1px 7px;
+            border-radius: 3px;
+            margin-right: 4px;
+        }
+
+        [data-theme="dark"] .msg-content .source-badge {
+            background: rgba(59, 158, 255, .12);
+            border-color: rgba(59, 158, 255, .2);
+            color: var(--brand);
+        }
+
+        .msg-content p {
+            margin-bottom: 6px;
+        }
+
+        .msg-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .msg-content ul {
+            padding-left: 18px;
+            margin-bottom: 6px;
+        }
+
+        .msg-content li {
+            margin-bottom: 3px;
+        }
+
+        .msg-content hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 10px 0;
+        }
+
+        /* Timestamp */
+        .msg-time {
+            font-size: 10px;
+            color: var(--text-3);
+            padding: 0 2px;
+        }
+
+        .msg-row.user .msg-time {
+            text-align: right;
+        }
+
+        /* Typing indicator */
+        .typing-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            animation: appear .22s ease;
+        }
+
+        .typing-bubble {
+            background: var(--brand-light);
+            border: 1px solid rgba(0, 74, 133, .10);
+            border-radius: var(--r);
+            padding: 12px 16px;
+            width: fit-content;
+        }
+
+        [data-theme="dark"] .typing-bubble {
+            background: #111827;
+            border-color: var(--border);
+        }
+
+        .dots {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            height: 16px;
+        }
+
+        .dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--brand-mid);
+            opacity: .5;
+            animation: pulse 1.2s infinite;
+        }
+
+        .dots span:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .dots span:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        /* ─────────────────────────────────────────────────
+       FLOATING INPUT BAR
+    ───────────────────────────────────────────────── */
+        .input-zone {
+            flex-shrink: 0;
+            padding: 12px 0 20px;
+        }
+
+        .input-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--r);
+            box-shadow: var(--shadow-glass);
+            padding: 14px 14px 14px 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .input-glass:focus-within {
+            border-color: rgba(0, 74, 133, .35);
+            box-shadow: var(--shadow-glass), 0 0 0 3px rgba(0, 74, 133, .08);
+        }
+
+        [data-theme="dark"] .input-glass:focus-within {
+            border-color: rgba(59, 158, 255, .3);
+            box-shadow: var(--shadow-glass), 0 0 0 3px rgba(59, 158, 255, .06);
+        }
+
+        #user-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text-1);
+            resize: none;
+            max-height: 180px;
+            line-height: 1.6;
+            min-height: 24px;
+        }
+
+        #user-input::placeholder {
+            color: var(--text-3);
+        }
+
+        /* Send button */
+        #send-btn {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            background: var(--brand);
+            color: white;
+            border: none;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: background .2s, transform .15s, opacity .2s;
+        }
+
+        #send-btn:hover:not(:disabled) {
+            background: #003A6E;
+        }
+
+        #send-btn:active:not(:disabled) {
+            transform: scale(.93);
+        }
+
+        #send-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+        .input-footer {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-3);
+        }
+
+        #new-chat-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            color: var(--text-3);
+            cursor: pointer;
+            padding: 0;
+            transition: color .2s;
+        }
+
+        #new-chat-btn:hover {
+            color: var(--brand);
+        }
+
+        /* ─────────────────────────────────────────────────
+       ANIMATIONS
+    ───────────────────────────────────────────────── */
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(.7);
+                opacity: .4;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ─────────────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────────────── */
+        @media (max-width: 600px) {
+            main {
+                padding: 0 12px;
+            }
+
+            .header-inner {
+                padding: 0 14px;
+            }
+
+            .logo-tagline,
+            .status-dot {
+                display: none;
+            }
+
+            .msg-row.ai .msg-content {
+                max-width: 98%;
+            }
+
+            .msg-row.user .msg-content {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════ HEADER ═══════════ -->
+    <header>
+        <div class="header-inner">
+            <a href="/" class="logo" aria-label="LexAI">
+                <div class="logo-mark">
+                    <i data-lucide="scale" style="width:18px;height:18px;stroke-width:2;"></i>
+                </div>
+                <div class="logo-copy">
+                    <span class="logo-name">LexAI</span>
+                    <span class="logo-tagline">Milliy qonunchilik AI yordamchisi</span>
+                </div>
+            </a>
+            <div class="header-right">
+                <div class="status-dot">Online</div>
+                <button class="icon-btn" id="theme-btn" aria-label="Mavzu almashtirish" title="Dark / Light mode">
+                    <i data-lucide="moon" style="width:16px;height:16px;stroke-width:2;"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════ MAIN ═══════════ -->
+    <main>
+        <!-- Chat feed (hidden until first message) -->
+        <div id="feed" style="display:none;" role="log" aria-live="polite" aria-label="Suhbat"></div>
+
+        <!-- Landing (empty state) -->
+        <div id="landing">
+            <div class="landing-icon">
+                <i data-lucide="scale" style="width:26px;height:26px;stroke-width:1.8;"></i>
+            </div>
+            <p class="landing-title">O'zbekiston Respublikasi qonunchiligi<br>bo'yicha savolingizni bering</p>
+            <p class="landing-sub">Qonunlar, kodekslar va moddalar haqida aniq, manbali huquqiy ma'lumot olasiz.</p>
+        </div>
+
+        <!-- Input zone -->
+        <div class="input-zone">
+            <div class="input-glass">
+                <textarea id="user-input" rows="1" placeholder="Huquqiy savolingizni yozing…"
+                    aria-label="Huquqiy savol kiriting" autocomplete="off" spellcheck="false"></textarea>
+                <button id="send-btn" title="Yuborish" aria-label="Yuborish">
+                    <i data-lucide="send-horizontal" style="width:17px;height:17px;stroke-width:2;"></i>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span>Enter — yuborish &nbsp;·&nbsp; Shift+Enter — yangi qator</span>
+                <button id="new-chat-btn" type="button" title="Yangi suhbat">
+                    <i data-lucide="plus" style="width:12px;height:12px;stroke-width:2.5;"></i>
+                    Yangi suhbat
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        /* ════════════════════════════════════════════════════
+           LexAI Premium — Chat Logic
+        ════════════════════════════════════════════════════ */
+
+        // Init Lucide icons
+        lucide.createIcons();
+
+        const LEGAL_LAWS = [
+            'Jinoyat Kodeksi', 'Mehnat Kodeksi', 'Fuqarolik Kodeksi',
+            'Konstitutsiya', 'Oila Kodeksi', 'Soliq Kodeksi',
+            'Kiberxavfsizlik Qonuni', 'Saylov Kodeksi', 'Yer Kodeksi',
+            'Mamuriy Javobgarlik Kodeksi', 'Suv Kodeksi',
+        ];
+
+        let sessionId = null;
+        let isWaiting = false;
+        let isDark = false;
+
+        const feed = document.getElementById('feed');
+        const landing = document.getElementById('landing');
+        const input = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const themeBtn = document.getElementById('theme-btn');
+        const newBtn = document.getElementById('new-chat-btn');
+
+        /* ── Theme ─────────────────────────────────────────────── */
+        const savedTheme = localStorage.getItem('lexai-theme');
+        isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        applyTheme();
+
+        function applyTheme() {
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            // swap icon
+            const icon = themeBtn.querySelector('[data-lucide]');
+            if (icon) {
+                icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+                lucide.createIcons();
+            }
+        }
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            localStorage.setItem('lexai-theme', isDark ? 'dark' : 'light');
+            applyTheme();
+        });
+
+        /* ── Auto-resize ───────────────────────────────────────── */
+        input.addEventListener('input', () => {
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 180) + 'px';
+        });
+
+        /* ── Keyboard ──────────────────────────────────────────── */
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+        });
+
+        sendBtn.addEventListener('click', send);
+
+        /* ── New chat ──────────────────────────────────────────── */
+        newBtn.addEventListener('click', () => {
+            sessionId = null;
+            feed.innerHTML = '';
+            feed.style.display = 'none';
+            landing.style.display = 'flex';
+            input.value = '';
+            input.style.height = 'auto';
+            input.focus();
+        });
+
+        /* ── Send ──────────────────────────────────────────────── */
+        async function send() {
+            const text = input.value.trim();
+            if (!text || isWaiting) return;
+
+            // Switch to chat view
+            landing.style.display = 'none';
+            feed.style.display = 'flex';
+
+            appendMsg('user', text);
+            input.value = '';
+            input.style.height = 'auto';
+
+            const typingEl = showTyping();
+            setWaiting(true);
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: text, session_id: sessionId }),
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                sessionId = data.session_id;
+                typingEl.remove();
+                appendMsg('ai', data.response);
+            } catch (err) {
+                typingEl.remove();
+                appendMsg('ai', 'Kechirasiz, texnik xato yuz berdi. Iltimos qayta urinib koʻring.');
+                console.error(err);
+            } finally {
+                setWaiting(false);
+            }
+        }
+
+        /* ── UI helpers ────────────────────────────────────────── */
+        function setWaiting(val) {
+            isWaiting = val;
+            sendBtn.disabled = val;
+            input.disabled = val;
+        }
+
+        function now() {
+            return new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function appendMsg(role, text) {
+            const row = document.createElement('div');
+            row.className = `msg-row ${role}`;
+
+            if (role === 'ai') {
+                // header row with AI icon + label
+                const hdr = document.createElement('div');
+                hdr.className = 'msg-header';
+                hdr.innerHTML = `
+      <div class="ai-icon"><i data-lucide="scale" style="width:12px;height:12px;stroke-width:2;"></i></div>
+      <span class="ai-label">LexAI</span>`;
+                row.appendChild(hdr);
+            }
+
+            const content = document.createElement('div');
+            content.className = 'msg-content';
+            content.innerHTML = role === 'user' ? escapeHtml(text) : formatLegal(text);
+
+            const time = document.createElement('div');
+            time.className = 'msg-time';
+            time.textContent = now();
+
+            row.appendChild(content);
+            row.appendChild(time);
+            feed.appendChild(row);
+            feed.scrollTop = feed.scrollHeight;
+
+            // Init any new lucide icons inside
+            lucide.createIcons();
+            return row;
+        }
+
+        function showTyping() {
+            const row = document.createElement('div');
+            row.className = 'typing-row';
+
+            const hdr = document.createElement('div');
+            hdr.className = 'msg-header';
+            hdr.innerHTML = `
+    <div class="ai-icon"><i data-lucide="scale" style="width:12px;height:12px;stroke-width:2;"></i></div>
+    <span class="ai-label">LexAI</span>`;
+
+            const bub = document.createElement('div');
+            bub.className = 'typing-bubble';
+            bub.innerHTML = '<div class="dots"><span></span><span></span><span></span></div>';
+
+            row.appendChild(hdr);
+            row.appendChild(bub);
+            feed.appendChild(row);
+            feed.scrollTop = feed.scrollHeight;
+            lucide.createIcons();
+            return row;
+        }
+
+        /* ── Legal text formatter ──────────────────────────────── */
+        function escapeHtml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+        }
+
+        function formatLegal(raw) {
+            // Escape first, then apply formatting on safe HTML
+            let html = raw
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            // Article refs: "168-modda", "20-bob"
+            html = html.replace(
+                /(\d+[-–]\s*(?:modda|bob|qism|band|paragraf))/gi,
+                '<span class="art-ref">$1</span>'
+            );
+
+            // Source lines:  "📄 Jinoyat Kodeksi:"
+            html = html.replace(
+                /^(📄[^\n:]+:)/gm,
+                '<span class="source-badge">$1</span>'
+            );
+
+            // Section separator "—————"
+            html = html.replace(/^[-—]{6,}$/gm, '<hr>');
+
+            // Known law names → styled
+            LEGAL_LAWS.forEach(law => {
+                const re = new RegExp(`(${law})`, 'gi');
+                html = html.replace(re, '<span class="law-name">$1</span>');
+            });
+
+            // Paragraphs (split on double newline)
+            const blocks = html.split(/\n{2,}/);
+            html = blocks.map(block => {
+                const lines = block.split('\n').filter(Boolean);
+                if (!lines.length) return '';
+                // List items starting with • - *
+                if (lines.every(l => /^[•\-\*] /.test(l))) {
+                    return '<ul>' + lines.map(l => `<li>${l.replace(/^[•\-\*] /, '')}</li>`).join('') + '</ul>';
+                }
+                return `<p>${lines.join('<br>')}</p>`;
+            }).join('');
+
+            return html || `<p>${escapeHtml(raw)}</p>`;
+        }
+
+        /* ── Init ──────────────────────────────────────────────── */
+        input.focus();
+    </script>
+
+</body>
+
+</html>

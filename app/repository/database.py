@@ -8,21 +8,14 @@ logger = logging.getLogger(__name__)
 
 class DatabaseRepository(AbstractDatabase):
     def __init__(self) -> None:
-        try:
-            from database import DatabaseManager
-            self._db = DatabaseManager()
-            logger.info("DatabaseRepository initialized.")
-        except Exception as exc:
-            logger.error("Failed to connect to database: %s", exc)
-            raise
+        from database import DatabaseManager
+
+        self._db = DatabaseManager()
+        logger.info("DatabaseRepository initialised.")
 
     def hybrid_search(self, query: str, top_k: int = 8) -> List[Dict]:
         logger.debug("hybrid_search | query=%r | top_k=%d", query, top_k)
-        try:
-            return self._db.hybrid_search(query, top_k)
-        except Exception as exc:
-            logger.error("hybrid_search failed: %s", exc)
-            return []
+        return self._db.hybrid_search(query, top_k)
 
     def upload_data(self, folder: str = "lex_structured") -> None:
         logger.info("upload_data | folder=%s", folder)

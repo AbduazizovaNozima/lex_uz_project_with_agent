@@ -1,4 +1,5 @@
 import logging
+
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import CommandStart, Command
@@ -27,10 +28,9 @@ def _get_or_create_session(user_id: int) -> str:
 
 @router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
-    user_id = message.from_user.id
     _, session_svc = _get_services()
-    sid = session_svc.create_session(user_id=str(user_id))
-    _user_sessions[user_id] = sid
+    sid = session_svc.create_session(user_id=str(message.from_user.id))
+    _user_sessions[message.from_user.id] = sid
     welcome = (
         "⚖️ *LexAI Professional* ga xush kelibsiz\\!\n\n"
         "Men O'zbekiston Respublikasi qonunchiligi bo'yicha "
@@ -62,10 +62,9 @@ async def cmd_help(message: Message) -> None:
 
 @router.message(Command("new"))
 async def cmd_new(message: Message) -> None:
-    user_id = message.from_user.id
     _, session_svc = _get_services()
-    sid = session_svc.create_session(user_id=str(user_id))
-    _user_sessions[user_id] = sid
+    sid = session_svc.create_session(user_id=str(message.from_user.id))
+    _user_sessions[message.from_user.id] = sid
     await message.answer(
         escape_md("✅ Yangi suhbat boshlandi. Savolingizni yozing."),
         parse_mode=ParseMode.MARKDOWN_V2,
@@ -74,40 +73,38 @@ async def cmd_new(message: Message) -> None:
 
 @router.message(F.text)
 async def handle_message(message: Message) -> None:
-    user_id = message.from_user.id
     question = message.text.strip()
     if not question:
         return
 
+    user_id = message.from_user.id
     agent_svc, session_svc = _get_services()
     sid = _get_or_create_session(user_id)
     history = session_svc.get_formatted_history(sid, limit=4)
 
-    logger.info("\n%s\n🤖 BOT | user=%d | sid=%s…\n❓ Savol   : %s\n%s", "═"*60, user_id, sid[:8], question, "═"*60)
+    logger.info("bot | user=%d | sid=%.8s | question=%r", user_id, sid, question)
 
     waiting_msg = await message.answer("⏳", parse_mode=None)
 
     try:
         answer = await agent_svc.get_response(question, history)
-    except Exception as exc:
-        logger.error("bot | agent error: %s", exc)
-        answer = "Kechirasiz, texnik xato yuz berdi. Iltimos qayta urinib ko'ring."
-
-    try:
-        await waiting_msg.delete()
     except Exception:
-        pass
-
-    logger.info("✅ Javob    :\n%s\n%s", answer, "═"*60)
+        logger.exception("bot | agent error | user=%d", user_id)
+        answer = "Kechirasiz, texnik xato yuz berdi. Iltimos qayta urinib ko'ring."
+    finally:
+        try:
+            await waiting_msg.delete()
+        except Exception:
+            pass
 
     session_svc.add_message(sid, "user", question)
     session_svc.add_message(sid, "assistant", answer)
 
-    formatted = format_legal_response(answer)
-    formatted = truncate_for_telegram(formatted)
+    logger.info("bot | user=%d | response_len=%d", user_id, len(answer))
 
+    formatted = truncate_for_telegram(format_legal_response(answer))
     try:
         await message.answer(formatted, parse_mode=ParseMode.MARKDOWN_V2)
-    except Exception as fmt_err:
-        logger.warning("bot | MarkdownV2 failed (%s) — plain text", fmt_err)
+    except Exception:
+        logger.warning("bot | MarkdownV2 failed — sending as plain text.", exc_info=True)
         await message.answer(answer[:4096], parse_mode=None)

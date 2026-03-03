@@ -1,7 +1,4 @@
 import re
-import logging
-
-logger = logging.getLogger(__name__)
 
 _ESCAPE_RE = re.compile(r"([\\\_\*\[\]\(\)\~\`\>\#\+\-\=\|\{\}\.\!])")
 
@@ -30,14 +27,4 @@ def format_legal_response(text: str) -> str:
 def truncate_for_telegram(text: str, max_len: int = 4000) -> str:
     if len(text) <= max_len:
         return text
-    return text[:max_len - 4] + r"\.\.\."
-
-
-def make_lex_deeplink(doc_name: str) -> str:
-    from app.core.constants import LAWS_TO_SCRAPE
-    url = LAWS_TO_SCRAPE.get(doc_name)
-    if not url:
-        return ""
-    display = escape_md(doc_name.replace("_", " "))
-    safe_url = url.replace(")", "\\)")
-    return f"[{display}]({safe_url})"
+    return text[: max_len - 4] + r"\.\.\."

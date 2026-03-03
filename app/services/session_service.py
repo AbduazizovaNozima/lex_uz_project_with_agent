@@ -1,8 +1,8 @@
-import uuid
-import json
-import os
 import asyncio
+import json
 import logging
+import os
+import uuid
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 class SessionService:
     def __init__(self) -> None:
-        settings = get_settings()
-        self._storage_dir = settings.SESSIONS_DIR
+        self._storage_dir = get_settings().SESSIONS_DIR
         os.makedirs(self._storage_dir, exist_ok=True)
         self._sessions: Dict[str, dict] = {}
         self._locks: Dict[str, asyncio.Lock] = {}
@@ -48,8 +47,8 @@ class SessionService:
                     data = json.load(f)
                 self._sessions[session_id] = data
                 return data
-            except Exception as exc:
-                logger.warning("get_session | load failed: %s", exc)
+            except Exception:
+                logger.warning("get_session | failed to load %s.", session_id, exc_info=True)
         return None
 
     def add_message(self, session_id: str, role: str, content: str) -> bool:
@@ -91,8 +90,8 @@ class SessionService:
             try:
                 os.remove(path)
                 return True
-            except Exception as exc:
-                logger.warning("delete_session | remove failed: %s", exc)
+            except Exception:
+                logger.warning("delete_session | failed to remove %s.", session_id, exc_info=True)
         return False
 
     def get_session_summary(self, session_id: str) -> Optional[dict]:
@@ -118,8 +117,8 @@ class SessionService:
         try:
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(session, f, ensure_ascii=False, indent=2)
-        except Exception as exc:
-            logger.error("_save_session | failed: %s", exc)
+        except Exception:
+            logger.error("_save_session | failed for %s.", session_id, exc_info=True)
 
     def _load_active_sessions(self) -> None:
         cutoff = datetime.now() - timedelta(hours=SESSION_EXPIRY_HOURS)
@@ -134,8 +133,8 @@ class SessionService:
                     data = json.load(f)
                 if datetime.fromisoformat(data["last_active"]) >= cutoff:
                     self._sessions[data["session_id"]] = data
-            except Exception as exc:
-                logger.warning("_load_active_sessions | skip %s: %s", filename, exc)
+            except Exception:
+                logger.warning("_load_active_sessions | skipping %s.", filename, exc_info=True)
 
 
 session_service = SessionService()

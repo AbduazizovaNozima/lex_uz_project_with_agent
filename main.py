@@ -26,8 +26,11 @@ async def run_api() -> None:
 
 async def run_bot() -> None:
     settings = get_settings()
+    if not settings.TELEGRAM_BOT_ENABLED:
+        logger.info("Telegram bot disabled by config.")
+        return
     if not settings.TELEGRAM_BOT_TOKEN:
-        logger.warning("TELEGRAM_BOT_TOKEN not set — Telegram bot disabled.")
+        logger.warning("TELEGRAM_BOT_ENABLED=true but TELEGRAM_BOT_TOKEN is empty — bot disabled.")
         return
     from app.bot.main import start_bot
     await start_bot()

@@ -2,6 +2,7 @@ import glob
 import json
 import logging
 import os
+import re
 
 import psycopg2
 from psycopg2 import pool
@@ -13,6 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger(__name__)
+_TOKEN_PATTERN = re.compile(r"\w+", re.UNICODE)
 
 
 class DatabaseManager:
@@ -177,13 +179,53 @@ class DatabaseManager:
 
 
 def search_lexuz_tool(query: str) -> str:
-    results = DatabaseManager().hybrid_search(query)
+    results = search_local_corpus(query)
     if not results:
         return "Bazada ushbu mavzu bo'yicha ma'lumot topilmadi."
-    lines = ["📚 TASDIQLANGAN MANBALAR:\n"]
+    lines = ["TASDIQLANGAN MANBALAR:\n"]
     for res in results:
-        lines.append(f"📄 {res['source']}:\n{res['content']}\n{'—' * 30}")
+        lines.append(f"{res['source']}:\n{res['content']}\n{'-' * 30}")
     return "\n".join(lines)
+
+
+def _tokenize(text: str) -> set[str]:
+    return {token.lower() for token in _TOKEN_PATTERN.findall(text)}
+
+
+def search_local_corpus(query: str, folder: str = "lex_structured", top_k: int = 8) -> List[Dict]:
+    query_tokens = _tokenize(query)
+    if not query_tokens:
+        return []
+
+    results: List[Dict] = []
+    for file_path in glob.glob(f"{folder}/*.json"):
+        source = os.path.basename(file_path).replace(".json", "").replace("_", " ")
+        try:
+            with open(file_path, "r", encoding="utf-8") as handle:
+                data = json.load(handle)
+        except (OSError, json.JSONDecodeError):
+            logger.warning("Skipping unreadable corpus file: %s", file_path)
+            continue
+
+        for article in data.values():
+            content = article.get("content", "").strip()
+            if not content:
+                continue
+            title = article.get("title", "").strip()
+            haystack = f"{title} {content}"
+            tokens = _tokenize(haystack)
+            overlap = len(query_tokens & tokens)
+            if not overlap:
+                continue
+            results.append(
+                {
+                    "source": source,
+                    "content": content,
+                    "score": float(overlap),
+                }
+            )
+
+    return sorted(results, key=lambda item: item["score"], reverse=True)[:top_k]
 
 
 if __name__ == "__main__":

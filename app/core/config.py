@@ -8,10 +8,11 @@ class Settings(BaseSettings):
     OPENAI_TEMPERATURE: float = 0.1
 
     TELEGRAM_BOT_TOKEN: str = ""
+    TELEGRAM_BOT_ENABLED: bool = False
 
     DB_NAME: str = "lexuz_db"
     DB_USER: str = "postgres"
-    DB_PASSWORD: str = "12345"
+    DB_PASSWORD: str = ""
     DB_HOST: str = "localhost"
     DB_PORT: str = "5433"
 

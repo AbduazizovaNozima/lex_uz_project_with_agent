@@ -1,6 +1,6 @@
 import logging
 
-import autogen
+from openai import OpenAI
 
 from app.interfaces.agent_interface import AbstractAgentService
 from app.core.config import get_settings
@@ -40,14 +40,16 @@ class AgentService(AbstractAgentService):
     def __init__(self, db_repository=None) -> None:
         self._settings = get_settings()
         self._db_repo = db_repository
-        self._client = autogen.OpenAIWrapper(
-            config_list=[
-                {
-                    "model": self._settings.OPENAI_MODEL,
-                    "api_key": self._settings.OPENAI_API_KEY,
-                }
-            ]
+        self._client = OpenAI(api_key=self._settings.OPENAI_API_KEY)
+
+    def _create(self, messages: list[dict[str, str]]) -> str:
+        response = self._client.chat.completions.create(
+            model=self._settings.OPENAI_MODEL,
+            messages=messages,
+            temperature=self._settings.OPENAI_TEMPERATURE,
         )
+        content = response.choices[0].message.content
+        return content.strip() if content else ""
 
     def classify_intent(self, question: str) -> str:
         prompt = (
@@ -59,8 +61,7 @@ class AgentService(AbstractAgentService):
             "Faqat bitta so'z: SOCIAL, LEGAL yoki UNKNOWN"
         )
         try:
-            res = self._client.create(messages=[{"role": "user", "content": prompt}])
-            intent = res.choices[0].message.content.strip().upper()
+            intent = self._create([{"role": "user", "content": prompt}]).upper()
             result = intent if intent in {"SOCIAL", "LEGAL", "UNKNOWN"} else "LEGAL"
             logger.info("classify_intent | intent=%s", result)
             return result
@@ -92,8 +93,7 @@ class AgentService(AbstractAgentService):
             "Faqat savol matnini qaytargin."
         )
         try:
-            res = self._client.create(messages=[{"role": "user", "content": prompt}])
-            rewritten = res.choices[0].message.content.strip().strip('"')
+            rewritten = self._create([{"role": "user", "content": prompt}]).strip('"')
             if 5 <= len(rewritten) <= 400:
                 return rewritten
         except Exception:
@@ -112,8 +112,7 @@ class AgentService(AbstractAgentService):
             messages.append({"role": "assistant", "content": f"Oldingi suhbat:\n{history}"})
         messages.append({"role": "user", "content": question})
         try:
-            res = self._client.create(messages=messages)
-            return res.choices[0].message.content.strip()
+            return self._create(messages)
         except Exception:
             logger.error("_handle_social failed.", exc_info=True)
             return "Salom! Men LexAI — huquqiy yordamchiman. Huquqiy savolingizni bering."
@@ -150,13 +149,12 @@ class AgentService(AbstractAgentService):
             f"{_GENERAL_RULES}"
         )
         try:
-            res = self._client.create(
-                messages=[
+            return self._create(
+                [
                     {"role": "system", "content": _SYSTEM_PROMPT},
                     {"role": "user", "content": prompt},
                 ]
             )
-            return res.choices[0].message.content.strip()
         except Exception:
             logger.error("_synthesize_answer failed.", exc_info=True)
             return "Texnik xato yuz berdi. Iltimos qayta urinib ko'ring."

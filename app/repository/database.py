@@ -29,7 +29,7 @@ class DatabaseRepository(AbstractDatabase):
         results = self.hybrid_search(query)
         if not results:
             return ""
-        lines = ["📚 TASDIQLANGAN MANBALAR:\n"]
+        lines = ["TASDIQLANGAN MANBALAR:\n"]
         for res in results:
-            lines.append(f"📄 {res['source']}:\n{res['content']}\n{'—' * 30}")
+            lines.append(f"{res['source']}:\n{res['content']}\n{'-' * 30}")
         return "\n".join(lines)

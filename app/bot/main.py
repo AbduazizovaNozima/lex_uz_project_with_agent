@@ -4,6 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramConflictError
 
 from app.bot.handlers import router as handlers_router
 from app.core.config import get_settings
@@ -15,6 +16,9 @@ logger = logging.getLogger(__name__)
 async def start_bot() -> None:
     setup_logging()
     settings = get_settings()
+    if not settings.TELEGRAM_BOT_ENABLED:
+        logger.info("Telegram bot disabled by config.")
+        return
     if not settings.TELEGRAM_BOT_TOKEN:
         logger.warning("TELEGRAM_BOT_TOKEN not set — Telegram bot disabled.")
         return
@@ -29,6 +33,8 @@ async def start_bot() -> None:
     logger.info("Telegram bot starting (long-polling)…")
     try:
         await dp.start_polling(bot, allowed_updates=["message"])
+    except TelegramConflictError:
+        logger.warning("Telegram bot disabled: another bot instance is already polling this token.")
     finally:
         await bot.session.close()
         logger.info("Telegram bot stopped.")

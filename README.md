@@ -1,60 +1,77 @@
-# LexAI Professional
+# LexAI — Uzbek Legal Assistant
 
-AI-powered legal assistant for Uzbekistan — answers questions about laws, codes, and statutes sourced directly from [Lex.uz](https://lex.uz).
+> AI-powered legal Q&A system for Uzbekistan law, backed by [Lex.uz](https://lex.uz)
 
-It runs as a **FastAPI** web service with a built-in **Telegram bot**, backed by a **PostgreSQL + pgvector** database for semantic search.
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?logo=fastapi)](https://fastapi.tiangolo.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgvector-blue?logo=postgresql)](https://github.com/pgvector/pgvector)
+[![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker)](https://docker.com)
 
 ---
 
-## Run with Docker
+## Overview
+
+LexAI is a Retrieval-Augmented Generation (RAG) system that answers legal questions in Uzbek and Russian using laws, codes, and statutes scraped directly from the official Uzbekistan legal database (Lex.uz).
+
+**Key features:**
+- Semantic search over 25,000+ legal documents via PostgreSQL + pgvector
+- Multi-turn conversation with session memory (per Telegram user or API client)
+- Telegram bot interface + REST API
+- Scraper to keep legal data up to date
+
+**Tech stack:** FastAPI · OpenAI GPT-4o-mini · PostgreSQL + pgvector · Docker · Aiogram
+
+---
+
+## Architecture
+
+```
+User (Telegram / REST)
+        │
+        ▼
+   FastAPI App
+        │
+   ┌────┴────┐
+   │  Agent  │  ← OpenAI GPT-4o-mini
+   └────┬────┘
+        │  semantic search
+        ▼
+ PostgreSQL + pgvector
+  (25K+ law documents)
+```
+
+---
+
+## Quickstart (Docker)
 
 ```bash
-# 1. Copy and fill in credentials
-cp .env.example .env
+git clone https://github.com/AbduazizovaNozima/lex_uz_project_with_agent
+cd lex_uz_project_with_agent
 
-# 2. Start all services (PostgreSQL + app)
+# 1. Set credentials
+cp .env.example .env
+# Edit .env — add OPENAI_API_KEY and DB_PASSWORD
+
+# 2. Start services
 docker compose -f docker/docker-compose.yml up -d --build
 
 # 3. Bootstrap the database (first run only)
 docker exec lexai_app python3 database.py
 
-# 4. View logs
-docker compose -f docker/docker-compose.yml logs -f app
-
-# 5. Stop
-docker compose -f docker/docker-compose.yml down
+# 4. Open docs
+open http://localhost:8000/docs
 ```
-
-The app will be available at **http://localhost:8000**
 
 ---
 
-## Run Locally
+## Quickstart (Local)
 
 ```bash
-# 1. Copy and fill in credentials
-cp .env.example .env
-
-# 2. Install dependencies
 pip install -r requirements.txt
+cp .env.example .env   # fill in your credentials
 
-# 3. Bootstrap the database (first run only)
-python3 database.py
-
-# 4. Start
+python3 database.py    # first run only
 python3 main.py
-```
-
----
-
-## Ingest / Update Legal Data
-
-```bash
-# Scrape all laws from Lex.uz and save to lex_structured/
-python3 -c "from app.services.scraper_service import ScraperService; ScraperService().scrape_all()"
-
-# Upload scraped data into PostgreSQL
-python3 database.py
 ```
 
 ---
@@ -75,27 +92,46 @@ Interactive docs: **http://localhost:8000/docs**
 
 ---
 
-## Telegram Bot Commands
+## Telegram Bot
 
-| Command | Action |
-|---------|--------|
+| Command | Description |
+|---------|-------------|
 | `/start` | Start a new session |
-| `/new` | Reset the conversation |
+| `/new` | Reset conversation |
 | `/help` | Show help |
+
+Enable the bot by setting `TELEGRAM_BOT_TOKEN` and `TELEGRAM_BOT_ENABLED=true` in `.env`.
+
+---
+
+## Data Pipeline
+
+```bash
+# Scrape updated laws from Lex.uz
+python3 scraper.py
+
+# Re-index into PostgreSQL
+python3 database.py
+```
 
 ---
 
 ## Environment Variables
 
-Copy `.env.example` → `.env`:
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `OPENAI_API_KEY` | OpenAI secret key | ✅ |
+| `OPENAI_MODEL` | Model name | default: `gpt-4o-mini` |
+| `TELEGRAM_BOT_TOKEN` | Token from [@BotFather](https://t.me/botfather) | optional |
+| `TELEGRAM_BOT_ENABLED` | Enable Telegram bot | default: `false` |
+| `DB_NAME` | PostgreSQL database name | default: `lexuz_db` |
+| `DB_USER` | PostgreSQL user | default: `postgres` |
+| `DB_PASSWORD` | PostgreSQL password | ✅ |
+| `DB_HOST` | DB host (`localhost` or `postgres` in Docker) | ✅ |
+| `DB_PORT` | DB port | default: `5433` |
 
-| Variable | Description |
-|----------|-------------|
-| `OPENAI_API_KEY` | OpenAI secret key |
-| `OPENAI_MODEL` | Model name (default: `gpt-4o-mini`) |
-| `TELEGRAM_BOT_TOKEN` | Token from [@BotFather](https://t.me/botfather) — optional |
-| `DB_NAME` | PostgreSQL database name |
-| `DB_USER` | PostgreSQL user |
-| `DB_PASSWORD` | PostgreSQL password |
-| `DB_HOST` | `localhost` locally, `postgres` inside Docker |
-| `DB_PORT` | `5433` locally, `5432` inside Docker |
+---
+
+## License
+
+MIT

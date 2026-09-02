@@ -26,3 +26,5 @@ webdriver-manager
 python-dotenv
 numpy
 aiofiles
+scikit-learn
+pandas

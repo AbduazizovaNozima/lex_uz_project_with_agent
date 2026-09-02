@@ -2,6 +2,7 @@ import logging
 import traceback
 from contextlib import asynccontextmanager
 
+import psycopg2
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
@@ -31,6 +32,11 @@ async def lifespan(app: FastAPI):
     try:
         from app.repository.database import DatabaseRepository
         db_repo = DatabaseRepository()
+    except psycopg2.OperationalError as exc:
+        logger.warning(
+            "Database unavailable (%s) — agent will use the legacy search_lexuz_tool fallback.",
+            exc,
+        )
     except Exception:
         logger.warning(
             "Database unavailable — agent will use the legacy search_lexuz_tool fallback.",
